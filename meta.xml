@@ -1,0 +1,5 @@
+<meta>
+<info name="Mirror" type="script" />
+<script src="bin\Debug\netcoreapp2.0\Mirror.dll" />
+<include resource="litedbwrapper" />
+</meta>
