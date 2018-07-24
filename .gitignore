@@ -1,0 +1,13 @@
+.vs/*
+obj/Debug/*
+**.pdb
+**.txt
+**.cache
+**.CopyComplete
+**.csproj.CopyComplete
+**.csproj.CoreCompileInputs.cache
+**.csproj.FileListAbsolute.txt
+**.AssemblyInfo.cs
+**.AssemblyInfoInputs.cache
+bin/Debug/netcoreapp2.0/*.cs
+bin/Debug/netcoreapp2.1
