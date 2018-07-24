@@ -1,0 +1,11 @@
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\bin\Debug\netcoreapp2.0\Mirror.deps.json
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\bin\Debug\netcoreapp2.0\Mirror.dll
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\bin\Debug\netcoreapp2.0\Mirror.pdb
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\bin\Debug\netcoreapp2.0\LiteDbWrapper.dll
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\bin\Debug\netcoreapp2.0\LiteDbWrapper.pdb
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\obj\Debug\netcoreapp2.0\Mirror.csproj.CoreCompileInputs.cache
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\obj\Debug\netcoreapp2.0\Mirror.AssemblyInfoInputs.cache
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\obj\Debug\netcoreapp2.0\Mirror.AssemblyInfo.cs
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\obj\Debug\netcoreapp2.0\Mirror.csproj.CopyComplete
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\obj\Debug\netcoreapp2.0\Mirror.dll
+C:\Users\Vape\Desktop\RageMP\server-files\bridge\resources\Mirror\obj\Debug\netcoreapp2.0\Mirror.pdb
