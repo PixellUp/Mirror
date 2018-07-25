@@ -13,15 +13,6 @@ namespace Mirror.Commands
         [Command("login")]
         public void CmdLogin(Client client, string username, string password)
         {
-            if (client.HasData("LoggedIn"))
-                return;
-
-            if (Utility.Utility.CheckIfLoggedIn(username))
-            {
-                client.SendChatMessage("~r~That account is already logged in.");
-                return;
-            }
-
             bool passwordCorrect = Encryption.BCryptHelper.CheckPassword(password, Database.Get<Account>("Name", username).Password);
 
             if (!passwordCorrect)
@@ -31,8 +22,19 @@ namespace Mirror.Commands
             }
 
             client.SendChatMessage($"~g~ Welcome ~w~{username}, ~g~loading account details...");
-            client.SetData("Account", Database.Get<Account>("Name", username));
-            client.SetData("LoggedIn", true);
+            LoadAccount(client, username);
+        }
+
+        private void LoadAccount(Client client, string username)
+        {
+            Account acc = Database.Get<Account>("Name", username);
+            acc.LoadAccountData(client);
+
+            acc.Appearance = Database.GetById<Appearance>(acc.ID);
+            acc.Appearance.LoadAppearanceData(client);
+
+            acc.Clothing = Database.GetById<Clothing>(acc.ID);
+            acc.Clothing.LoadClothingData(client);
         }
     }
 }
