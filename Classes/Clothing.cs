@@ -23,6 +23,9 @@ namespace Mirror.Classes
         public int BodyArmorVariant { get; set; } = 0;
         public int Top { get; set; } = 41;
         public int TopVariant { get; set; } = 0;
+        public int Hats { get; set; } = 0;
+        public int Glasses { get; set; } = 0;
+        public int Ears { get; set; } = 0;
 
         public void LoadClothingData(Client client)
         {

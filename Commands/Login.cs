@@ -29,12 +29,6 @@ namespace Mirror.Commands
         {
             Account acc = Database.Get<Account>("Name", username);
             acc.LoadAccountData(client);
-
-            acc.Appearance = Database.GetById<Appearance>(acc.ID);
-            acc.Appearance.LoadAppearanceData(client);
-
-            acc.Clothing = Database.GetById<Clothing>(acc.ID);
-            acc.Clothing.LoadClothingData(client);
         }
     }
 }

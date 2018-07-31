@@ -7,7 +7,7 @@ namespace Mirror
     {
         public Startup()
         {
-
+            Settings.Settings.Initialize();
         }
     }
 }

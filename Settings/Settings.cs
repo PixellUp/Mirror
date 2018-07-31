@@ -13,6 +13,10 @@ namespace Mirror.Settings
         public static string DatabaseLocation { get; set; } = Wrapper.Settings.DatabaseLocation;
         [JsonProperty("StartupMessage")]
         public static string StartupMessage { get; set; } = "Welcome! Please use ~g~/register ~w~or ~b~/login";
+        [JsonProperty("DisableTalentCommands")]
+        public static bool DisableTalentCommands { get; set; } = false;
+        [JsonProperty("TalentDivision")]
+        public static int TalentDivision { get; set; } = 4;
 
         public static void Initialize()
         {
@@ -37,12 +41,12 @@ namespace Mirror.Settings
         public static void SaveSettings()
         {
             string serialize = JsonConvert.SerializeObject(Settings, Formatting.Indented);
-            File.WriteAllText(Settings.DatabaseLocation + @"\settings.json", serialize);
+            File.WriteAllText(Settings.DatabaseLocation + @"\mirror-settings.json", serialize);
         }
 
         public static void LoadSettings()
         {
-            string deserialize = File.ReadAllText(Settings.DatabaseLocation + @"\settings.json");
+            string deserialize = File.ReadAllText(Settings.DatabaseLocation + @"\mirror-settings.json");
             Settings = JsonConvert.DeserializeObject<Settings>(deserialize);
         }
     }

@@ -45,6 +45,7 @@ namespace Mirror.Commands
                 Name = username,
                 Password = hash
             };
+
             Database.Upsert(account); // Insert into Database.
             account.SetupAccountData(); // Insert New Clothing / Appearance Collections.
             client.SendChatMessage($"~g~ Your account has been registered. ~w~{username}");
