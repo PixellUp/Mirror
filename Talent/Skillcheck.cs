@@ -92,10 +92,27 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckStrAgainstOpponent(Client client, Client target, int impact = 0)
         {
+            if (!client.HasData("TalentScoresheet"))
+                return false;
+
+            if (!target.HasData("TalentScoresheet"))
+                return false;
+
             TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
             TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
-            if (clientSheet.GetStrScore() + Dice.RollDice() > targetSheet.GetStrScore() + Dice.RollDice())
+            if (clientSheet == null)
+                return false;
+
+            if (targetSheet == null)
+                return false;
+
+            int clientRoll = clientSheet.GetStrScore() + Dice.RollDice();
+            int targetRoll = targetSheet.GetStrScore() + Dice.RollDice();
+
+            client.SendNotification($"[~r~STRENGTH~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+
+            if (clientRoll > targetRoll)
                 return true;
 
             clientSheet.StrengthModifier += impact;
@@ -110,10 +127,27 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckEndAgainstOpponent(Client client, Client target, int impact = 0)
         {
+            if (!client.HasData("TalentScoresheet"))
+                return false;
+
+            if (!target.HasData("TalentScoresheet"))
+                return false;
+
             TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
             TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
-            if (clientSheet.GetEndScore() + Dice.RollDice() > targetSheet.GetEndScore() + Dice.RollDice())
+            if (clientSheet == null)
+                return false;
+
+            if (targetSheet == null)
+                return false;
+
+            int clientRoll = clientSheet.GetEndScore() + Dice.RollDice();
+            int targetRoll = targetSheet.GetEndScore() + Dice.RollDice();
+
+            client.SendNotification($"[~g~ENDURANCE~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+
+            if (clientRoll > targetRoll)
                 return true;
 
             clientSheet.EnduranceModifier += impact;
@@ -128,10 +162,27 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckIntAgainstPlayer(Client client, Client target, int impact = 0)
         {
+            if (!client.HasData("TalentScoresheet"))
+                return false;
+
+            if (!target.HasData("TalentScoresheet"))
+                return false;
+
             TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
             TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
-            if (clientSheet.GetIntScore() + Dice.RollDice() > targetSheet.GetIntScore() + Dice.RollDice())
+            if (clientSheet == null)
+                return false;
+
+            if (targetSheet == null)
+                return false;
+
+            int clientRoll = clientSheet.GetIntScore() + Dice.RollDice();
+            int targetRoll = targetSheet.GetIntScore() + Dice.RollDice();
+
+            client.SendNotification($"[~b~INTEL~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+
+            if (clientRoll > targetRoll)
                 return true;
 
             clientSheet.IntelligenceModifier += impact;
@@ -146,10 +197,27 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckChaAgainstPlayer(Client client, Client target, int impact = 0)
         {
+            if (!client.HasData("TalentScoresheet"))
+                return false;
+
+            if (!target.HasData("TalentScoresheet"))
+                return false;
+
             TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
             TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
-            if (clientSheet.GetChaScore() + Dice.RollDice() > targetSheet.GetChaScore() + Dice.RollDice())
+            if (clientSheet == null)
+                return false;
+
+            if (targetSheet == null)
+                return false;
+
+            int clientRoll = clientSheet.GetChaScore() + Dice.RollDice();
+            int targetRoll = targetSheet.GetChaScore() + Dice.RollDice();
+
+            client.SendNotification($"[~y~CHARISMA~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+
+            if (clientRoll > targetRoll)
                 return true;
 
             clientSheet.CharismaModifier += impact;

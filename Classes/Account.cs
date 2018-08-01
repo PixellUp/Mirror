@@ -17,6 +17,7 @@ namespace Mirror.Classes
         public string Gender { get; set; } = "Male";
         public string Description { get; set; } = "";
         public bool Banned { get; set; } = false;
+        public bool isAttacking { get; set; } = false;
         public Clothing Clothing { get; set; }
         public Appearance Appearance { get; set; }
         public TalentScoresheet TalentScoreSheet { get; set; }
@@ -91,7 +92,16 @@ namespace Mirror.Classes
                 TalentScoreSheet.AddSheetToPlayer(client);
                 client.SendChatMessage("Loaded Talent Sheet");
             });
-            
+
+            client.TriggerEvent("Freeze", client.Handle, false);
+            client.TriggerEvent("Disable", false);
+        }
+
+        public static Account RetrieveAccount(Client client)
+        {
+            Account account;
+            account = client.GetData("Account") as Account;
+            return account;
         }
     }
 }

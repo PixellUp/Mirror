@@ -14,13 +14,23 @@ namespace Mirror.Events
             if (!vehicle.HasData("Headlights"))
                 vehicle.SetData("Headlights", true);
 
-            if (vehicle.GetData("Headlights"))
+            if (Convert.ToBoolean(vehicle.GetData("Headlights")))
             {
-                NAPI.ClientEvent.TriggerClientEventInRange(client.Position, 50f, "ClientTasks", "ToggleLights", vehicle, false);
-            } else  {
-                NAPI.ClientEvent.TriggerClientEventInRange(client.Position, 50f, "ClientTasks", "ToggleLights", vehicle, true);
-                
+                List<Client> targets = NAPI.Player.GetPlayersInRadiusOfPlayer(25, client);
+                foreach (Client target in targets)
+                {
+                    target.TriggerEvent("ToggleLights", vehicle.Handle, 0);
+                }
+                vehicle.SetData("Headlights", false);
+            } else {
+                List<Client> targets = NAPI.Player.GetPlayersInRadiusOfPlayer(25, client);
+                foreach (Client target in targets)
+                {
+                    target.TriggerEvent("ToggleLights", vehicle.Handle, 1);
+                }
+                vehicle.SetData("Headlights", true);
             }
+            
         }
     }
 }

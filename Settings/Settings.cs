@@ -18,6 +18,7 @@ namespace Mirror.Settings
         [JsonProperty("TalentDivision")]
         public static int TalentDivision { get; set; } = 4;
 
+
         public static void Initialize()
         {
             if (!Directory.Exists(DatabaseLocation))

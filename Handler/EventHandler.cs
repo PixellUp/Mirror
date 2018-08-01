@@ -21,6 +21,18 @@ namespace Mirror.Handler
                 case "ToggleLights":
                     Events.ToggleLights.Event(client, arguments);
                     return;
+                case "OpenDoor":
+                    Events.OpenDoor.Event(client, arguments);
+                    return;
+                case "CloseDoors":
+                    Events.CloseDoors.Event(client, arguments);
+                    return;
+                case "AttackPlayer":
+                    Events.AttackPlayer.Event(client, arguments);
+                    return;
+                case "StopAttacking":
+                    Events.StopAttacking.Event(client);
+                    return;
             }
         }
     }

@@ -6492,7 +6492,7 @@
     ".NETCoreApp,Version=v2.0": [
       "BCrypt-Core >= 2.0.0",
       "Microsoft.NETCore.App >= 2.0.0",
-      "gtanetwork.api >= 0.*"
+      "gtanetwork.api >= 0.3.5"
     ]
   },
   "packageFolders": {
@@ -6549,7 +6549,7 @@
           },
           "gtanetwork.api": {
             "target": "Package",
-            "version": "[0.*, )"
+            "version": "[0.3.5, )"
           }
         },
         "imports": [
