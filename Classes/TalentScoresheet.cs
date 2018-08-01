@@ -24,6 +24,8 @@ namespace Mirror.Classes
         public void AddSheetToPlayer(Client client)
         {
             client.SetData("TalentScoresheet", this);
+            //  (strength: number, endurance: number, intelligence: number, charisma: number)
+            client.TriggerEvent("LoadStats", GetStrScore(), GetEndScore(), GetIntScore(), GetChaScore());
         }
 
         public void SaveNewScoresheet()
