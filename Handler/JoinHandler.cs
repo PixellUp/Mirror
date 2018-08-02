@@ -14,8 +14,8 @@ namespace Mirror.Handler
                 return;
 
             client.Position = new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ);
-            client.TriggerEvent("Freeze", client.Handle, true);
-            client.TriggerEvent("Disable", true);
+            client.TriggerEvent("eventFreeze", client.Handle, true);
+            client.TriggerEvent("eventDisable", true);
             client.Dimension = 999;
             client.Transparency = 0;
         }

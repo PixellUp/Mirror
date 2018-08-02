@@ -30,7 +30,7 @@ namespace Mirror.Classes
 
         public void PushScoresLocally(Client client)
         {
-            client.TriggerEvent("LoadStats", GetStrScore(), GetEndScore(), GetIntScore(), GetChaScore());
+            client.TriggerEvent("eventLoadStats", GetStrScore(), GetEndScore(), GetIntScore(), GetChaScore());
         }
 
         public void SaveNewScoresheet()

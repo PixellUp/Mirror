@@ -22,7 +22,7 @@ namespace Mirror.Events
 
             foreach (Client target in targets)
             {
-                target.TriggerEvent("OpenDoor", vehicle, doorNumber);
+                target.TriggerEvent("eventOpenDoor", vehicle, doorNumber);
             }
         }
     }

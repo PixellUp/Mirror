@@ -18,9 +18,9 @@ namespace Mirror.Events
             client.Vehicle.Locked = !client.Vehicle.Locked;
             if (client.Vehicle.Locked)
             {
-                client.TriggerEvent("ArpgNotification", $"Locked");
+                client.TriggerEvent("eventCreatePlayerNotification", $"Locked");
             } else {
-                client.TriggerEvent("ArpgNotification", $"Unlocked");
+                client.TriggerEvent("eventCreatePlayerNotification", $"Unlocked");
             }
             
         }

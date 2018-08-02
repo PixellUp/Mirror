@@ -22,16 +22,16 @@ namespace Mirror.Events
                 List<Client> targets = NAPI.Player.GetPlayersInRadiusOfPlayer(25, client);
                 foreach (Client target in targets)
                 {
-                    target.TriggerEvent("ToggleLights", vehicle.Handle, 0);
-                    client.TriggerEvent("ArpgNotification", $"Lights Off");
+                    target.TriggerEvent("eventToggleLights", vehicle.Handle, 0);
+                    client.TriggerEvent("eventCreatePlayerNotification", $"Lights Off");
                 }
                 vehicle.SetData("Headlights", false);
             } else {
                 List<Client> targets = NAPI.Player.GetPlayersInRadiusOfPlayer(25, client);
                 foreach (Client target in targets)
                 {
-                    target.TriggerEvent("ToggleLights", vehicle.Handle, 1);
-                    client.TriggerEvent("ArpgNotification", $"Lights On");
+                    target.TriggerEvent("eventToggleLights", vehicle.Handle, 1);
+                    client.TriggerEvent("eventCreatePlayerNotification", $"Lights On");
                 }
                 vehicle.SetData("Headlights", true);
             }

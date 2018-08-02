@@ -18,7 +18,7 @@ namespace Mirror.Events
 
             foreach (Client target in targets)
             {
-                target.TriggerEvent("CloseDoors", vehicle);
+                target.TriggerEvent("eventCloseDoors", vehicle);
             }
         }
     }

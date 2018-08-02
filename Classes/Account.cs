@@ -93,8 +93,8 @@ namespace Mirror.Classes
                 client.SendChatMessage("Loaded Talent Sheet");
             });
 
-            client.TriggerEvent("Freeze", client.Handle, false);
-            client.TriggerEvent("Disable", false);
+            client.TriggerEvent("eventFreeze", client.Handle, false);
+            client.TriggerEvent("eventDisable", false);
             client.Dimension = 0;
             client.Transparency = 255;
         }

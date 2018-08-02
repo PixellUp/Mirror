@@ -16,10 +16,10 @@ namespace Mirror.Events
             if (vehicle.EngineStatus)
             {
                 vehicle.EngineStatus = false;
-                client.TriggerEvent("ArpgNotification", $"Engine Off");
+                client.TriggerEvent("eventCreatePlayerNotification", $"Engine Off");
             } else {
                 vehicle.EngineStatus = true;
-                client.TriggerEvent("ArpgNotification", $"Engine On");
+                client.TriggerEvent("eventCreatePlayerNotification", $"Engine On");
             }
         }
 
