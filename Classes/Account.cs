@@ -95,6 +95,8 @@ namespace Mirror.Classes
 
             client.TriggerEvent("Freeze", client.Handle, false);
             client.TriggerEvent("Disable", false);
+            client.Dimension = 0;
+            client.Transparency = 255;
         }
 
         public static Account RetrieveAccount(Client client)

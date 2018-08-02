@@ -15,6 +15,8 @@ namespace Mirror.Events
             if (client.Position.DistanceTo2D(vehicle.Position) > 5)
                 return;
 
+            if (client.VehicleSeat != -1)
+                return;
 
             List<Client> targets = NAPI.Player.GetPlayersInRadiusOfPlayer(25, client);
 

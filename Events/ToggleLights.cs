@@ -11,6 +11,9 @@ namespace Mirror.Events
         {
             Vehicle vehicle = arguments[1] as Vehicle;
 
+            if (client.VehicleSeat != -1)
+                return;
+
             if (!vehicle.HasData("Headlights"))
                 vehicle.SetData("Headlights", true);
 
@@ -20,6 +23,7 @@ namespace Mirror.Events
                 foreach (Client target in targets)
                 {
                     target.TriggerEvent("ToggleLights", vehicle.Handle, 0);
+                    client.TriggerEvent("ArpgNotification", $"Lights Off");
                 }
                 vehicle.SetData("Headlights", false);
             } else {
@@ -27,6 +31,7 @@ namespace Mirror.Events
                 foreach (Client target in targets)
                 {
                     target.TriggerEvent("ToggleLights", vehicle.Handle, 1);
+                    client.TriggerEvent("ArpgNotification", $"Lights On");
                 }
                 vehicle.SetData("Headlights", true);
             }

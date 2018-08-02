@@ -25,6 +25,11 @@ namespace Mirror.Classes
         {
             client.SetData("TalentScoresheet", this);
             //  (strength: number, endurance: number, intelligence: number, charisma: number)
+            PushScoresLocally(client);
+        }
+
+        public void PushScoresLocally(Client client)
+        {
             client.TriggerEvent("LoadStats", GetStrScore(), GetEndScore(), GetIntScore(), GetChaScore());
         }
 

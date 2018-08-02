@@ -27,8 +27,19 @@ namespace Mirror.Talent
             TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
             if (scoresheet.GetEndScore() + Dice.RollDice() > scoreToBeat)
+            {
+                client.TriggerEvent("ArpgNotification", $"Success");
                 return true;
+            }
 
+            if (impact != 0)
+            {
+                client.TriggerEvent("ArpgNotification", $"-{impact} to Endurance");
+            }
+            else
+            {
+                client.TriggerEvent("ArpgNotification", $"Failed Endurance Check");
+            }
             scoresheet.EnduranceModifier += impact;
             return false;
         }
@@ -44,8 +55,19 @@ namespace Mirror.Talent
             TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
             if (scoresheet.GetIntScore() + Dice.RollDice() > scoreToBeat)
+            {
+                client.TriggerEvent("ArpgNotification", $"Success");
                 return true;
+            }
 
+            if (impact != 0)
+            {
+                client.TriggerEvent("ArpgNotification", $"-{impact} to Intelligence");
+            }
+            else
+            {
+                client.TriggerEvent("ArpgNotification", $"Failed Intelligence Check");
+            }
             scoresheet.IntelligenceModifier += impact;
             return false;
         }
@@ -61,8 +83,19 @@ namespace Mirror.Talent
             TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
             if (scoresheet.GetStrScore() + Dice.RollDice() > scoreToBeat)
+            {
+                client.TriggerEvent("ArpgNotification", $"Success");
                 return true;
+            }
 
+            if (impact != 0)
+            {
+                client.TriggerEvent("ArpgNotification", $"-{impact} to Strength");
+            }
+            else
+            {
+                client.TriggerEvent("ArpgNotification", $"Failed Strength Check");
+            }
             scoresheet.StrengthModifier += impact;
             return false;
         }
@@ -78,8 +111,18 @@ namespace Mirror.Talent
             TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
 
             if (scoresheet.GetChaScore() + Dice.RollDice() > scoreToBeat)
+            {
+                client.TriggerEvent("ArpgNotification", $"Success");
                 return true;
+            }
 
+            if (impact != 0)
+            {
+                client.TriggerEvent("ArpgNotification", $"-{impact} to Charisma");
+            } else {
+                client.TriggerEvent("ArpgNotification", $"Failed Charisma Check");
+            }
+            
             scoresheet.CharismaModifier += impact;
             return false;
         }
@@ -110,7 +153,7 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetStrScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetStrScore() + Dice.RollDice();
 
-            client.SendNotification($"[~r~STRENGTH~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+            client.TriggerEvent("ArpgNotification", $"Success - {clientRoll} vs {targetRoll}");
 
             if (clientRoll > targetRoll)
                 return true;
@@ -145,7 +188,7 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetEndScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetEndScore() + Dice.RollDice();
 
-            client.SendNotification($"[~g~ENDURANCE~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+            client.TriggerEvent("ArpgNotification", $"Success - {clientRoll} vs {targetRoll}");
 
             if (clientRoll > targetRoll)
                 return true;
@@ -180,7 +223,7 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetIntScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetIntScore() + Dice.RollDice();
 
-            client.SendNotification($"[~b~INTEL~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+            client.TriggerEvent("ArpgNotification", $"Success - {clientRoll} vs {targetRoll}");
 
             if (clientRoll > targetRoll)
                 return true;
@@ -215,7 +258,7 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetChaScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetChaScore() + Dice.RollDice();
 
-            client.SendNotification($"[~y~CHARISMA~w~] -> ~b~{clientRoll} vs ~o~{targetRoll}");
+            client.TriggerEvent("ArpgNotification", $"Success - {clientRoll} vs {targetRoll}");
 
             if (clientRoll > targetRoll)
                 return true;

@@ -33,6 +33,12 @@ namespace Mirror.Handler
                 case "StopAttacking":
                     Events.StopAttacking.Event(client);
                     return;
+                case "ToggleLock":
+                    Events.ToggleLock.Event(client, arguments);
+                    return;
+                case "PicklockVehicle":
+                    Events.PicklockVehicle.Event(client, arguments);
+                    return;
             }
         }
     }

@@ -17,7 +17,12 @@ namespace Mirror.Settings
         public static bool DisableTalentCommands { get; set; } = false;
         [JsonProperty("TalentDivision")]
         public static int TalentDivision { get; set; } = 4;
-
+        [JsonProperty("SpawnX")]
+        public static int SpawnX { get; set; } = -1056;
+        [JsonProperty("SpawnY")]
+        public static int SpawnY { get; set; } = -821;
+        [JsonProperty("SpawnZ")]
+        public static int SpawnZ { get; set; } = 20;
 
         public static void Initialize()
         {
