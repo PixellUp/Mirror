@@ -1,6 +1,7 @@
 ﻿using GTANetworkAPI;
 using LiteDbWrapper;
-using Mirror.Classes;
+using Mirror.Models;
+using Mirror.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,45 +11,45 @@ namespace Mirror.Commands
 {
     public class Register : Script
     {
-        [Command("register")]
-        public void CmdRegister(Client client, string username, string password)
+        [Command("register", Description = "/register Username Player_Name Password")]
+        public void CmdRegister(Client client, string username, string playerName, string password)
         {
             if (username.Length <= 4)
             {
-                client.SendChatMessage("~r~ Username not long enough.");
+                client.SendChatMessage(Exceptions.AccountUsernameNotLongEnough);
                 return;
             }
 
-            if (!Utility.Utility.IsNameRoleplayFormat(username))
+            if (!Utility.Utility.IsNameRoleplayFormat(playerName))
             {
-                client.SendChatMessage("~r~ Name is in incorrect format.");
+                client.SendChatMessage(Exceptions.AccountPlayerNameIncorrectFormat);
                 return;
             }
 
-            if (Utility.Utility.DoesUsernameExist(username))
+            if (Utility.Utility.DoesFieldExistInAccounts("Name", playerName))
             {
-                client.SendChatMessage("~r~ Name already exists.");
+                client.SendChatMessage(Exceptions.AccountAlreadyExists);
                 return;
             }
 
-            if (password.Length <= 4)
+            if (Utility.Utility.DoesFieldExistInAccounts("Username", username))
             {
-                client.SendChatMessage("~r~ Password not long enough.");
+                client.SendChatMessage(Exceptions.AccountAlreadyExists);
                 return;
             }
 
-            string salt = Encryption.BCryptHelper.GenerateSalt();
-            string hash = Encryption.BCryptHelper.HashPassword(password, salt);
-
-            Account account = new Account
+            if (password.Length <= 6)
             {
-                Name = username,
-                Password = hash
-            };
+                client.SendChatMessage(Exceptions.AccountPasswordNotLongEnough);
+                return;
+            }
 
-            Database.Upsert(account); // Insert into Database.
-            account.SetupAccountData(); // Insert New Clothing / Appearance Collections.
-            client.SendChatMessage($"~g~ Your account has been registered. ~w~{username}");
+            Account account = new Account();
+            account.Create(client, username, playerName, password);
+
+            // SETUP CLOTHING AFTER THIS
+            //account.SetupAccountData(); // Insert New Clothing / Appearance Collections.
+            
         }
     }
 }

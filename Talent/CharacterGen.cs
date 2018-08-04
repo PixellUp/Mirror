@@ -3,7 +3,7 @@ using LiteDbWrapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mirror.Classes;
+using Mirror.Models;
 
 namespace Mirror.Talent
 {
@@ -30,12 +30,14 @@ namespace Mirror.Talent
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static TalentScoresheet LoadTalentSheet(Client client)
+        public static Skills LoadTalentSheet(Client client)
         {
-            Account acc = (Account)client.GetData("Account");
-            TalentScoresheet talentScoresheet = Database.GetById<TalentScoresheet>(acc.UserID);
-            talentScoresheet.AddSheetToPlayer(client);
-            return talentScoresheet;
+            Skills skills = (Skills) client.GetData("Mirror_Skills");
+
+            if (skills == null)
+                return new Skills();
+
+            return skills;
         }
     }
 }

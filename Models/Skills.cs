@@ -1,15 +1,14 @@
 ﻿using GTANetworkAPI;
 using LiteDbWrapper;
-using Mirror.Classes;
+using Mirror.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Classes
+namespace Mirror.Models
 {
-    public class TalentScoresheet : StandardData
+    public class Skills : StandardData
     {
-        public string Name { get; set; }
         public int Endurance { get; set; }
         public int Intelligence { get; set; }
         public int Charisma { get; set; }
@@ -19,12 +18,9 @@ namespace Mirror.Classes
         public int CharismaModifier { get; set; } = 0;
         public int StrengthModifier { get; set; } = 0;
 
-        public TalentScoresheet() { }
-
-        public void AddSheetToPlayer(Client client)
+        public void Attach(Client client)
         {
-            client.SetData("TalentScoresheet", this);
-            //  (strength: number, endurance: number, intelligence: number, charisma: number)
+            client.SetData("Mirror_Skills", this);
             PushScoresLocally(client);
         }
 
@@ -33,13 +29,15 @@ namespace Mirror.Classes
             client.TriggerEvent("eventLoadStats", GetStrScore(), GetEndScore(), GetIntScore(), GetChaScore());
         }
 
-        public void SaveNewScoresheet()
+        public void Create(int id)
         {
-            if (Database.Get<TalentScoresheet>("Name", Name) != null)
-                UserID = Database.Get<TalentScoresheet>("Name", Name).UserID;
-
+            UserID = id;
             GenerateRandomScores();
+            Database.Upsert(this);
+        }
 
+        public void Update()
+        {
             Database.UpdateData(this);
         }
 
@@ -96,6 +94,11 @@ namespace Mirror.Classes
         public int GetStrScore()
         {
             return (Strength / Settings.Settings.TalentDivision) + StrengthModifier;
+        }
+
+        public static Skills RetrieveSkills(Account account)
+        {
+            return Database.GetById<Skills>(account.UserID);
         }
     }
 }

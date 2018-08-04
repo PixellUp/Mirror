@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using Mirror.Classes;
+using Mirror.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,9 +18,6 @@ namespace Mirror.Events
 
             if (target.IsInVehicle)
                 return;
-
-            Account acc = Account.RetrieveAccount(client);
-            acc.isAttacking = true;
 
             if (Talent.Skillcheck.CheckStrAgainstOpponent(client, target))
             {

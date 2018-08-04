@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GTANetworkAPI;
 using LiteDbWrapper;
-using Mirror.Classes;
+using Mirror.Models;
 
 namespace Mirror.Utility
 {
@@ -25,14 +25,14 @@ namespace Mirror.Utility
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool CheckIfLoggedIn(string name)
+        public static bool CheckIfLoggedIn(string username)
         {
-            Client client = NAPI.Pools.GetAllPlayers().Find(x => x.Name == name);
+            Account account = Database.Get<Account>("Username", username);
 
-            if (client == null)
-                return false;
+            if (account == null)
+                return true;
 
-            return true;
+            return account.IsLoggedIn;
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace Mirror.Utility
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool DoesUsernameExist(string name)
+        public static bool DoesFieldExistInAccounts(string targetField, string name)
         {
-            Account acc = Database.Get<Account>("Name", name);
+            Account acc = Database.Get<Account>(targetField, name);
             if (acc == null)
             {
                 return false;

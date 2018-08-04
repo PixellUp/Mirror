@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using Mirror.Classes;
+using Mirror.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,8 +22,8 @@ namespace Mirror.Events
             {
                 vehicle.Locked = false;
             } else {
-                TalentScoresheet sheet = client.GetData("TalentScoresheet") as TalentScoresheet;
-                sheet.PushScoresLocally(client);
+                Skills skills = client.GetData("Mirror_Skills") as Skills;
+                skills.PushScoresLocally(client);
             }
         }
     }

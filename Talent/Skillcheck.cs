@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mirror.Classes;
+using Mirror.Models;
 
 namespace Mirror.Talent
 {
@@ -24,7 +24,7 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckEndurance(Client client, int scoreToBeat = 10, int impact = 0)
         {
-            TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (scoresheet.GetEndScore() + Dice.RollDice() > scoreToBeat)
             {
@@ -52,7 +52,7 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckIntelligence(Client client, int scoreToBeat = 10, int impact = 0)
         {
-            TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (scoresheet.GetIntScore() + Dice.RollDice() > scoreToBeat)
             {
@@ -80,7 +80,7 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckStrength(Client client, int scoreToBeat = 10, int impact = 0)
         {
-            TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (scoresheet.GetStrScore() + Dice.RollDice() > scoreToBeat)
             {
@@ -108,7 +108,7 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckCharisma(Client client, int scoreToBeat = 10, int impact = 0)
         {
-            TalentScoresheet scoresheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (scoresheet.GetChaScore() + Dice.RollDice() > scoreToBeat)
             {
@@ -135,14 +135,14 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckStrAgainstOpponent(Client client, Client target, int impact = 0)
         {
-            if (!client.HasData("TalentScoresheet"))
+            if (!client.HasData("Mirror_Skills"))
                 return false;
 
-            if (!target.HasData("TalentScoresheet"))
+            if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
-            TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
+            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (clientSheet == null)
                 return false;
@@ -170,14 +170,14 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckEndAgainstOpponent(Client client, Client target, int impact = 0)
         {
-            if (!client.HasData("TalentScoresheet"))
+            if (!client.HasData("Mirror_Skills"))
                 return false;
 
-            if (!target.HasData("TalentScoresheet"))
+            if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
-            TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
+            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (clientSheet == null)
                 return false;
@@ -205,14 +205,14 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckIntAgainstPlayer(Client client, Client target, int impact = 0)
         {
-            if (!client.HasData("TalentScoresheet"))
+            if (!client.HasData("Mirror_Skills"))
                 return false;
 
-            if (!target.HasData("TalentScoresheet"))
+            if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
-            TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
+            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (clientSheet == null)
                 return false;
@@ -240,14 +240,14 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static bool CheckChaAgainstPlayer(Client client, Client target, int impact = 0)
         {
-            if (!client.HasData("TalentScoresheet"))
+            if (!client.HasData("Mirror_Skills"))
                 return false;
 
-            if (!target.HasData("TalentScoresheet"))
+            if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            TalentScoresheet clientSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
-            TalentScoresheet targetSheet = client.GetData("TalentScoresheet") as TalentScoresheet;
+            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
+            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
 
             if (clientSheet == null)
                 return false;

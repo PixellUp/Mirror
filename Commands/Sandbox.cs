@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,21 @@ namespace Mirror.Commands
         public void SetTime(Client client, int hour)
         {
             NAPI.World.SetTime(hour, 0, 0);
+        }
+
+        [Command("update")]
+        public void UpdateClothing(Client client)
+        {
+            if (!client.HasData("Mirror_Account"))
+                return;
+
+            Account acc = client.GetData("Mirror_Account") as Account;
+
+            Appearance app = Appearance.RetrieveAppearance(acc);
+            app.Attach(client);
+
+            Clothing clothing = Clothing.RetrieveClothing(acc);
+            clothing.Attach(client);
         }
     }
 }

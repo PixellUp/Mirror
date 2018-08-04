@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Classes
+namespace Mirror.Models
 {
     public class StandardData
     {

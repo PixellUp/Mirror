@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using LiteDbWrapper;
-using Mirror.Classes;
+using Mirror.Models;
+using Mirror.Utility;
 
 namespace Mirror.Commands
 {
@@ -13,22 +14,35 @@ namespace Mirror.Commands
         [Command("login")]
         public void CmdLogin(Client client, string username, string password)
         {
-            bool passwordCorrect = Encryption.BCryptHelper.CheckPassword(password, Database.Get<Account>("Name", username).Password);
-
-            if (!passwordCorrect)
+            if (!Account.CompareAccountPassword(username, password))
             {
-                client.SendChatMessage("~r~Incorrect Password.");
+                client.SendChatMessage(Exceptions.LoginAccountCredentialsInvalid);
                 return;
             }
 
-            client.SendChatMessage($"~g~ Welcome ~w~{username}, ~g~loading account details...");
-            LoadAccount(client, username);
-        }
+            if (Utility.Utility.CheckIfLoggedIn(username))
+            {
+                client.SendChatMessage(Exceptions.LoginAccountAlreadyLoggedIn);
+                return;
+            }
 
-        private void LoadAccount(Client client, string username)
-        {
-            Account acc = Database.Get<Account>("Name", username);
-            acc.LoadAccountData(client);
+            Account account = Account.RetrieveAccount(username);
+
+            if (account == null)
+            {
+                client.Kick(Exceptions.LoginNullException);
+                return;
+            }
+
+            if (account.Banned)
+            {
+                client.Kick(Exceptions.LoginAccountIsBanned);
+                return;
+            }
+
+            client.SendChatMessage(Exceptions.LoginSuccess);
+            // Attach the account to the player under the Dataset of "Mirror_Account";
+            account.Attach(client);
         }
     }
 }
