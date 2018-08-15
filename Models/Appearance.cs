@@ -19,9 +19,10 @@ namespace Mirror.Models
         // Face Number, Skin Number
         public double[] FatherAttributes { get; set; } = new double[] { 0, 0 };
         public double[] MotherAttributes { get; set; } = new double[] { 0, 0 };
+        public double[] ThirdAttributes { get; set; } = new double[] { 0, 0 };
         // Blend Data, Shape + Skin
-        public float[] SkinBlendAttributes { get; set; } = new float[] { 0.5f, 0.5f };
-        // Overlays: Slot, R, G, B, Opacity as Float
+        public float[] SkinBlendAttributes { get; set; } = new float[] { 0.5f, 0.5f, 0.5f };
+        // Overlays: Slot, Color, Opacity
         public double[] Blemish { get; set; } = new double[] { 0, 0, 0.5 }; // 0
         public double[] FacialHair { get; set; } = new double[] { 0, 0, 0.5 };
         public double[] Eyebrows { get; set; } = new double[] { 0, 0, 0.5 };
@@ -39,7 +40,7 @@ namespace Mirror.Models
         // Literally Eye Color
         public int EyeColor { get; set; } = 0;
         // Facial Features
-        public float[] FacialFeatures { get; set; } = new float[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        public float[] FacialFeatures { get; set; } = new float[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         public void Create(int id)
         {
@@ -78,16 +79,14 @@ namespace Mirror.Models
             {
                 ShapeFirst = (byte)FatherAttributes[0],
                 ShapeSecond = (byte)MotherAttributes[0],
+                ShapeThird = (byte)ThirdAttributes[0],
                 SkinFirst = (byte)FatherAttributes[1],
                 SkinSecond = (byte)MotherAttributes[1],
+                SkinThird = (byte)ThirdAttributes[1],
                 ShapeMix = (byte)SkinBlendAttributes[0],
                 SkinMix = (byte)SkinBlendAttributes[1],
+                ThirdMix = (byte)SkinBlendAttributes[2]
             });
-
-            // Face
-            NAPI.Player.SetPlayerClothes(client, 2, Hair[0], Hair[1]);
-            NAPI.Player.SetPlayerHairColor(client, (byte)Hair[2], (byte)Hair[3]);
-            NAPI.Player.SetPlayerEyeColor(client, (byte)EyeColor);
 
             // Facial Features
             for (int i = 0; i < FacialFeatures.Length; i++)
@@ -106,6 +105,11 @@ namespace Mirror.Models
                     Opacity = (byte)overlays[i][2]
                 });
             }
+
+            // Face
+            NAPI.Player.SetPlayerClothes(client, 2, Hair[0], Hair[1]);
+            NAPI.Player.SetPlayerHairColor(client, (byte)Hair[2], (byte)Hair[3]);
+            NAPI.Player.SetPlayerEyeColor(client, (byte)EyeColor);
         }
 
         /// <summary>

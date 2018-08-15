@@ -10,9 +10,12 @@ namespace Mirror.Handler
         [RemoteEvent("EventHandler")]
         public void Handler(Client client, params object[] arguments)
         {
+            if (arguments.Length <= 0)
+                return;
+
             // First argument will always be the event name.
             string eventName = arguments[0] as string;
-
+            
             switch(eventName)
             {
                 case "ToggleEngine":
@@ -39,7 +42,14 @@ namespace Mirror.Handler
                 case "PicklockVehicle":
                     Events.PicklockVehicle.Event(client, arguments);
                     return;
+                case "PushAppearanceChanges":
+                    Events.PushAppearanceChanges.Event(client, arguments);
+                    return;
+                case "PushFacialChanges":
+                    Events.PushFacialChanges.Event(client, arguments);
+                    return;
             }
+            
         }
     }
 }

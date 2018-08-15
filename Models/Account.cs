@@ -3,6 +3,7 @@ using LiteDbWrapper;
 using Mirror.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Encryption = BCrypt;
 
@@ -84,6 +85,7 @@ namespace Mirror.Models
         {
             client.TriggerEvent("eventFreeze", client.Handle, false);
             client.TriggerEvent("eventDisable", false);
+            client.TriggerEvent("eventLoggedIn", true);
             client.Dimension = 0;
             client.Transparency = 255;
         }
