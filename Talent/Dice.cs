@@ -17,5 +17,10 @@ namespace Mirror.Talent
         {
             return Random.Next(1, sides + 1);
         }
+
+        public static int RollDamage(int sides = 20, int modifier = 0)
+        {
+            return Random.Next(1, sides + 1) + modifier;
+        }
     }
 }

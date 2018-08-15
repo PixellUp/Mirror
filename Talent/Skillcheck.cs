@@ -26,7 +26,10 @@ namespace Mirror.Talent
         {
             Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
-            if (scoresheet.GetEndScore() + Dice.RollDice() > scoreToBeat)
+            int clientRoll = Dice.RollDice();
+            client.TriggerEvent("eventLastRoll", clientRoll);
+
+            if (scoresheet.GetEndScore() + clientRoll > scoreToBeat)
             {
                 client.TriggerEvent("eventCreatePlayerNotification", $"Success");
                 return true;
@@ -34,7 +37,7 @@ namespace Mirror.Talent
 
             if (impact != 0)
             {
-                client.TriggerEvent("eventCreatePlayerNotification", $"-{impact} to Endurance");
+                client.TriggerEvent("eventCreatePlayerNotification", $"{impact} to Endurance");
             }
             else
             {
@@ -54,7 +57,10 @@ namespace Mirror.Talent
         {
             Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
-            if (scoresheet.GetIntScore() + Dice.RollDice() > scoreToBeat)
+            int clientRoll = Dice.RollDice();
+            client.TriggerEvent("eventLastRoll", clientRoll);
+
+            if (scoresheet.GetIntScore() + clientRoll > scoreToBeat)
             {
                 client.TriggerEvent("eventCreatePlayerNotification", $"Success");
                 return true;
@@ -62,7 +68,7 @@ namespace Mirror.Talent
 
             if (impact != 0)
             {
-                client.TriggerEvent("eventCreatePlayerNotification", $"-{impact} to Intelligence");
+                client.TriggerEvent("eventCreatePlayerNotification", $"{impact} to Intelligence");
             }
             else
             {
@@ -82,7 +88,10 @@ namespace Mirror.Talent
         {
             Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
-            if (scoresheet.GetStrScore() + Dice.RollDice() > scoreToBeat)
+            int clientRoll = Dice.RollDice();
+            client.TriggerEvent("eventLastRoll", clientRoll);
+
+            if (scoresheet.GetStrScore() + clientRoll > scoreToBeat)
             {
                 client.TriggerEvent("eventCreatePlayerNotification", $"Success");
                 return true;
@@ -90,7 +99,7 @@ namespace Mirror.Talent
 
             if (impact != 0)
             {
-                client.TriggerEvent("eventCreatePlayerNotification", $"-{impact} to Strength");
+                client.TriggerEvent("eventCreatePlayerNotification", $"{impact} to Strength");
             }
             else
             {
@@ -110,7 +119,10 @@ namespace Mirror.Talent
         {
             Models.Skills scoresheet = client.GetData("Mirror_Skills") as Models.Skills;
 
-            if (scoresheet.GetChaScore() + Dice.RollDice() > scoreToBeat)
+            int clientRoll = Dice.RollDice();
+            client.TriggerEvent("eventLastRoll", clientRoll);
+
+            if (scoresheet.GetChaScore() + clientRoll > scoreToBeat)
             {
                 client.TriggerEvent("eventCreatePlayerNotification", $"Success");
                 return true;
@@ -118,7 +130,7 @@ namespace Mirror.Talent
 
             if (impact != 0)
             {
-                client.TriggerEvent("eventCreatePlayerNotification", $"-{impact} to Charisma");
+                client.TriggerEvent("eventCreatePlayerNotification", $"{impact} to Charisma");
             } else {
                 client.TriggerEvent("eventCreatePlayerNotification", $"Failed Charisma Check");
             }
@@ -153,7 +165,8 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetStrScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetStrScore() + Dice.RollDice();
 
-            client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            //client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            client.TriggerEvent("eventLastRoll", clientRoll);
 
             if (clientRoll > targetRoll)
                 return true;
@@ -188,7 +201,8 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetEndScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetEndScore() + Dice.RollDice();
 
-            client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            //client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            client.TriggerEvent("eventLastRoll", clientRoll);
 
             if (clientRoll > targetRoll)
                 return true;
@@ -223,7 +237,8 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetIntScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetIntScore() + Dice.RollDice();
 
-            client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            //client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            client.TriggerEvent("eventLastRoll", clientRoll);
 
             if (clientRoll > targetRoll)
                 return true;
@@ -258,7 +273,8 @@ namespace Mirror.Talent
             int clientRoll = clientSheet.GetChaScore() + Dice.RollDice();
             int targetRoll = targetSheet.GetChaScore() + Dice.RollDice();
 
-            client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            //client.TriggerEvent("eventCreatePlayerNotification", $"Success - {clientRoll} vs {targetRoll}");
+            client.TriggerEvent("eventLastRoll", clientRoll);
 
             if (clientRoll > targetRoll)
                 return true;

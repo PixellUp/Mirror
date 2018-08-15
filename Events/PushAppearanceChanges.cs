@@ -13,7 +13,9 @@ namespace Mirror.Events
             if (!client.HasData("Mirror_Appearance"))
                 return;
 
-            Appearance app = (Appearance)client.GetData("Mirror_Appearance");
+            if (!(client.GetData("Mirror_Appearance") is Appearance app))
+                return;
+
             // 0 - 5
             app.FatherAttributes = new double[] { Convert.ToDouble(args[1]), Convert.ToDouble(args[4]) };
             app.MotherAttributes = new double[] { Convert.ToDouble(args[2]), Convert.ToDouble(args[5]) };

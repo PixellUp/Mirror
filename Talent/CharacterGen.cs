@@ -32,12 +32,7 @@ namespace Mirror.Talent
         /// <returns></returns>
         public static Skills LoadTalentSheet(Client client)
         {
-            Skills skills = (Skills) client.GetData("Mirror_Skills");
-
-            if (skills == null)
-                return new Skills();
-
-            return skills;
+            return client.GetData("Mirror_Skills") as Skills;
         }
     }
 }

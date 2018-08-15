@@ -19,12 +19,29 @@ namespace Mirror.Events
             if (target.IsInVehicle)
                 return;
 
+            if (!client.HasData("LastAttack"))
+            {
+                client.SetData("LastAttack", DateTime.UtcNow.Millisecond);
+            }
+
+            if ((Int32)client.GetData("LastAttack") + 2500 > DateTime.UtcNow.Millisecond)
+                return;
+
+            client.SetData("LastAttack", DateTime.UtcNow.Millisecond);
+
             if (Talent.Skillcheck.CheckStrAgainstOpponent(client, target))
             {
-                target.SendChatMessage($"You were attacked by {client.Name} and he hit you.");
-                client.SendChatMessage($"You attacked {target.Name} and hit him.");
-                target.Health -= 5;
+                int damage = Talent.Dice.RollDamage(10, 0);
+                //target.SendChatMessage($"You were attacked by {client.Name} and he hit you.");
+                target.TriggerEvent("eventLastDamage", damage);
+                client.TriggerEvent("eventTargetDamage", damage);
+                //client.SendChatMessage($"You attacked {target.Name} and hit him.");
+                target.Health -= damage;
+                return;
             }
+
+            target.TriggerEvent("eventLastDamage", 0);
+            client.TriggerEvent("eventTargetDamage", 0);
         }
     }
 }
