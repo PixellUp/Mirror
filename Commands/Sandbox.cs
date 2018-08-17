@@ -35,5 +35,24 @@ namespace Mirror.Commands
             Clothing clothing = Clothing.RetrieveClothing(acc);
             clothing.Attach(client);
         }
+
+        [Command("setpoint")]
+        public void CmdSetPoint(Client client, string type, int radius = 5)
+        {
+            Location.CreatePosition(client, type, radius);
+        }
+
+
+        [RemoteEvent("createTopFemale")]
+        public void CreateTopSandbox(Client client, params object[] args)
+        {
+            FemaleValidTopConfiguration.Create(Convert.ToInt32(args[0]), Convert.ToInt32(args[1]), Convert.ToInt32(args[2]));
+        }
+
+        [RemoteEvent("createTopMale")]
+        public void CreateTopMaleSandbox(Client client, params object[] args)
+        {
+            MaleValidTopConfiguration.Create(Convert.ToInt32(args[0]), Convert.ToInt32(args[1]), Convert.ToInt32(args[2]));
+        }
     }
 }

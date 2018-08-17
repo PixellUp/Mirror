@@ -48,6 +48,10 @@ namespace Mirror.Handler
                 case "PushFacialChanges":
                     Events.PushFacialChanges.Event(client, arguments);
                     return;
+                case "RequestFace":
+                    Events.RequestFace.Event(client, arguments);
+                    Console.WriteLine("Hello!");
+                    return;
             }
             
         }

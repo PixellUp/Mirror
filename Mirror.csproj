@@ -17,4 +17,12 @@
 <ItemGroup>
   <Folder Include="Skills\" />
 </ItemGroup>
+<ItemGroup>
+  <None Update="Datasets\FemaleTopCombinations.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+  <None Update="Datasets\MaleTopCombinations.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
 </Project>

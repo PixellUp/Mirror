@@ -12,7 +12,9 @@ namespace Mirror
         {
             Settings.Settings.Initialize();
             ResetLogins();
-            
+
+            MaleValidTopConfiguration.Initialize();
+            FemaleValidTopConfiguration.Initialize();
         }
 
         /// <summary>

@@ -54,6 +54,7 @@ namespace Mirror.Models
             // Basic Account
             IsLoggedIn = true;
             client.SetData("Mirror_Account", this);
+            client.Name = Name;
             Update();
 
             // Appearance
