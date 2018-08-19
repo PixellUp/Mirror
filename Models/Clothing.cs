@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using LiteDbWrapper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,11 +14,11 @@ namespace Mirror.Models
         public int[] Torso { get; set; } = new int[] { 0, 0 };
         public int[] Legs { get; set; } = new int[] { 76, 0 };
         public int[] Bags { get; set; } = new int[] { 255, 0 };
-        public int[] Feet { get; set; } = new int[] { 66, 0 };
+        public int[] Feet { get; set; } = new int[] { 0, 0 };
         public int[] Accesssories { get; set; } = new int[] { 255, 0 };
-        public int[] Undershirt { get; set; } = new int[] { 15, 0 };
+        public int[] Undershirt { get; set; } = new int[] { 0, 0 };
         public int[] BodyArmor { get; set; } = new int[] { 255, 0 };
-        public int[] Top { get; set; } = new int[] { 49, 0 };
+        public int[] Top { get; set; } = new int[] { 0, 0 };
         public int[] Hats { get; set; } = new int[] { 255, 0 };
         public int[] Glasses { get; set; } = new int[] { 255, 0 };
         public int[] Ears { get; set; } = new int[] { 255, 0 };
@@ -71,6 +72,10 @@ namespace Mirror.Models
 
                 client.SetAccessories(i, accessories[i][0], accessories[i][1]);
             }
+
+
+            string clothingJson = JsonConvert.SerializeObject(this);
+            client.SetSharedData("Mirror_Clothing_JSON", clothingJson);
         }
 
         /// <summary>

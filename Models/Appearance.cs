@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using LiteDbWrapper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,22 +24,22 @@ namespace Mirror.Models
         // Blend Data, Shape + Skin
         public float[] SkinBlendAttributes { get; set; } = new float[] { 0.5f, 0.5f, 0.5f };
         // Overlays: Slot, Color, Opacity
-        public double[] Blemish { get; set; } = new double[] { 0, 0, 0.5 }; // 0
-        public double[] FacialHair { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] Eyebrows { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] Age { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] Makeup { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] Blush { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] Complexion { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] SunDamage { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] Lipstick { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] Moles { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] ChestHair { get; set; } = new double[] { 0, 0, 0.5 };
-        public double[] BodyBlemish { get; set; } = new double[] { 0, 0, 0.5 };
+        public double[] Blemish { get; set; } = new double[] { 0, 0, 0.0 }; // 0
+        public double[] FacialHair { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] Eyebrows { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] Age { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] Makeup { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] Blush { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] Complexion { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] SunDamage { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] Lipstick { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] Moles { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] ChestHair { get; set; } = new double[] { 0, 0, 0.0 };
+        public double[] BodyBlemish { get; set; } = new double[] { 0, 0, 0.0 };
         // Hair, Texture, Color, Highlight
         public int[] Hair { get; set; } = new int[] { 0, 0, 0, 0 };
         // Literally Eye Color
-        public int EyeColor { get; set; } = 0;
+        public int[] EyeColor { get; set; } = new int[] { 0 };
         // Facial Features
         public float[] FacialFeatures { get; set; } = new float[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -109,7 +110,9 @@ namespace Mirror.Models
             // Face
             NAPI.Player.SetPlayerClothes(client, 2, Hair[0], Hair[1]);
             NAPI.Player.SetPlayerHairColor(client, (byte)Hair[2], (byte)Hair[3]);
-            NAPI.Player.SetPlayerEyeColor(client, (byte)EyeColor);
+            NAPI.Player.SetPlayerEyeColor(client, (byte)EyeColor[0]);
+
+            client.SetSharedData("Mirror_Appearance_JSON", JsonConvert.SerializeObject(this));
         }
 
         /// <summary>

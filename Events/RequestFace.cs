@@ -14,7 +14,7 @@ namespace Mirror.Events
         {
             if (!(client.GetData("Mirror_Appearance") is Appearance app))
                 return;
-
+            
             double[] faceValues = new double[] {
                 app.FatherAttributes[0],
                 app.MotherAttributes[0],
@@ -49,7 +49,7 @@ namespace Mirror.Events
                 app.Hair[1],
                 app.Hair[2],
                 app.Hair[3],
-                app.EyeColor // 33
+                app.EyeColor[0]
             };
 
             string facialJson = JsonConvert.SerializeObject(faceValues);
