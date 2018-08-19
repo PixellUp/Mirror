@@ -84,9 +84,9 @@ namespace Mirror.Models
                 SkinFirst = (byte)FatherAttributes[1],
                 SkinSecond = (byte)MotherAttributes[1],
                 SkinThird = (byte)ThirdAttributes[1],
-                ShapeMix = (byte)SkinBlendAttributes[0],
-                SkinMix = (byte)SkinBlendAttributes[1],
-                ThirdMix = (byte)SkinBlendAttributes[2]
+                ShapeMix = Convert.ToSingle(SkinBlendAttributes[0]),
+                SkinMix = Convert.ToSingle(SkinBlendAttributes[1]),
+                ThirdMix = Convert.ToSingle(SkinBlendAttributes[2])
             });
 
             // Facial Features
@@ -101,9 +101,9 @@ namespace Mirror.Models
             {
                 NAPI.Player.SetPlayerHeadOverlay(client, i, new HeadOverlay()
                 {
-                    Index = (byte)overlays[i][0],
-                    Color = (byte)overlays[i][1],
-                    Opacity = (byte)overlays[i][2]
+                    Index = (byte)Convert.ToSingle(overlays[i][0]),
+                    Color = (byte)Convert.ToSingle(overlays[i][1]),
+                    Opacity = Convert.ToSingle(overlays[i][2])
                 });
             }
 
