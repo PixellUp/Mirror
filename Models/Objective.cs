@@ -15,6 +15,7 @@ namespace Mirror.Models
         public int TimeLimit { get; set; }
         public int Radius { get; set; } // Get the radius.
         public int Progression { get; set; } // Used to tell if the Objective is complete.
+        public NetHandle[] RequiredVehicles { get; set; } = new NetHandle[] { };
 
         /// <summary>
         /// Get the location of this objective.

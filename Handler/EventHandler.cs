@@ -48,8 +48,8 @@ namespace Mirror.Handler
                 case "RequestFace":
                     Events.RequestFace.Event(client, arguments);
                     return;
-                case "VerifyJobEvent":
-                    Events.VerifyJobEvent.Event(client, arguments);
+                case "Mission_Framework_Verify":
+                    Events.VerifyMissionFramework.Event(client, arguments);
                     return;
             }
             

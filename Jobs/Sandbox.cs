@@ -8,82 +8,63 @@ namespace Mirror.Jobs
 {
     public class Sandbox : Script
     {
-        List<Vector3> jobPositions = new List<Vector3>();
+        Dictionary<Vector3, string> jobPositions = new Dictionary<Vector3, string>();
 
+        [Command("leavemission")]
+        public void CmdLeaveMission(Client client)
+        {
+            if (!client.HasData("Mission_Active"))
+                return;
+
+            if (!(client.GetData("Mission_Active") is Mission mission))
+                return;
+
+            mission.RemoveActivePlayer(client);
+        }
 
         [Command("startjob")]
         public void CMDJob(Client client)
         {
             Mission mission = new Mission();
 
-            jobPositions.ForEach((position) =>
+            NetHandle vehicle = NAPI.Vehicle.CreateVehicle(VehicleHash.Baller2, new Vector3(), 0, 255, 255, "", 255, true, false);
+
+            foreach (var element in jobPositions)
             {
                 Objective objective = new Objective
                 {
                     ID = 0,
-                    X = Convert.ToInt32(position.X),
-                    Y = Convert.ToInt32(position.Y),
-                    Z = Convert.ToInt32(17),
+                    X = Convert.ToInt32(element.Key.X),
+                    Y = Convert.ToInt32(element.Key.Y),
+                    Z = Convert.ToInt32(element.Key.Z),
                     Progression = 0,
                     Radius = 3,
-                    Type = "Capture"
+                    Type = element.Value
                 };
+
+                if (objective.Type == "Retrieve Car")
+                {
+                    NAPI.Entity.SetEntityPosition(vehicle, objective.GetLocation());
+                    objective.RequiredVehicles = new NetHandle[] { vehicle };
+                }
+                
+                if (objective.Type == "Deliver Car")
+                {
+                    objective.RequiredVehicles = new NetHandle[] { vehicle };
+                }
+
                 mission.Objectives.Enqueue(objective);
-            });
+            }
 
             mission.AddActivePlayer(client);
 
-            jobPositions = new List<Vector3>();
+            jobPositions.Clear();
         }
 
-        [Command("examplejob")]
-        public void CmdExampleJob(Client client)
+        [Command("addjobpos", GreedyArg = true)]
+        public void CMDAddJobPOS(Client client, string type = "Capture")
         {
-            Mission mission = new Mission();
-
-            Objective objective = new Objective
-            {
-                ID = 0,
-                X = 1,
-                Y = 2,
-                Z = 3,
-                Progression = 0,
-                Radius = 3,
-                Type = "Capture"
-            };
-            mission.Objectives.Enqueue(objective);
-
-            objective = new Objective
-            {
-                ID = 0,
-                X = 1,
-                Y = 2,
-                Z = 3,
-                Progression = 0,
-                Radius = 3,
-                Type = "Capture"
-            };
-            mission.Objectives.Enqueue(objective);
-
-            objective = new Objective
-            {
-                ID = 0,
-                X = 1,
-                Y = 2,
-                Z = 3,
-                Progression = 0,
-                Radius = 3,
-                Type = "Capture"
-            };
-            mission.Objectives.Enqueue(objective);
-
-            mission.AddActivePlayer(client);
-        }
-
-        [Command("addjobpos")]
-        public void CMDAddJobPOS(Client client)
-        {
-            jobPositions.Add(client.Position);
+            jobPositions.Add(client.Position, type);
             client.SendChatMessage("Added...");
         }
 
@@ -95,17 +76,20 @@ namespace Mirror.Jobs
 
             if (!client.HasData("Mission_Active"))
             {
-                client.SendChatMessage("Not on mission currently.");
+                client.SendChatMessage("Not on a mission currently.");
                 return;
             }
 
-            var targetPlayer = NAPI.Pools.GetAllPlayers().Find(x => x.Name.ToLower().Equals(playerName.ToLower()));
+            var targetPlayer = NAPI.Pools.GetAllPlayers().Find(x => x.Name.ToLower().Contains(playerName.ToLower()));
 
             if (targetPlayer == null)
                 return;
 
             Mission miss =  client.GetData("Mission_Active") as Mission;
-            miss.AddActivePlayer(targetPlayer);
+            if (!miss.AddActivePlayer(targetPlayer))
+            {
+                client.SendChatMessage("Player is already in a mission.");
+            }
         }
     }
 }

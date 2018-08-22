@@ -10,6 +10,7 @@ namespace Mirror.Models
     {
         public List<NetHandle> ActivePlayers { get; set; } = new List<NetHandle>();
         public Queue<Objective> Objectives { get; set; } = new Queue<Objective>();
+        public List<Objective> FinishedObjectives { get; set; } = new List<Objective>();
 
         // Get all the Active Objectives so we can use it for our mission builder.
         public Objective[] GetObjectives()
@@ -25,8 +26,15 @@ namespace Mirror.Models
 
         public bool UpdateObjectives()
         {
+            Objective clearedObjective = Objectives.Dequeue();
+
+            if (!FinishedObjectives.Contains(clearedObjective))
+                FinishedObjectives.Add(clearedObjective);
+
             if (GetObjectives().Length <= 0)
             {
+                CleanupMission();
+
                 for (int i = 0; i < ActivePlayers.Count; i++)
                 {
                     NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]).TriggerEvent("eventCreatePlayerNotification", $"Objective Complete");
@@ -47,6 +55,25 @@ namespace Mirror.Models
             return true;
         }
 
+        public void CleanupMission()
+        {
+            if (FinishedObjectives.Count <= 0)
+                return;
+
+            FinishedObjectives.ForEach((objective) =>
+            {
+                // Delete Vehicles
+                if (objective.RequiredVehicles.Length > 0)
+                {
+                    for (int i = 0; i < objective.RequiredVehicles.Length; i++)
+                    {
+                        NAPI.Entity.DeleteEntity(objective.RequiredVehicles[i]);
+                    }
+                }
+                       
+            });
+        }
+
         /// <summary>
         /// Add the player to the Active Players list for the Mission.
         /// </summary>
@@ -54,6 +81,12 @@ namespace Mirror.Models
         /// <returns></returns>
         public bool AddActivePlayer(Client client)
         {
+            if (client.HasData("Mission_Active"))
+            {
+                client.SendChatMessage("You must leave your current mission to join a new one. /leavemission");
+                return false;
+            }
+
             if (ActivePlayers.Contains(client))
                 return false;
 
@@ -62,9 +95,6 @@ namespace Mirror.Models
 
             string activePlayers = JsonConvert.SerializeObject(GetActivePlayers());
             string activeObjectives = JsonConvert.SerializeObject(GetObjectives());
-
-            Console.WriteLine(activePlayers);
-
 
             for (int i = 0; i < ActivePlayers.Count; i++)
             {
@@ -86,14 +116,17 @@ namespace Mirror.Models
                 return false;
 
             ActivePlayers.Remove(client);
-            client.ResetSharedData("Mission_Active_Players");
-            client.ResetSharedData("Mission_Active_Objectives");
             client.ResetData("Mission_Active");
+            NAPI.ClientEvent.TriggerClientEvent(client, "MissionInfo", "Mission_Active_Players", "");
+            NAPI.ClientEvent.TriggerClientEvent(client, "MissionInfo", "Mission_Active_Objectives", "");
 
             string activePlayers = JsonConvert.SerializeObject(GetActivePlayers());
 
             for (int i = 0; i < ActivePlayers.Count; i++)
                 NAPI.ClientEvent.TriggerClientEvent(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), "MissionInfo", "Mission_Active_Players", activePlayers);
+
+            if (ActivePlayers.Count <= 0)
+                CleanupMission();
 
             return true;
         }
