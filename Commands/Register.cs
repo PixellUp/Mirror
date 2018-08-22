@@ -14,6 +14,15 @@ namespace Mirror.Commands
         [Command("register", Description = "/register Username Player_Name Password")]
         public void CmdRegister(Client client, string username, string playerName, string password)
         {
+            if (username == null)
+                return;
+
+            if (playerName == null)
+                return;
+
+            if (password == null)
+                return;
+
             if (username.Length <= 4)
             {
                 client.SendChatMessage(Exceptions.AccountUsernameNotLongEnough);

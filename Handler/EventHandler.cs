@@ -47,7 +47,9 @@ namespace Mirror.Handler
                     return;
                 case "RequestFace":
                     Events.RequestFace.Event(client, arguments);
-                    Console.WriteLine("Hello!");
+                    return;
+                case "VerifyJobEvent":
+                    Events.VerifyJobEvent.Event(client, arguments);
                     return;
             }
             

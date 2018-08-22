@@ -14,6 +14,12 @@ namespace Mirror.Commands
         [Command("login")]
         public void CmdLogin(Client client, string username, string password)
         {
+            if (username == null)
+                return;
+
+            if (password == null)
+                return;
+
             if (!Account.CompareAccountPassword(username, password))
             {
                 client.SendChatMessage(Exceptions.LoginAccountCredentialsInvalid);
