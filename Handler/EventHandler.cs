@@ -51,6 +51,18 @@ namespace Mirror.Handler
                 case "Mission_Framework_Verify":
                     Events.VerifyMissionFramework.Event(client, arguments);
                     return;
+                case "Get_Inventory":
+                    Events.GetInventory.Event(client, arguments);
+                    return;
+                case "Drop_Item_Inventory":
+                    Events.DropItemInventory.Event(client, arguments);
+                    return;
+                case "Use_Item_Inventory":
+                    Events.UseItemInventory.Event(client, arguments);
+                    return;
+                case "Pickup_Item_Inventory":
+                    Events.PickupItemInventory.Event(client, arguments);
+                    return;
             }
             
         }

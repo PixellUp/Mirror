@@ -17,7 +17,7 @@ namespace Mirror
             MaleValidTopConfiguration.Initialize();
             FemaleValidTopConfiguration.Initialize();
 
-            /*
+            
             double minLevel = 2;
             double points = 0;
             
@@ -30,7 +30,7 @@ namespace Mirror
                 }
 
             }
-            */
+            
 
 
 

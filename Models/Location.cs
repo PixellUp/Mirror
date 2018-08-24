@@ -8,6 +8,8 @@ namespace Mirror.Models
 {
     public class Location : StandardData
     {
+        public static List<Location> Locations = new List<Location>();
+
         public string Type { get; set; } = "None";
         public float X { get; set; } = 0;
         public float Y { get; set; } = 0;
@@ -31,7 +33,6 @@ namespace Mirror.Models
             };
 
             Database.Upsert(location);
-
             return location;
         }
     }

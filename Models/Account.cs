@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Threading.Tasks;
 using Encryption = BCrypt;
 
 namespace Mirror.Models
@@ -17,6 +18,8 @@ namespace Mirror.Models
         public int Age { get; set; } = 20;
         public bool Banned { get; set; } = false;
         public bool IsLoggedIn { get; set; } = false;
+        public bool NewAccount { get; set; } = true;
+        public string Inventory { get; set; } = "";
 
         public void Create(Client client, string username, string playerName, string password)
         {
@@ -89,6 +92,20 @@ namespace Mirror.Models
             client.TriggerEvent("eventLoggedIn", true);
             client.Dimension = 0;
             client.Transparency = 255;
+
+            if (!NewAccount)
+                return;
+
+            Task task = new Task(() =>
+            {
+                client.SendChatMessage("Please wait... setting up appearance menu for your new account.");
+                System.Threading.Thread.Sleep(2000);
+                client.TriggerEvent("OpenFacialMenu");
+            });
+            task.Start();
+            
+            NewAccount = false;
+            Database.UpdateData(this);
         }
 
         /// <summary>

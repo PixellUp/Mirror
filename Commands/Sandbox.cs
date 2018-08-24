@@ -43,16 +43,82 @@ namespace Mirror.Commands
         }
 
 
-        [RemoteEvent("createTopFemale")]
-        public void CreateTopSandbox(Client client, params object[] args)
+        [Command("additem", GreedyArg = true)]
+        public void CmdAddItem(Client client, string name)
         {
-            FemaleValidTopConfiguration.Create(Convert.ToInt32(args[0]), Convert.ToInt32(args[1]), Convert.ToInt32(args[2]));
+            Inventory.AddItemToInventory(client, name, 1);
+
+            string json = Inventory.GetInventory(client);
+
+            InventoryItem[] items = Inventory.GetInventoryArray(json);
+
+            string itemList = "";
+
+            StringBuilder builder = new StringBuilder(itemList);
+
+            foreach (InventoryItem item in items)
+            {
+                if (item == null)
+                    continue;
+
+                builder.Append($"{item.ID} {item.Name} | ");
+            }
+
+            string finished = builder.ToString();
+            client.SendChatMessage(finished);
         }
 
-        [RemoteEvent("createTopMale")]
-        public void CreateTopMaleSandbox(Client client, params object[] args)
+        [Command("dropitem")]
+        public void CmdRemoveItem(Client client, int index)
         {
-            MaleValidTopConfiguration.Create(Convert.ToInt32(args[0]), Convert.ToInt32(args[1]), Convert.ToInt32(args[2]));
+            Inventory.RemoveItemFromInventory(client, index);
+
+            string json = Inventory.GetInventory(client);
+
+            InventoryItem[] items = Inventory.GetInventoryArray(json);
+
+            string itemList = "";
+
+            StringBuilder builder = new StringBuilder(itemList);
+
+            foreach (InventoryItem item in items)
+            {
+                if (item == null)
+                    continue;
+
+                builder.Append($"{item.ID} {item.Name} | ");
+            }
+
+            string finished = builder.ToString();
+            client.SendChatMessage(finished);
+        }
+
+        [Command("checkitems")]
+        public void CMDCheckItems(Client client)
+        {
+            string json = Inventory.GetInventory(client);
+            InventoryItem[] items = Inventory.GetInventoryArray(json);
+
+            string itemList = "";
+
+            StringBuilder builder = new StringBuilder(itemList);
+
+            foreach (InventoryItem item in items)
+            {
+                if (item == null)
+                    continue;
+
+                builder.Append($"{item.ID} {item.Name} | ");
+            }
+
+            string finished = builder.ToString();
+            client.SendChatMessage(finished);
+        }
+
+        [Command("pickup")]
+        public void CMDPickupItem(Client client)
+        {
+            Inventory.RemoveDroppedItemFromGround(client);
         }
     }
 }
