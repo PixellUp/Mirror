@@ -117,10 +117,10 @@ namespace Mirror.Models
             clothing.Update();
 
             Appearance appearance = Database.GetById<Appearance>(UserID);
-            clothing.Update();
+            appearance.Update();
 
             Skills skills = Database.GetById<Skills>(UserID);
-            clothing.Update();
+            skills.Update();
 
             Database.UpdateData(this);
         }

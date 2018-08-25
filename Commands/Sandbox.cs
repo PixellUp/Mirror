@@ -16,6 +16,12 @@ namespace Mirror.Commands
             Vehicle newVeh = NAPI.Vehicle.CreateVehicle(veh, client.Position.Around(5), 0, 45, 45, "TESTING", 255, false, true);
         }
 
+        [Command("sethealth")]
+        public void SetHealth(Client client, int amount)
+        {
+            client.Health = amount;
+        }
+
         [Command("time")]
         public void SetTime(Client client, int hour)
         {
@@ -72,7 +78,7 @@ namespace Mirror.Commands
         [Command("dropitem")]
         public void CmdRemoveItem(Client client, int index)
         {
-            InventoryHandler.RemoveItemFromInventory(client, index);
+            InventoryHandler.RemoveItemFromInventory(client, index, true);
 
             string json = InventoryHandler.GetInventory(client);
 

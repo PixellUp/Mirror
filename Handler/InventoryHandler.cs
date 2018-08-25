@@ -11,6 +11,75 @@ namespace Mirror.Handler
     {
         public static List<DroppedItem> DroppedItems = new List<DroppedItem>();
 
+        public static void UseItem(Client client, int index)
+        {
+            if (!(client.GetData("Mirror_Account") is Account account))
+                return;
+
+            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
+
+            if (inventoryItems[index] == null)
+                return;
+
+            string inventoryJson = "";
+
+            bool itemFound = UseItemEffect(client, inventoryItems[index].Name.ToLower());
+
+            if (!itemFound)
+            {
+                client.SendChatMessage("That item doesn't seem to have any effect.");
+                return;
+            }
+
+            if (inventoryItems[index].StackCount <= 1)
+            {
+                inventoryItems[index] = null;
+                inventoryJson = GetInventoryJson(inventoryItems);
+                SaveInventory(client, inventoryJson);
+                return;
+            }
+
+            inventoryItems[index].StackCount -= 1;
+            inventoryJson = GetInventoryJson(inventoryItems);
+            SaveInventory(client, inventoryJson);
+            return;
+        }
+
+        public static bool UseItemEffect(Client client, string name)
+        {
+            switch (name)
+            {
+                case "medkit":
+                    ItemHandler.Heal(client, +25);
+                    return true;
+                case "armor":
+                    ItemHandler.Armor(client, +5);
+                    return true;
+                case "coffee":
+                    ItemHandler.RestoreStats(client);
+                    return true;
+                case "burger":
+                    ItemHandler.Heal(client, +3);
+                    return true;
+                case "soda":
+                    ItemHandler.Heal(client, +5);
+                    return true;
+                case "beer":
+                    ItemHandler.Heal(client, -5);
+                    ItemHandler.Drunk(client, 20);
+                    return true;
+                case "fish":
+                    ItemHandler.Heal(client, +8);
+                    return true;
+                case "pistol50":
+                    ItemHandler.Weapon(client, name);
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+
         /// <summary>
         /// Add an item to the ground from the player's inventory.
         /// </summary>
@@ -100,6 +169,7 @@ namespace Mirror.Handler
             if (!(client.GetData("Mirror_Account") is Account account))
                 return;
 
+            client.TriggerEvent("Recieve_Inventory", jsonInventory);
             account.Inventory = jsonInventory;
             account.Update();
         }
@@ -112,22 +182,25 @@ namespace Mirror.Handler
         /// <param name="amount"></param>
         public static void AddItemToInventory(Client client, string itemName, int amount)
         {
+            string inventoryJson = "";
+            int option = 0;
+            bool foundOpenSlot = false;
+
             if (!(client.GetData("Mirror_Account") is Account account))
                 return;
 
-            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
-
+            // If item does not exist. Create a new item.
             InventoryItem invItem = new InventoryItem
             {
                 ID = 0,
                 Name = itemName,
-                StackCount = 1
+                StackCount = amount
             };
 
-            int option = 0;
-            bool foundOpenSlot = false;
-            string inventoryJson = "";
+            // Grab the player inventory.
+            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
 
+            // Check if player even has an inventory.
             if (inventoryItems == null)
             {
                 inventoryItems = new InventoryItem[27];
@@ -137,6 +210,23 @@ namespace Mirror.Handler
                 return;
             }
 
+            // Check if item type already exists.
+            foreach (InventoryItem item in inventoryItems)
+            {
+                if (item == null)
+                    continue;
+
+                if (item.Name.ToLower() == itemName.ToLower())
+                {
+                    item.StackCount += amount;
+                    inventoryJson = GetInventoryJson(inventoryItems);
+                    SaveInventory(client, inventoryJson);
+                    client.TriggerEvent("Recieve_Inventory", inventoryJson);
+                    return;
+                }
+            }
+
+            // If the item does not exist we'll ad it to the inventory now.
             for (option = 0; option < inventoryItems.Length; option++)
             {
                 if (inventoryItems[option] == null)
@@ -166,7 +256,7 @@ namespace Mirror.Handler
         /// </summary>
         /// <param name="client"></param>
         /// <param name="index"></param>
-        public static void RemoveItemFromInventory(Client client, int index)
+        public static void RemoveItemFromInventory(Client client, int index, bool allItems)
         {
             if (!(client.GetData("Mirror_Account") is Account account))
                 return;
@@ -176,14 +266,30 @@ namespace Mirror.Handler
             if (inventoryItems[index] == null)
                 return;
 
-            AddDroppedItemToGround(client, inventoryItems[index]);
-
             client.SendChatMessage($"Dropped -> {inventoryItems[index].Name}");
+            string inventoryJson = "";
 
-            inventoryItems[index] = null;
+            if (allItems || inventoryItems[index].StackCount <= 1)
+            {
+                AddDroppedItemToGround(client, inventoryItems[index]);
+                inventoryItems[index] = null;
+                inventoryJson = GetInventoryJson(inventoryItems);
+                SaveInventory(client, inventoryJson);
+                return;
+            }
 
-            string inventoryJson = GetInventoryJson(inventoryItems);
+            inventoryItems[index].StackCount -= 1;
+            inventoryJson = GetInventoryJson(inventoryItems);
             SaveInventory(client, inventoryJson);
+
+            InventoryItem item = new InventoryItem()
+            {
+                ID = inventoryItems[index].ID,
+                Name = inventoryItems[index].Name,
+                StackCount = 1
+            };
+            AddDroppedItemToGround(client, item);
+            return;
         }
     }
 }

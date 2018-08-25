@@ -18,9 +18,7 @@ namespace Mirror.Events
             if (args[1] == null)
                 return;
 
-            // Not yet.
-
-            SyncInventory(client);
+            InventoryHandler.UseItem(client, Convert.ToInt32(args[1]));
         }
 
         /// <summary>
@@ -33,7 +31,10 @@ namespace Mirror.Events
             if (args[1] == null)
                 return;
 
-            InventoryHandler.RemoveItemFromInventory(client, Convert.ToInt32(args[1]));
+            if (args[2] == null)
+                return;
+
+            InventoryHandler.RemoveItemFromInventory(client, Convert.ToInt32(args[1]), Convert.ToBoolean(args[2]));
             SyncInventory(client);
         }
 

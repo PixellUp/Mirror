@@ -15,13 +15,39 @@ namespace Mirror.Models
 
         public DroppedItem(Client client, InventoryItem inventoryItem)
         {
-            this.Name = inventoryItem.Name;
-            this.StackCount = inventoryItem.StackCount;
-            this.Position = client.Position;
-            // 1778631864
-            GTANetworkAPI.Object obj = NAPI.Object.CreateObject(3151838160, new Vector3(client.Position.X, client.Position.Y, client.Position.Z - 0.8), new Vector3(), 255);
-            SpawnedObject = obj;
-            TextLabel = NAPI.TextLabel.CreateTextLabel($"{inventoryItem.Name}", new Vector3(client.Position.X, client.Position.Y, client.Position.Z - 0.8), 5f, 1f, 4, new Color(255, 255, 255, 255));
+            Position = new Vector3(client.Position.X, client.Position.Y, client.Position.Z - 0.8).Around(2);
+            Name = inventoryItem.Name.ToUpper();
+            StackCount = inventoryItem.StackCount;
+            TextLabel = NAPI.TextLabel.CreateTextLabel($"{inventoryItem.Name} ({StackCount})", new Vector3(Position.X, Position.Y, Position.Z + 0.5), 5f, 1f, 4, new Color(255, 255, 255, 255));
+            SetObjectType();
+        }
+
+        private void SetObjectType()
+        {
+            switch(Name.ToLower())
+            {
+                case "medkit":
+                    SpawnedObject = NAPI.Object.CreateObject(3792764623, Position, new Vector3(), 255);
+                    return;
+                case "coffee":
+                    SpawnedObject = NAPI.Object.CreateObject(3696781377, Position, new Vector3(), 255);
+                    return;
+                case "burger":
+                    SpawnedObject = NAPI.Object.CreateObject(4098414302, Position, new Vector3(), 255);
+                    return;
+                case "pills":
+                    SpawnedObject = NAPI.Object.CreateObject(4126380171, Position, new Vector3(), 255);
+                    return;
+                case "material":
+                    SpawnedObject = NAPI.Object.CreateObject(4126380171, Position, new Vector3(), 255);
+                    return;
+                case "ammo":
+                    SpawnedObject = NAPI.Object.CreateObject(2872701481, Position, new Vector3(), 255);
+                    return;
+                default:
+                    SpawnedObject = NAPI.Object.CreateObject(3151838160, Position, new Vector3(), 255);
+                    return;
+            }
         }
 
         public void PickupItem()

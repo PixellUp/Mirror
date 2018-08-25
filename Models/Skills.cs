@@ -52,12 +52,13 @@ namespace Mirror.Models
         /// <summary>
         /// Restore any negative or positive modifier impacts.
         /// </summary>
-        public void RestoreModifiers()
+        public void RestoreModifiers(Client client)
         {
             EnduranceModifier = 0;
             IntelligenceModifier = 0;
             CharismaModifier = 0;
             StrengthModifier = 0;
+            PushScoresLocally(client);
         }
 
         /// <summary>
