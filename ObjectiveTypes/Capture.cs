@@ -13,7 +13,7 @@ namespace Mirror.ObjectiveTypes
             if (client.Position.DistanceTo2D(objective.GetLocation()) > objective.Radius)
                 return false;
 
-            Events.DequeueObjective.Event(mission);
+            mission.UpdateObjectives();
             return true;
         }
     }

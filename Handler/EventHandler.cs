@@ -18,50 +18,52 @@ namespace Mirror.Handler
             
             switch(eventName)
             {
+                // Car Events
                 case "ToggleEngine":
-                    Events.ToggleEngine.Event(client, arguments);
+                    Events.CarEvents.ToggleEngine(client, arguments);
                     return;
                 case "ToggleLights":
-                    Events.ToggleLights.Event(client, arguments);
+                    Events.CarEvents.ToggleLights(client, arguments);
                     return;
                 case "OpenDoor":
-                    Events.OpenDoor.Event(client, arguments);
+                    Events.CarEvents.OpenDoor(client, arguments);
                     return;
                 case "CloseDoors":
-                    Events.CloseDoors.Event(client, arguments);
-                    return;
-                case "AttackPlayer":
-                    Events.AttackPlayer.Event(client, arguments);
-                    return;
-                case "StopAttacking":
-                    Events.StopAttacking.Event(client);
-                    return;
-                case "ToggleLock":
-                    Events.ToggleLock.Event(client, arguments);
+                    Events.CarEvents.CloseDoors(client, arguments);
                     return;
                 case "PicklockVehicle":
-                    Events.PicklockVehicle.Event(client, arguments);
+                    Events.CarEvents.PicklockDoor(client, arguments);
                     return;
+                case "ToggleLock":
+                    Events.CarEvents.ToggleLock(client, arguments);
+                    return;
+                // Player Actions
+                case "AttackPlayer":
+                    Events.PlayerEvents.AttackPlayer(client, arguments);
+                    return;
+                // Appearance Events
                 case "PushAppearanceChanges":
-                    Events.PushAppearanceChanges.Event(client, arguments);
+                    Events.AppearanceEvents.PushAppearanceChanges(client, arguments);
                     return;
                 case "RequestFace":
-                    Events.RequestFace.Event(client, arguments);
+                    Events.AppearanceEvents.GetAppearance(client);
                     return;
+                // Mission Events
                 case "Mission_Framework_Verify":
                     Events.VerifyMissionFramework.Event(client, arguments);
                     return;
+                // Inventory Events
                 case "Get_Inventory":
-                    Events.GetInventory.Event(client, arguments);
+                    Events.InventoryEvents.SyncInventory(client);
                     return;
                 case "Drop_Item_Inventory":
-                    Events.DropItemInventory.Event(client, arguments);
+                    Events.InventoryEvents.DropItem(client, arguments);
                     return;
                 case "Use_Item_Inventory":
-                    Events.UseItemInventory.Event(client, arguments);
+                    Events.InventoryEvents.UseItem(client, arguments);
                     return;
                 case "Pickup_Item_Inventory":
-                    Events.PickupItemInventory.Event(client, arguments);
+                    Events.InventoryEvents.PickupItem(client, arguments);
                     return;
             }
             

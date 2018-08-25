@@ -1,15 +1,21 @@
 ﻿using GTANetworkAPI;
 using Newtonsoft.Json;
+using Mirror.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Handler
 {
-    public static class Inventory
+    public static class InventoryHandler
     {
         public static List<DroppedItem> DroppedItems = new List<DroppedItem>();
 
+        /// <summary>
+        /// Add an item to the ground from the player's inventory.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="item"></param>
         public static void AddDroppedItemToGround(Client client, InventoryItem item)
         {
             if (item == null)
@@ -19,18 +25,28 @@ namespace Mirror.Models
             DroppedItems.Add(newItem);
         }
 
-        public static void RemoveDroppedItemFromGround(Client client)
+        /// <summary>
+        /// Removes an item on the ground if the remote id matches one in the list.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="handle"></param>
+        public static void RemoveDroppedItemFromGround(Client client, int handle)
         {
             DroppedItem droppedItem = null;
-
             foreach (DroppedItem item in DroppedItems)
             {
-                if (item.Position.DistanceTo2D(client.Position) <= 1)
-                {
-                    droppedItem = item;
-                    DroppedItems.Remove(droppedItem);
-                    break;
-                }
+                if (item == null)
+                    continue;
+
+                if (item.Position.DistanceTo2D(client.Position) > 3)
+                    continue;
+
+                if (item.SpawnedObject.Value != handle)
+                    continue;
+
+                droppedItem = item;
+                DroppedItems.Remove(droppedItem);
+                break;
             }
 
             if (droppedItem == null)
@@ -74,6 +90,11 @@ namespace Mirror.Models
             return account.Inventory;
         }
 
+        /// <summary>
+        /// Save the player's inventory.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="jsonInventory"></param>
         public static void SaveInventory(Client client, string jsonInventory)
         {
             if (!(client.GetData("Mirror_Account") is Account account))
@@ -83,6 +104,12 @@ namespace Mirror.Models
             account.Update();
         }
 
+        /// <summary>
+        /// Add a new item to the player's inventory.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="itemName"></param>
+        /// <param name="amount"></param>
         public static void AddItemToInventory(Client client, string itemName, int amount)
         {
             if (!(client.GetData("Mirror_Account") is Account account))
@@ -134,6 +161,11 @@ namespace Mirror.Models
             client.TriggerEvent("Recieve_Inventory", inventoryJson);
         }
 
+        /// <summary>
+        /// Remove an item from the player's inventory based on the index position.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="index"></param>
         public static void RemoveItemFromInventory(Client client, int index)
         {
             if (!(client.GetData("Mirror_Account") is Account account))

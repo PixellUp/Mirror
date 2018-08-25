@@ -4,17 +4,46 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading;
 
 namespace Mirror.Events
 {
-    public static class RequestFace
+    /// <summary>
+    /// Anything having to do with facial changes, clothing, etc.
+    /// </summary>
+    public static class AppearanceEvents
     {
-        public static void Event(Client client, params object[] args)
+        /// <summary>
+        /// Take the changes from client-side and push them to server-side.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="args"></param>
+        public static void PushAppearanceChanges(Client client, params object[] args)
+        {
+            if (!client.HasData("Mirror_Appearance"))
+                return;
+
+            if (!(client.GetData("Mirror_Appearance") is Appearance app))
+                return;
+
+            if (args[1] == null)
+                return;
+
+            client.TriggerEvent("eventCreatePlayerNotification", $"Appearance Updated");
+
+            app = JsonConvert.DeserializeObject<Appearance>(args[1] as string);
+            app.Update();
+            app.UpdateAppearance(client);
+        }
+
+        /// <summary>
+        /// Used to callback to client-side to get the player's appearance.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void GetAppearance(Client client)
         {
             if (!(client.GetData("Mirror_Appearance") is Appearance app))
                 return;
-            
+
             double[] faceValues = new double[] {
                 app.FatherAttributes[0],
                 app.MotherAttributes[0],
@@ -69,7 +98,6 @@ namespace Mirror.Events
             };
 
             string overlayJson = JsonConvert.SerializeObject(overlayValues);
-
             client.TriggerEvent("RecieveFace", facialJson, overlayJson);
         }
     }

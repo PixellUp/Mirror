@@ -1,15 +1,19 @@
-﻿using GTANetworkAPI;
-using Mirror.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
+using Mirror.Models;
+using GTANetworkAPI;
 
 namespace Mirror.Events
 {
-    public static class AttackPlayer
+    public static class PlayerEvents
     {
-        public static void Event(Client client, params object[] arguments)
+        /// <summary>
+        /// Uses the interval client-side to make attacks on a player.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="arguments"></param>
+        public static void AttackPlayer(Client client, params object[] arguments)
         {
             Client target = arguments[1] as Client;
 
@@ -43,5 +47,7 @@ namespace Mirror.Events
             target.TriggerEvent("eventLastDamage", 0);
             client.TriggerEvent("eventTargetDamage", 0);
         }
+
+
     }
 }

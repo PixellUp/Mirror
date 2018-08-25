@@ -30,7 +30,7 @@ namespace Mirror.ObjectiveTypes
             if (!isVehicleAtLocation)
                 return false;
 
-            Events.DequeueObjective.Event(mission);
+            mission.UpdateObjectives();
             return true;
         }
     }

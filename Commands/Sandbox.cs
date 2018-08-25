@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Handler;
 using Mirror.Models;
 using System;
 using System.Collections.Generic;
@@ -46,11 +47,11 @@ namespace Mirror.Commands
         [Command("additem", GreedyArg = true)]
         public void CmdAddItem(Client client, string name)
         {
-            Inventory.AddItemToInventory(client, name, 1);
+            InventoryHandler.AddItemToInventory(client, name, 1);
 
-            string json = Inventory.GetInventory(client);
+            string json = InventoryHandler.GetInventory(client);
 
-            InventoryItem[] items = Inventory.GetInventoryArray(json);
+            InventoryItem[] items = InventoryHandler.GetInventoryArray(json);
 
             string itemList = "";
 
@@ -71,11 +72,11 @@ namespace Mirror.Commands
         [Command("dropitem")]
         public void CmdRemoveItem(Client client, int index)
         {
-            Inventory.RemoveItemFromInventory(client, index);
+            InventoryHandler.RemoveItemFromInventory(client, index);
 
-            string json = Inventory.GetInventory(client);
+            string json = InventoryHandler.GetInventory(client);
 
-            InventoryItem[] items = Inventory.GetInventoryArray(json);
+            InventoryItem[] items = InventoryHandler.GetInventoryArray(json);
 
             string itemList = "";
 
@@ -96,8 +97,8 @@ namespace Mirror.Commands
         [Command("checkitems")]
         public void CMDCheckItems(Client client)
         {
-            string json = Inventory.GetInventory(client);
-            InventoryItem[] items = Inventory.GetInventoryArray(json);
+            string json = InventoryHandler.GetInventory(client);
+            InventoryItem[] items = InventoryHandler.GetInventoryArray(json);
 
             string itemList = "";
 
@@ -113,12 +114,6 @@ namespace Mirror.Commands
 
             string finished = builder.ToString();
             client.SendChatMessage(finished);
-        }
-
-        [Command("pickup")]
-        public void CMDPickupItem(Client client)
-        {
-            Inventory.RemoveDroppedItemFromGround(client);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Mirror.ObjectiveTypes
             if (!client.IsInVehicle)
                 return false;
 
-            Events.DequeueObjective.Event(mission);
+            mission.UpdateObjectives();
             return true;
         }
     }
