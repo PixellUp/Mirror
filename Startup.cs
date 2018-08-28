@@ -12,30 +12,11 @@ namespace Mirror
         public Startup()
         {
             Settings.Settings.Initialize();
+            Levels.LevelSystem.InitializeLevels(100);
             ResetLogins();
 
             MaleValidTopConfiguration.Initialize();
             FemaleValidTopConfiguration.Initialize();
-
-            
-            double minLevel = 2;
-            double points = 0;
-            
-            for (int level = 0; level < 100; level++)
-            {
-                points += Math.Floor(level + 300 * Math.Pow(2, level / 7));
-                if (level >= minLevel)
-                {
-                    Console.WriteLine($"{level} -> XP: {Math.Floor(points / 4)}");
-                }
-
-            }
-            
-
-
-
-
-            
         }
 
         /// <summary>

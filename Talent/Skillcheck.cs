@@ -153,13 +153,10 @@ namespace Mirror.Talent
             if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
-            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
-
-            if (clientSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills clientSheet))
                 return false;
 
-            if (targetSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills targetSheet))
                 return false;
 
             int clientRoll = clientSheet.GetStrScore() + Dice.RollDice();
@@ -189,13 +186,10 @@ namespace Mirror.Talent
             if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
-            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
-
-            if (clientSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills clientSheet))
                 return false;
 
-            if (targetSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills targetSheet))
                 return false;
 
             int clientRoll = clientSheet.GetEndScore() + Dice.RollDice();
@@ -225,13 +219,11 @@ namespace Mirror.Talent
             if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
-            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
 
-            if (clientSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills clientSheet))
                 return false;
 
-            if (targetSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills targetSheet))
                 return false;
 
             int clientRoll = clientSheet.GetIntScore() + Dice.RollDice();
@@ -261,13 +253,10 @@ namespace Mirror.Talent
             if (!target.HasData("Mirror_Skills"))
                 return false;
 
-            Models.Skills clientSheet = client.GetData("Mirror_Skills") as Models.Skills;
-            Models.Skills targetSheet = client.GetData("Mirror_Skills") as Models.Skills;
-
-            if (clientSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills clientSheet))
                 return false;
 
-            if (targetSheet == null)
+            if (!(client.GetData("Mirror_Skills") is Models.Skills targetSheet))
                 return false;
 
             int clientRoll = clientSheet.GetChaScore() + Dice.RollDice();

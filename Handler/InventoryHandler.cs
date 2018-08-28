@@ -31,6 +31,8 @@ namespace Mirror.Handler
                 return;
             }
 
+            client.TriggerEvent("PlaySoundFrontend", "PIN_BUTTON", "ATM_SOUNDS");
+
             if (inventoryItems[index].StackCount <= 1)
             {
                 inventoryItems[index] = null;
@@ -121,7 +123,6 @@ namespace Mirror.Handler
             if (droppedItem == null)
                 return;
 
-            client.SendChatMessage($"You picked up a {droppedItem.Name}");
             droppedItem.PickupItem();
             AddItemToInventory(client, droppedItem.Name, droppedItem.StackCount);
         }
@@ -207,6 +208,7 @@ namespace Mirror.Handler
                 inventoryItems[option] = invItem;
                 inventoryJson = GetInventoryJson(inventoryItems);
                 SaveInventory(client, inventoryJson);
+                client.TriggerEvent("PlaySoundFrontend", "TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 return;
             }
 
@@ -222,6 +224,7 @@ namespace Mirror.Handler
                     inventoryJson = GetInventoryJson(inventoryItems);
                     SaveInventory(client, inventoryJson);
                     client.TriggerEvent("Recieve_Inventory", inventoryJson);
+                    client.TriggerEvent("PlaySoundFrontend", "TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                     return;
                 }
             }
@@ -248,6 +251,7 @@ namespace Mirror.Handler
             inventoryJson = GetInventoryJson(inventoryItems);
             SaveInventory(client, inventoryJson);
 
+            client.TriggerEvent("PlaySoundFrontend", "TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             client.TriggerEvent("Recieve_Inventory", inventoryJson);
         }
 
@@ -266,7 +270,6 @@ namespace Mirror.Handler
             if (inventoryItems[index] == null)
                 return;
 
-            client.SendChatMessage($"Dropped -> {inventoryItems[index].Name}");
             string inventoryJson = "";
 
             if (allItems || inventoryItems[index].StackCount <= 1)
@@ -275,6 +278,7 @@ namespace Mirror.Handler
                 inventoryItems[index] = null;
                 inventoryJson = GetInventoryJson(inventoryItems);
                 SaveInventory(client, inventoryJson);
+                client.TriggerEvent("PlaySoundFrontend", "CANCEL", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 return;
             }
 
@@ -288,6 +292,7 @@ namespace Mirror.Handler
                 Name = inventoryItems[index].Name,
                 StackCount = 1
             };
+            client.TriggerEvent("PlaySoundFrontend", "CANCEL", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             AddDroppedItemToGround(client, item);
             return;
         }

@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Handler;
+using Mirror.Levels;
 using Mirror.Models;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,9 @@ namespace Mirror.Commands
         [Command("cv")]
         public void CreateVehicle(Client client, string value)
         {
-            VehicleHash veh = (VehicleHash)Enum.Parse(typeof(VehicleHash), value);
-            Vehicle newVeh = NAPI.Vehicle.CreateVehicle(veh, client.Position.Around(5), 0, 45, 45, "TESTING", 255, false, true);
+            uint vehiclecode = NAPI.Util.GetHashKey(value);
+
+            Vehicle newVeh = NAPI.Vehicle.CreateVehicle(vehiclecode, client.Position.Around(5), 0, 45, 45, "TESTING", 255, false, true);
         }
 
         [Command("sethealth")]
@@ -50,29 +52,10 @@ namespace Mirror.Commands
         }
 
 
-        [Command("additem", GreedyArg = true)]
-        public void CmdAddItem(Client client, string name)
+        [Command("additem")]
+        public void CmdAddItem(Client client, string name, int amount = 1)
         {
-            InventoryHandler.AddItemToInventory(client, name, 1);
-
-            string json = InventoryHandler.GetInventory(client);
-
-            InventoryItem[] items = InventoryHandler.GetInventoryArray(json);
-
-            string itemList = "";
-
-            StringBuilder builder = new StringBuilder(itemList);
-
-            foreach (InventoryItem item in items)
-            {
-                if (item == null)
-                    continue;
-
-                builder.Append($"{item.ID} {item.Name} | ");
-            }
-
-            string finished = builder.ToString();
-            client.SendChatMessage(finished);
+            InventoryHandler.AddItemToInventory(client, name, amount);
         }
 
         [Command("dropitem")]
@@ -100,26 +83,10 @@ namespace Mirror.Commands
             client.SendChatMessage(finished);
         }
 
-        [Command("checkitems")]
-        public void CMDCheckItems(Client client)
+        [Command("addxp")]
+        public void CmdSetXP(Client client, int amount)
         {
-            string json = InventoryHandler.GetInventory(client);
-            InventoryItem[] items = InventoryHandler.GetInventoryArray(json);
-
-            string itemList = "";
-
-            StringBuilder builder = new StringBuilder(itemList);
-
-            foreach (InventoryItem item in items)
-            {
-                if (item == null)
-                    continue;
-
-                builder.Append($"{item.ID} {item.Name} | ");
-            }
-
-            string finished = builder.ToString();
-            client.SendChatMessage(finished);
+            LevelSystem.AddPlayerExperience(client, amount);
         }
     }
 }

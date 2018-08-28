@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Mirror.Handler
 {
-    public class ExitHandler : Script
+    public class DisconnectionHandler : Script
     {
         [ServerEvent(Event.PlayerDisconnected)]
         public void PlayerDisconnectEvent(Client client, DisconnectionType type, string reason)
@@ -16,7 +16,7 @@ namespace Mirror.Handler
 
             Account account = client.GetData("Mirror_Account");
             account.IsLoggedIn = false;
-            account.Update();
+            account.Update(client);
         }
     }
 }

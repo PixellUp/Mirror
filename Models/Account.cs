@@ -1,6 +1,8 @@
 ﻿using GTANetworkAPI;
 using LiteDbWrapper;
+using Mirror.Levels;
 using Mirror.Utility;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +22,9 @@ namespace Mirror.Models
         public bool IsLoggedIn { get; set; } = false;
         public bool NewAccount { get; set; } = true;
         public string Inventory { get; set; } = "";
+        public string LastPosition { get; set; } = JsonConvert.SerializeObject(new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ));
+        public int CurrentExperience { get; set; } = 75;
+        public string LevelRanks { get; set; } = JsonConvert.SerializeObject(new LevelRanks());
 
         public void Create(Client client, string username, string playerName, string password)
         {
@@ -58,7 +63,11 @@ namespace Mirror.Models
             IsLoggedIn = true;
             client.SetData("Mirror_Account", this);
             client.Name = Name;
-            Update();
+
+            Vector3 position = JsonConvert.DeserializeObject<Vector3>(LastPosition);
+            NAPI.Entity.SetEntityPosition(client, position);
+
+            Update(client);
 
             // Appearance
             Appearance appearance = Appearance.RetrieveAppearance(this);
@@ -74,6 +83,9 @@ namespace Mirror.Models
             Skills skills = Skills.RetrieveSkills(this);
             skills.Attach(client);
             client.SendChatMessage(Exceptions.LoginLoadedSkills);
+
+            // Levels
+            LevelSystem.UpdatePlayerExperienceLocally(client);
 
             // Finish
             FinishLogin(client);
@@ -111,6 +123,23 @@ namespace Mirror.Models
         /// <summary>
         /// Fully updates the database with new information.
         /// </summary>
+        public void Update(Client client)
+        {
+            // Save the player's last position.
+            LastPosition = JsonConvert.SerializeObject(client.Position);
+
+            Clothing clothing = Database.GetById<Clothing>(UserID);
+            clothing.Update();
+
+            Appearance appearance = Database.GetById<Appearance>(UserID);
+            appearance.Update();
+
+            Skills skills = Database.GetById<Skills>(UserID);
+            skills.Update();
+
+            Database.UpdateData(this);
+        }
+
         public void Update()
         {
             Clothing clothing = Database.GetById<Clothing>(UserID);
@@ -135,6 +164,18 @@ namespace Mirror.Models
         {
             bool passwordCorrect = Encryption.BCryptHelper.CheckPassword(password, Database.Get<Account>("Username", username).Password);
             return passwordCorrect;
+        }
+
+
+        public LevelRanks GetLevelRanks()
+        {
+            return JsonConvert.DeserializeObject<LevelRanks>(LevelRanks);
+        }
+
+        public void UpdateLevelRanks(LevelRanks levelRanks)
+        {
+            LevelRanks = JsonConvert.SerializeObject(levelRanks);
+            Update();
         }
 
     }
