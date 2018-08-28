@@ -10,8 +10,7 @@
         "dependencies": {
           "BCrypt-Core": "2.0.0",
           "gtanetwork.api": "0.3.5",
-          "LiteDbWrapper": "1.0.0.0",
-          "Talent": "1.0.0.0"
+          "LiteDbWrapper": "1.0.0.0"
         },
         "runtime": {
           "Mirror.dll": {}
@@ -1279,14 +1278,6 @@
             "fileVersion": "1.0.0.0"
           }
         }
-      },
-      "Talent/1.0.0.0": {
-        "runtime": {
-          "Talent.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
       }
     }
   },
@@ -2067,11 +2058,6 @@
       "hashPath": "xxhash.core.0.3.0.nupkg.sha512"
     },
     "LiteDbWrapper/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Talent/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

@@ -11,11 +11,11 @@ namespace Mirror.Commands
     public class Sandbox : Script
     {
         [Command("cv")]
-        public void CreateVehicle(Client client, string value)
+        public void CreateVehicle(Client client, string value, bool locked)
         {
             uint vehiclecode = NAPI.Util.GetHashKey(value);
 
-            Vehicle newVeh = NAPI.Vehicle.CreateVehicle(vehiclecode, client.Position.Around(5), 0, 45, 45, "TESTING", 255, false, true);
+            Vehicle newVeh = NAPI.Vehicle.CreateVehicle(vehiclecode, client.Position.Around(5), 0, 45, 45, "TESTING", 255, locked, true);
         }
 
         [Command("sethealth")]

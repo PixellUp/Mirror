@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Mirror.Models;
 using GTANetworkAPI;
+using Dice = Mirror.Skills.Utility;
+using Mirror.Skills;
 
 namespace Mirror.Events
 {
@@ -24,18 +26,16 @@ namespace Mirror.Events
                 return;
 
             if (!client.HasData("LastAttack"))
-            {
                 client.SetData("LastAttack", DateTime.UtcNow.Millisecond);
-            }
 
             if ((Int32)client.GetData("LastAttack") + 2500 > DateTime.UtcNow.Millisecond)
                 return;
 
             client.SetData("LastAttack", DateTime.UtcNow.Millisecond);
 
-            if (Talent.Skillcheck.CheckStrAgainstOpponent(client, target))
+            if (Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.strength))
             {
-                int damage = Talent.Dice.RollDamage(10, 0);
+                int damage = Dice.RollDamage(10, 0);
                 //target.SendChatMessage($"You were attacked by {client.Name} and he hit you.");
                 target.TriggerEvent("eventLastDamage", damage);
                 client.TriggerEvent("eventTargetDamage", damage);

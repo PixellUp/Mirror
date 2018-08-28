@@ -1,8 +1,10 @@
 ﻿using GTANetworkAPI;
 using Mirror.Models;
+using Mirror.Skills;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Skillsheet = Mirror.Skills.Skills;
 
 namespace Mirror.Events
 {
@@ -82,15 +84,11 @@ namespace Mirror.Events
             if (!vehicle.Locked)
                 return;
 
-            if (Talent.Skillcheck.CheckIntelligence(client, 15, -1))
-            {
-                vehicle.Locked = false;
-            }
-            else
-            {
-                Skills skills = client.GetData("Mirror_Skills") as Skills;
-                skills.PushScoresLocally(client);
-            }
+            if (!Skillcheck.SkillCheckPlayer(client, Skillcheck.Skills.intelligence, 15, -1))
+                return;
+
+            vehicle.Locked = false;
+            client.SendChatMessage("Success!");
         }
 
         /// <summary>

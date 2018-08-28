@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Models;
+using Skillsheet = Mirror.Skills.Skills;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -37,11 +38,14 @@ namespace Mirror.Handler
 
         public static void RestoreStats(Client client)
         {
-            if (!(client.GetData("Mirror_Skills") is Skills skillsheet))
+            if (!(client.GetData("Mirror_Skills") is Skillsheet skillsheet))
+                return;
+
+            if (!(client.GetData("Mirror_Account") is Account account))
                 return;
 
             skillsheet.RestoreModifiers(client);
-            skillsheet.Update();
+            skillsheet.Update(client);
             client.TriggerEvent("eventCreatePlayerNotification", $"Stats Restored");
         }
 

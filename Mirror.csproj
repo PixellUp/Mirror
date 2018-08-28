@@ -10,12 +10,11 @@
   <Reference Include="LiteDbWrapper">
     <HintPath>..\litedbwrapper\bin\Debug\netcoreapp2.0\LiteDbWrapper.dll</HintPath>
   </Reference>
-  <Reference Include="Talent">
-    <HintPath>..\talent\bin\Debug\netcoreapp2.0\Talent.dll</HintPath>
-  </Reference>
 </ItemGroup>
 <ItemGroup>
-  <Folder Include="Skills\" />
+  <Folder Include="Skills\Endurance\" />
+  <Folder Include="Skills\Intelligence\" />
+  <Folder Include="Skills\Charisma\" />
 </ItemGroup>
 <ItemGroup>
   <None Update="Datasets\FemaleTopCombinations.json">

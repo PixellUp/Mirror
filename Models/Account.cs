@@ -2,6 +2,7 @@
 using LiteDbWrapper;
 using Mirror.Levels;
 using Mirror.Utility;
+using Skillsheet = Mirror.Skills.Skills;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,10 @@ namespace Mirror.Models
         public string Inventory { get; set; } = "";
         public string LastPosition { get; set; } = JsonConvert.SerializeObject(new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ));
         public int CurrentExperience { get; set; } = 75;
+        // Ranks
         public string LevelRanks { get; set; } = JsonConvert.SerializeObject(new LevelRanks());
+        // Skills
+        public string LevelSkills { get; set; } = JsonConvert.SerializeObject(new Skills.Skills());
 
         public void Create(Client client, string username, string playerName, string password)
         {
@@ -48,10 +52,6 @@ namespace Mirror.Models
             // Setup Appearance Data
             Appearance appearance = new Appearance();
             appearance.Create(acc.UserID);
-
-            // Setup Skill Sheet Data
-            Skills skills = new Skills();
-            skills.Create(acc.UserID);
 
             // Fully Registered
             client.SendChatMessage(Exceptions.AccountHasBeenRegistered);
@@ -80,7 +80,7 @@ namespace Mirror.Models
             client.SendChatMessage(Exceptions.LoginLoadedClothing);
 
             // Skills
-            Skills skills = Skills.RetrieveSkills(this);
+            Skillsheet skills = JsonConvert.DeserializeObject<Skillsheet>(LevelSkills);
             skills.Attach(client);
             client.SendChatMessage(Exceptions.LoginLoadedSkills);
 
@@ -126,16 +126,13 @@ namespace Mirror.Models
         public void Update(Client client)
         {
             // Save the player's last position.
-            LastPosition = JsonConvert.SerializeObject(client.Position);
+            LastPosition = JsonConvert.SerializeObject(client.Position); 
 
             Clothing clothing = Database.GetById<Clothing>(UserID);
             clothing.Update();
 
             Appearance appearance = Database.GetById<Appearance>(UserID);
             appearance.Update();
-
-            Skills skills = Database.GetById<Skills>(UserID);
-            skills.Update();
 
             Database.UpdateData(this);
         }
@@ -147,9 +144,6 @@ namespace Mirror.Models
 
             Appearance appearance = Database.GetById<Appearance>(UserID);
             appearance.Update();
-
-            Skills skills = Database.GetById<Skills>(UserID);
-            skills.Update();
 
             Database.UpdateData(this);
         }
