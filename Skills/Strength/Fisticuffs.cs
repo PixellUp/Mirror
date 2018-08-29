@@ -11,6 +11,7 @@ namespace Mirror.Skills.Strength
     // Increased Melee Damage based on Points in Skillset.
     public static class Fisticuffs
     {
+        // Returns Bonus Damage on use.
         public static int Event(Client client)
         {
             int bonusDamage = 0;
@@ -24,7 +25,7 @@ namespace Mirror.Skills.Strength
             if (client.CurrentWeapon != WeaponHash.Unarmed)
                 return bonusDamage;
 
-            LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
+            LevelRanks levelRanks = account.GetLevelRanks();
             bonusDamage = levelRanks.Fisticuffs;
 
             return bonusDamage;

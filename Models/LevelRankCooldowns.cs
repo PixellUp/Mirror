@@ -12,12 +12,14 @@ namespace Mirror.Models
         public bool IsIntimidateReady { get; set; } = false;
         public bool IsDragReady { get; set; } = false;
         public bool IsDownerReady { get; set; } = false;
+        public bool IsBruteReady { get; set; } = false;
 
         // END
-        public bool IsDeadEyeReady { get; set; } = false;
+        public bool IsDeadeyeReady { get; set; } = false;
         public bool IsQuickReady { get; set; } = false;
         public bool IsHighJumpReady { get; set; } = false;
         public bool IsConcentrateReady { get; set; } = false;
+        public bool IsPerceptionReady { get; set; } = false;
 
         // INT
         public bool IsMedicineReady { get; set; } = false;
@@ -25,6 +27,9 @@ namespace Mirror.Models
         public bool IsRegenerateReady { get; set; } = false;
         public bool IsElectricReady { get; set; } = false;
         public bool IsCalculatedReady { get; set; } = false;
+        public bool IsLockpickReady { get; set; } = false;
+        public bool IsVehicleSenseReady { get; set; } = false;
+        public bool IsSickSenseReady { get; set; } = false;
 
         // CHA
         public bool IsDisguiseReady { get; set; } = false;
@@ -44,7 +49,6 @@ namespace Mirror.Models
             if (!client.HasData(VariableName))
                 client.SetData(VariableName, new LevelRankCooldowns());
 
-
             return client.GetData(VariableName) as LevelRankCooldowns;
         }
 
@@ -58,13 +62,16 @@ namespace Mirror.Models
             if (DateTime.Compare(DateTime.Now, clientTime) <= 0)
                 return false;
 
+            client.SetData(variableName, DateTime.Now.AddSeconds(secondsOnCooldown));
             foreach (var property in GetType().GetProperties())
             {
                 if (property.Name.ToLower() == variableName.ToLower())
+                {
                     property.SetValue(this, true);
+                    break;
+                }
+                    
             }
-
-            client.SetData(variableName, DateTime.Now.AddSeconds(secondsOnCooldown));
             return true;
         }
     }

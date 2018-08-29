@@ -18,6 +18,7 @@ namespace Mirror.Levels
         public int Smash { get; set; } = 0;
         public int Intimidate { get; set; } = 0;
         public int Drag { get; set; } = 0;
+        public int Downer { get; set; } = 0;
 
         // INT
         public int MediumWeaponry { get; set; } = 0;
@@ -34,7 +35,7 @@ namespace Mirror.Levels
         public int LightWeaponry { get; set; } = 0;
         public int FlyingVehicles { get; set; } = 0;
         public int SuperclassVehicles { get; set; } = 0;
-        public int Deadye { get; set; } = 0;
+        public int Deadeye { get; set; } = 0;
         public int Quick { get; set; } = 0;
         public int HighJump { get; set; } = 0;
         public int Perception { get; set; } = 0;

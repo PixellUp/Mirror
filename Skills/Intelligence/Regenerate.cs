@@ -3,6 +3,7 @@ using Mirror.Events;
 using Mirror.Events.ActualEvents;
 using Mirror.Levels;
 using Mirror.Models;
+using Mirror.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,17 +29,17 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            levelRankCooldowns.UpdateCooldownTime(client, "IsRegenerateReady", SkillCooldowns.Regenerate);
 
             if (!levelRankCooldowns.IsRegenerateReady)
-            {
-                levelRankCooldowns.UpdateCooldownTime(client, "IsRegenerateReady", 30);
                 return;
-            }
+
+            levelRankCooldowns.IsRegenerateReady = false;
 
             if (client.Health >= 100)
                 return;
 
-            client.SendNotification("~r~Regenerate~n~~w~You feel a bit healthier.");
+            client.SendNotification("~b~Regenerate~n~~w~You feel a bit healthier.");
             client.Health += levelRanks.Regenerate;
         }
     }

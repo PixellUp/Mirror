@@ -18,6 +18,7 @@ namespace Mirror.Models
             LastPosition = vehicle.Position;
             Vehicle = vehicle;
             ElectricVehicles.Add(this);
+            Vehicle.SetData("ElectricVehicle", this);
         }
 
         public bool HasPower()

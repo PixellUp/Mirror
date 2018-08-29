@@ -7,20 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Skills.Strength
+namespace Mirror.Skills.Charisma
 {
-    // Increased Health
-    public class Brute : Script
+    public class Transparent : Script
     {
-        private readonly string VariableName = "IsBruteReady";
+        private readonly string VariableName = "IsTransparentReady";
         private readonly string Notification = "Notification";
 
-        public Brute()
+        public Transparent()
         {
             RankEvents.PassiveEvent.PassiveEventTrigger += CheckPassive;
         }
 
-        public void CheckPassive(object source, Client client)
+        private void CheckPassive(object source, Client client)
         {
             if (!client.HasData(VariableName + Notification))
                 client.SetData(VariableName + Notification, false);
@@ -30,29 +29,23 @@ namespace Mirror.Skills.Strength
 
             LevelRanks levelRanks = account.GetLevelRanks();
 
-            if (levelRanks.Brute <= 0)
+            if (levelRanks.Transparent <= 0)
                 return;
 
             LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
-            levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Brute);
+            levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Transparent);
 
-            if (!levelRankCooldowns.IsBruteReady)
+            if (!levelRankCooldowns.IsTransparentReady)
             {
                 client.SetData(VariableName + Notification, false);
                 return;
             }
 
-            levelRankCooldowns.IsBruteReady = false;
-
-            if (client.Armor >= levelRanks.Brute)
+            if (client.GetData(VariableName + Notification))
                 return;
 
-            if (!client.GetData(VariableName + Notification))
-            {
-                client.SetData(VariableName + Notification, true);
-                client.SendNotification("~r~Brute~n~~w~You feel your skin tighten.");
-                client.Armor = levelRanks.Brute;
-            }
+            client.SetData(VariableName + Notification, true);
+            client.SendNotification("~o~Transparent~n~~w~You are able to hide from sight completely again.");
         }
     }
 }

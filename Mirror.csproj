@@ -12,10 +12,6 @@
   </Reference>
 </ItemGroup>
 <ItemGroup>
-  <Folder Include="Skills\Endurance\" />
-  <Folder Include="Skills\Charisma\" />
-</ItemGroup>
-<ItemGroup>
   <None Update="Datasets\FemaleTopCombinations.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
