@@ -25,10 +25,9 @@ namespace Mirror.Models
         public string Inventory { get; set; } = "";
         public string LastPosition { get; set; } = JsonConvert.SerializeObject(new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ));
         public int CurrentExperience { get; set; } = 75;
-        // Ranks
         public string LevelRanks { get; set; } = JsonConvert.SerializeObject(new LevelRanks());
-        // Skills
-        public string LevelSkills { get; set; } = JsonConvert.SerializeObject(new Skills.Skills());
+        public string LevelSkills { get; set; } = JsonConvert.SerializeObject(new Skillsheet());
+        public int RankPoints { get; set; } = 0;
 
         public void Create(Client client, string username, string playerName, string password)
         {

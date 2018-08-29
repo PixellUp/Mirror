@@ -122,9 +122,16 @@ namespace Mirror.Skills
         /// </summary>
         /// <param name="sides"></param>
         /// <returns></returns>
-        public static int RollDice(int sides = 20)
+        public static int RollDice(int sides = 20, int howManyTimes = 1)
         {
-            return Random.Next(1, sides + 1);
+            int startAmount = 0;
+
+            for (int i = 0; i < howManyTimes; i++)
+            {
+                startAmount += Random.Next(1, sides + 1);
+            }
+
+            return startAmount;
         }
 
         public static int RollDamage(int sides = 20, int modifier = 0)

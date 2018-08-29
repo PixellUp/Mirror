@@ -2,9 +2,11 @@
 using Mirror.Handler;
 using Mirror.Levels;
 using Mirror.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Skillsheet = Mirror.Skills.Skills;
 
 namespace Mirror.Commands
 {
@@ -87,6 +89,16 @@ namespace Mirror.Commands
         public void CmdSetXP(Client client, int amount)
         {
             LevelSystem.AddPlayerExperience(client, amount);
+        }
+
+        [Command("getpoints")]
+        public void GetPoints(Client client)
+        {
+            Account account = client.GetData("Mirror_Account");
+
+            LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
+
+            client.SendChatMessage($"{levelRanks.GetUnallocatedRankPointCount(account.CurrentExperience)}");
         }
     }
 }
