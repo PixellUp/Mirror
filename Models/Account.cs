@@ -159,7 +159,6 @@ namespace Mirror.Models
             return passwordCorrect;
         }
 
-
         public LevelRanks GetLevelRanks()
         {
             return JsonConvert.DeserializeObject<LevelRanks>(LevelRanks);

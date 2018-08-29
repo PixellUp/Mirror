@@ -13,7 +13,6 @@
 </ItemGroup>
 <ItemGroup>
   <Folder Include="Skills\Endurance\" />
-  <Folder Include="Skills\Intelligence\" />
   <Folder Include="Skills\Charisma\" />
 </ItemGroup>
 <ItemGroup>

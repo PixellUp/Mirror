@@ -100,5 +100,11 @@ namespace Mirror.Commands
 
             client.SendChatMessage($"{levelRanks.GetUnallocatedRankPointCount(account.CurrentExperience)}");
         }
+
+        [Command("allocatepoint")]
+        public void CMDAllocatePoint(Client client, string type)
+        {
+            Events.RankEvents.AllocateRankPoint(client, "", type);
+        }
     }
 }

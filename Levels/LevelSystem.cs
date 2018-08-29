@@ -52,6 +52,46 @@ namespace Mirror.Levels
         public int Attention { get; set; } = 0;
 
         /// <summary>
+        /// Allocates a skill point if they player has skill points available.
+        /// </summary>
+        /// <param name="currentXP"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool AllocateSkillPoint(int currentXP, string type)
+        {
+            int pointsAvailable = GetUnallocatedRankPointCount(currentXP);
+
+            if (pointsAvailable <= 0)
+                return false;
+
+            foreach (var property in GetType().GetProperties())
+            {
+                if (property.Name.ToLower() == type.ToLower())
+                {
+                    int currentValue = Convert.ToInt32(property.GetValue(this, null));
+                    currentValue += 1;
+                    property.SetValue(this, currentValue);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        public bool DoesLevelRankExist(string type)
+        {
+            foreach (var property in GetType().GetProperties())
+            {
+                if (property.Name.ToLower() == type.ToLower())
+                    return true;
+            }
+            return false;
+        }
+
+
+
+        /// <summary>
         /// Get the total number of skill points this player has allocated.
         /// </summary>
         /// <returns></returns>
@@ -81,11 +121,14 @@ namespace Mirror.Levels
                 if (LevelSystem.Levels[i] == null)
                     continue;
 
-                if (LevelSystem.Levels[i].Level % 3 == 0)
-                    availablePoints += 1;
+                if (LevelSystem.Levels[i].Level == 0)
+                    continue;
 
                 if (LevelSystem.Levels[i].Level >= currentLevel)
                     break;
+
+                if (LevelSystem.Levels[i].Level % 3 == 0)
+                    availablePoints += 1;
             }
 
             return availablePoints;
@@ -101,6 +144,24 @@ namespace Mirror.Levels
             int totalAllocated = GetRankPointsAllocated();
 
             return totalPoints - totalAllocated;
+        }
+
+        /// <summary>
+        /// Update the Level Ranks with this current version.
+        /// </summary>
+        /// <param name="account"></param>
+        public void UpdateLevelRanks(Client client)
+        {
+            if (!client.HasData("Mirror_Account"))
+                return;
+
+            if (!(client.GetData("Mirror_Account") is Account account))
+                return;
+
+            account.LevelRanks = JsonConvert.SerializeObject(this);
+            account.Update();
+
+            LevelSystem.UpdatePlayerExperienceLocally(client);
         }
     }
 
@@ -242,6 +303,7 @@ namespace Mirror.Levels
             int currentLvl = GetCurrentLevel(currentXP);
             int unallocatedPoints = levelRanks.GetUnallocatedRankPointCount(currentXP);
 
+            client.TriggerEvent("eventRecieveRanks", account.LevelRanks);
             client.TriggerEvent("UpdateExperienceHUD", lastXP, currentXP, nextLevelXP, currentLvl, unallocatedPoints);
         }
 

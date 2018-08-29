@@ -1,44 +1,45 @@
 ﻿using GTANetworkAPI;
 using Mirror.Events;
+using Mirror.Events.ActualEvents;
 using Mirror.Levels;
 using Mirror.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Skills.Strength
+namespace Mirror.Skills.Intelligence
 {
-    // Increased Health
-    public class Brute : Script
+    // Requires : Script to hook into the event at runtime.
+    public class Regenerate : Script
     {
-        public Brute()
+        public Regenerate()
         {
             RankEvents.PassiveEvent.PassiveEventTrigger += CheckPassive;
         }
 
-        public void CheckPassive(object source, Client client)
+        private void CheckPassive(object source, Client client)
         {
             if (!(client.GetData("Mirror_Account") is Account account))
                 return;
 
             LevelRanks levelRanks = account.GetLevelRanks();
 
-            if (levelRanks.Brute <= 0)
+            if (levelRanks.Regenerate <= 0)
                 return;
 
             LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
 
             if (!levelRankCooldowns.IsRegenerateReady)
             {
-                levelRankCooldowns.UpdateCooldownTime(client, "IsBruteReady", 60);
+                levelRankCooldowns.UpdateCooldownTime(client, "IsRegenerateReady", 30);
                 return;
             }
 
-            if (client.Armor > levelRanks.Brute)
+            if (client.Health >= 100)
                 return;
 
-            client.SendNotification("~r~Brute~n~~w~You feel your skin tighten.");
-            client.Armor = levelRanks.Brute;
+            client.SendNotification("~r~Regenerate~n~~w~You feel a bit healthier.");
+            client.Health += levelRanks.Regenerate;
         }
     }
 }
