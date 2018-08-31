@@ -133,6 +133,8 @@ namespace Mirror.Models
             Appearance appearance = Database.GetById<Appearance>(UserID);
             appearance.Update();
 
+            client.TriggerEvent("eventRecieveRanks", LevelRanks);
+
             Database.UpdateData(this);
         }
 

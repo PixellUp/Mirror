@@ -90,8 +90,6 @@ namespace Mirror.Levels
             return false;
         }
 
-
-
         /// <summary>
         /// Get the total number of skill points this player has allocated.
         /// </summary>
