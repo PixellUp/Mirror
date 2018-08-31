@@ -67,7 +67,7 @@ namespace Mirror.Levels
 
             foreach (var property in GetType().GetProperties())
             {
-                if (property.Name.ToLower() == type.ToLower())
+                if (property.Name.ToLower().Contains(type.ToLower()))
                 {
                     int currentValue = Convert.ToInt32(property.GetValue(this, null));
                     currentValue += 1;
@@ -75,7 +75,6 @@ namespace Mirror.Levels
                     return true;
                 }
             }
-
             return false;
         }
 

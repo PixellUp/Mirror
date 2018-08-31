@@ -65,6 +65,9 @@ namespace Mirror.Handler
                 case "Pickup_Item_Inventory":
                     Events.InventoryEvents.PickupItem(client, arguments);
                     return;
+                case "Allocate_Rank_Point":
+                    Events.RankEvents.AllocateRankPoint(client, arguments);
+                    return;
             }
             
         }
