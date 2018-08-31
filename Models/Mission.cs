@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Levels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,10 +40,10 @@ namespace Mirror.Models
                 {
                     NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]).TriggerEvent("eventCreatePlayerNotification", $"Objective Complete");
                     NAPI.ClientEvent.TriggerClientEvent(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), "MissionInfo", "Mission_Active_Objectives", "");
+                    LevelSystem.AddPlayerExperience(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), clearedObjective.Experience);
                 }
                 return true;
             }
-
 
             string activeObjectives = JsonConvert.SerializeObject(GetObjectives());
             for (int i = 0; i < ActivePlayers.Count; i++)
@@ -50,6 +51,8 @@ namespace Mirror.Models
                 NAPI.ClientEvent.TriggerClientEvent(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), "MissionInfo", "Mission_Active_Objectives", activeObjectives);
                 NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]).TriggerEvent("eventCreatePlayerNotification", $"Objective Complete");
 
+
+                LevelSystem.AddPlayerExperience(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), clearedObjective.Experience);
             }
 
             return true;
@@ -57,20 +60,34 @@ namespace Mirror.Models
 
         public void CleanupMission()
         {
+            if (ActivePlayers.Count <= 0)
+            {
+                Objective[] activeObjectives = Objectives.ToArray();
+
+
+                for (int i = 0; i < activeObjectives.Length; i++)
+                {
+                    if (activeObjectives[i].RequiredVehicles.Length <= 0)
+                        continue;
+
+                    for (int v = 0; v < activeObjectives[i].RequiredVehicles.Length; v++)
+                    {
+                        if (NAPI.Entity.DoesEntityExist(activeObjectives[i].RequiredVehicles[v]))
+                            NAPI.Entity.DeleteEntity(activeObjectives[i].RequiredVehicles[v]);
+                    }
+                }
+            }
+
             if (FinishedObjectives.Count <= 0)
                 return;
 
             FinishedObjectives.ForEach((objective) =>
             {
-                // Delete Vehicles
-                if (objective.RequiredVehicles.Length > 0)
+                for (int i = 0; i < objective.RequiredVehicles.Length; i++)
                 {
-                    for (int i = 0; i < objective.RequiredVehicles.Length; i++)
-                    {
-                        NAPI.Entity.DeleteEntity(objective.RequiredVehicles[i]);
-                    }
+                    NAPI.Entity.DeleteEntity(objective.RequiredVehicles[i]);
                 }
-                       
+
             });
         }
 

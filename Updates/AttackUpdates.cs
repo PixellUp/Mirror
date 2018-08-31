@@ -19,8 +19,6 @@ namespace Mirror.Updates
                 return;
 
             ticks = 0;
-
-            Console.WriteLine("Tick");
         }
     }
 }

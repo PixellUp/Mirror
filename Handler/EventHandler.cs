@@ -68,6 +68,10 @@ namespace Mirror.Handler
                 case "Allocate_Rank_Point":
                     Events.RankEvents.AllocateRankPoint(client, arguments);
                     return;
+                // Job Events
+                case "Start_Job":
+                    Events.JobEvents.StartJob(client, arguments);
+                    return;
             }
             
         }

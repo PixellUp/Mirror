@@ -61,13 +61,6 @@ namespace Mirror.Jobs
             jobPositions.Clear();
         }
 
-        [Command("addjobpos", GreedyArg = true)]
-        public void CMDAddJobPOS(Client client, string type = "Capture")
-        {
-            jobPositions.Add(client.Position, type);
-            client.SendChatMessage("Added...");
-        }
-
         [Command("addplayer")]
         public void CmdAddPlayerToMission(Client client, string playerName)
         {

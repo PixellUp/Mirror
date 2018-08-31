@@ -107,14 +107,17 @@ namespace Mirror.Models
             if (!NewAccount)
                 return;
 
+            client.TriggerEvent("eventFreeze", client.Handle, true);
             Task task = new Task(() =>
             {
                 client.SendChatMessage("Please wait... setting up appearance menu for your new account.");
                 System.Threading.Thread.Sleep(2000);
                 client.TriggerEvent("OpenFacialMenu");
+                
             });
             task.Start();
-            
+
+            client.TriggerEvent("eventFreeze", client.Handle, false);
             NewAccount = false;
             Database.UpdateData(this);
         }
@@ -171,6 +174,5 @@ namespace Mirror.Models
             LevelRanks = JsonConvert.SerializeObject(levelRanks);
             Update();
         }
-
     }
 }

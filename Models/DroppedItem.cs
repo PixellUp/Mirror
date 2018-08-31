@@ -28,26 +28,28 @@ namespace Mirror.Models
             {
                 case "medkit":
                     SpawnedObject = NAPI.Object.CreateObject(3792764623, Position, new Vector3(), 255);
-                    return;
+                    break;
                 case "coffee":
                     SpawnedObject = NAPI.Object.CreateObject(3696781377, Position, new Vector3(), 255);
-                    return;
+                    break;
                 case "burger":
                     SpawnedObject = NAPI.Object.CreateObject(4098414302, Position, new Vector3(), 255);
-                    return;
+                    break;
                 case "pills":
                     SpawnedObject = NAPI.Object.CreateObject(4126380171, Position, new Vector3(), 255);
-                    return;
+                    break;
                 case "material":
                     SpawnedObject = NAPI.Object.CreateObject(4126380171, Position, new Vector3(), 255);
-                    return;
+                    break;
                 case "ammo":
                     SpawnedObject = NAPI.Object.CreateObject(2872701481, Position, new Vector3(), 255);
-                    return;
+                    break;
                 default:
                     SpawnedObject = NAPI.Object.CreateObject(3151838160, Position, new Vector3(), 255);
-                    return;
+                    break;
             }
+
+            NAPI.Data.SetEntitySharedData(SpawnedObject, "Dropped_Item", Name);
         }
 
         public void PickupItem()

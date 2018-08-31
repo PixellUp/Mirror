@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,6 +29,13 @@ namespace Mirror.Handler
             foreach (FemaleValidTopConfiguration top in FemaleValidTopConfiguration.FemaleValidTops)
             {
                 client.TriggerEvent("GetFemaleTorso", top.ID, top.Torso, top.Undershirt, top.Top);
+            }
+
+            Console.WriteLine("" + JobInfo.JobInformation.Count);
+
+            foreach (JobInfo jobInfo in JobInfo.JobInformation)
+            {
+                client.TriggerEvent("eventAddJobInformation", JsonConvert.SerializeObject(jobInfo));
             }
         }
     }
