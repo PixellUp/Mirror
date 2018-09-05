@@ -45,7 +45,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~b~Calculated~n~~w~First shot will hit with 100% accuracy.");
+            client.SendChatMessage("~b~Calculated ~w~First shot will hit with 100% accuracy.");
         }
     }
 }

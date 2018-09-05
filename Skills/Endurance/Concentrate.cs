@@ -45,7 +45,7 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~g~Concentrate~n~~w~Your next shot will do double damage.");
+            client.SendChatMessage("~g~Concentrate ~w~Your next shot will do double damage.");
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~b~Medicine~n~~w~You can heal someone else or heal yourself for additional again.");
+            client.SendChatMessage("~b~Medicine ~w~You can heal someone else or heal yourself for additional again.");
         }
     }
 }

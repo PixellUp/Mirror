@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Brains~n~~w~Your next complete objective grants additional currency.");
+            client.SendChatMessage("~o~Brains ~w~Your next complete objective grants additional currency.");
         }
     }
 }

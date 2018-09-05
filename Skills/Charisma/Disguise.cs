@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Disguise~n~~w~You can swap to a new outfit again.");
+            client.SendChatMessage("~o~Disguise ~w~You can swap to a new outfit again.");
         }
     }
 }

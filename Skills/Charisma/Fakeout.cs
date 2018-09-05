@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Fakeout~n~~w~You are able to skip an objective completely again.");
+            client.SendChatMessage("~o~Fakeout ~w~You are able to skip an objective completely again.");
         }
     }
 }

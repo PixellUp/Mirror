@@ -15,10 +15,20 @@ namespace Mirror.Events
         /// </summary>
         /// <param name="client"></param>
         /// <param name="arguments"></param>
-        public static void AttackPlayer(Client client, params object[] arguments)
+        public static void AttackPlayer(Client client, params object[] args)
         {
-            Client target = arguments[1] as Client;
+            if (args[1] == null)
+                return;
 
+            Client target = args[1] as Client;
+            client.SetData("Mirror_Attack", target);
+
+
+
+
+
+
+            /*
             if (client.Position.DistanceTo2D(target.Position) > 5)
                 return;
 
@@ -46,8 +56,12 @@ namespace Mirror.Events
 
             target.TriggerEvent("eventLastDamage", 0);
             client.TriggerEvent("eventTargetDamage", 0);
+            */
         }
 
-
+        public static void CancelAttack(Client client)
+        {
+            client.SetData("Mirror_Attack", null);
+        }
     }
 }

@@ -106,5 +106,27 @@ namespace Mirror.Commands
         {
             Events.RankEvents.AllocateRankPoint(client, "", type);
         }
+
+        [Command("tp")]
+        public void cmdTP(Client client, string trg)
+        {
+            Client target = NAPI.Player.GetPlayerFromName(trg);
+
+            if (target == null)
+                return;
+
+            client.Position = target.Position.Around(5);
+        }
+
+        [Command("weapon")]
+        public void CmdWeapon(Client client, string weapon)
+        {
+            client.RemoveAllWeapons();
+
+            WeaponHash hash = NAPI.Util.WeaponNameToModel(weapon);
+            NAPI.Player.GivePlayerWeapon(client, hash, 25);
+
+            
+        }
     }
 }

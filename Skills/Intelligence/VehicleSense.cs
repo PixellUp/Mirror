@@ -45,7 +45,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~b~VehicleSense~n~~w~You're able to see your owned vehicles and moving vehicles again.");
+            client.SendChatMessage("~b~VehicleSense ~w~You're able to see your owned vehicles and moving vehicles again.");
         }
     }
 }

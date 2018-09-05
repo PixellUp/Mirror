@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Attention~n~~w~You are able to draw the attention of everyone around you.");
+            client.SendChatMessage("~o~Attention ~w~You are able to draw the attention of everyone around you.");
         }
     }
 }

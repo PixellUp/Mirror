@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Hidden~n~~w~You are able to hide your nametag from others for a period of time.");
+            client.SendChatMessage("~o~Hidden ~w~You are able to hide your nametag from others for a period of time.");
         }
     }
 }

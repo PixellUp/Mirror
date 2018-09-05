@@ -39,7 +39,7 @@ namespace Mirror.Skills.Intelligence
             if (client.Health >= 100)
                 return;
 
-            client.SendNotification("~b~Regenerate~n~~w~You feel a bit healthier.");
+            client.SendChatMessage("~b~Regenerate ~w~You feel a bit healthier.");
             client.Health += levelRanks.Regenerate;
         }
     }

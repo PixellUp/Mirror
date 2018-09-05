@@ -45,7 +45,7 @@ namespace Mirror.Skills.Strength
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~r~Downer~n~~w~You have an extended down time available.");
+            client.SendChatMessage("~r~Downer ~w~You have an extended down time available.");
         }
     }
 }

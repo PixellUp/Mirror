@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Agenda~n~~w~You can use a fake identity again.");
+            client.SendChatMessage("~o~Agenda ~w~You can use a fake identity again.");
         }
     }
 }

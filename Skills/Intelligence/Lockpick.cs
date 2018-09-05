@@ -45,7 +45,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~b~Lockpick~n~~w~Your next lockpick will have a higher chance to succeed.");
+            client.SendChatMessage("~b~Lockpick ~w~Your next lockpick will have a higher chance to succeed.");
         }
     }
 }

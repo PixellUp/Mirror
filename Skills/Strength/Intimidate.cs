@@ -45,7 +45,7 @@ namespace Mirror.Skills.Strength
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~r~Intimidate~n~~w~You're able to intimidate others again.");
+            client.SendChatMessage("~r~Intimidate ~w~You're able to intimidate others again.");
         }
     }
 }

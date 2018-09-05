@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Leadership~n~~w~You can increase your teammates ability scores again.");
+            client.SendChatMessage("~o~Leadership ~w~You can increase your teammates ability scores again.");
         }
     }
 }

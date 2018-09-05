@@ -63,6 +63,8 @@ namespace Mirror.Models
             client.SetData("Mirror_Account", this);
             client.Name = Name;
 
+            Console.WriteLine($"{client.Name} has logged in.");
+
             Vector3 position = JsonConvert.DeserializeObject<Vector3>(LastPosition);
             NAPI.Entity.SetEntityPosition(client, position);
 

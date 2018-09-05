@@ -45,7 +45,7 @@ namespace Mirror.Skills.Strength
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~r~Drag~n~~w~You're able to drag someone again.");
+            client.SendChatMessage("~r~Drag ~w~You're able to drag someone again.");
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~b~SickSense~n~~w~You can check the locations of all deaths in the last five minutes again.");
+            client.SendChatMessage("~b~SickSense ~w~You can check the locations of all deaths in the last five minutes again.");
         }
     }
 }

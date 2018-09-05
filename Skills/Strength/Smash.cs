@@ -45,7 +45,7 @@ namespace Mirror.Skills.Strength
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~r~Smash~n~~w~You're able to break a window again.");
+            client.SendChatMessage("~r~Smash ~w~You're able to break a window again.");
         }
     }
 }

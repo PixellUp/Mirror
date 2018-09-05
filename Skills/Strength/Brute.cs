@@ -50,7 +50,7 @@ namespace Mirror.Skills.Strength
             if (!client.GetData(VariableName + Notification))
             {
                 client.SetData(VariableName + Notification, true);
-                client.SendNotification("~r~Brute~n~~w~You feel your skin tighten.");
+                client.SendChatMessage("~r~Brute ~w~You feel your skin tighten.");
                 client.Armor = levelRanks.Brute;
             }
         }

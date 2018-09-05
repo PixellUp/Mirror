@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Commands;
 using Mirror.Models;
 using Newtonsoft.Json;
 using System;
@@ -12,14 +13,16 @@ namespace Mirror.Handler
         [ServerEvent(Event.PlayerSpawn)]
         public void PlayerSpawnHandler(Client client)
         {
+            Console.WriteLine($"{client.Name} has joined the server.");
+
             if (client.HasData("Mirror_Account"))
                 return;
 
-            client.Position = new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ);
-            client.TriggerEvent("eventFreeze", client.Handle, true);
+            client.Position = new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ + 0.2);
+            //client.TriggerEvent("eventFreeze", client.Handle, true);
             client.TriggerEvent("eventDisable", true);
-            client.Dimension = 999;
-            client.Transparency = 0;
+            client.Dimension = 0;
+            client.Transparency = 255;
 
             foreach (MaleValidTopConfiguration top in MaleValidTopConfiguration.MaleValidTops)
             {
@@ -31,12 +34,18 @@ namespace Mirror.Handler
                 client.TriggerEvent("GetFemaleTorso", top.ID, top.Torso, top.Undershirt, top.Top);
             }
 
-            Console.WriteLine("" + JobInfo.JobInformation.Count);
-
             foreach (JobInfo jobInfo in JobInfo.JobInformation)
             {
                 client.TriggerEvent("eventAddJobInformation", JsonConvert.SerializeObject(jobInfo));
             }
+
+            if (client.Name.ToLower() == "stuyk_test")
+            {
+                Login.ForceLogin(client, client.Name);
+            }
+
+            if (client.Name.ToLower() == "john_john")
+                Login.ForceLogin(client, "stuyk");
         }
     }
 }

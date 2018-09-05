@@ -45,7 +45,7 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~g~High Jump~n~~w~Your next jump will be much higher.");
+            client.SendChatMessage("~g~High Jump ~w~Your next jump will be much higher.");
         }
     }
 }

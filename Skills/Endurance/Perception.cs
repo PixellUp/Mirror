@@ -45,7 +45,7 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~g~Perception~n~~w~You can identify others from further away again.");
+            client.SendChatMessage("~g~Perception ~w~You can identify others from further away again.");
         }
     }
 }

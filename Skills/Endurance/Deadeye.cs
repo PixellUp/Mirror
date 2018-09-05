@@ -45,7 +45,7 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~g~Deadeye~n~~w~You have increased accuracy on your next shot.");
+            client.SendChatMessage("~g~Deadeye ~w~You have increased accuracy on your next shot.");
         }
     }
 }

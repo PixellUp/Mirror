@@ -58,7 +58,7 @@ namespace Mirror.Skills.Intelligence
                 // If the electric vehicle has less than 100 power. Add some power based on ranks put into Electric.
                 levelRankCooldowns.IsElectricReady = false;
                 electricVehicle.Power += levelRanks.Electric;
-                client.SendNotification("~b~Electric~n~~w~This vehicle has recieved a little more power.");
+                client.SendChatMessage("~b~Electric ~w~This vehicle has recieved a little more power.");
             }
 
             // Has the notification been sent.
@@ -66,7 +66,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~b~Electric~n~~w~You will recharge a vehicle slightly when you enter it.");
+            client.SendChatMessage("~b~Electric ~w~You will recharge a vehicle slightly when you enter it.");
         }
     }
 }

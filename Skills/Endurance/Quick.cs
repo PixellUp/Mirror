@@ -45,7 +45,7 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~g~Quick~n~~w~You have increased dodge chance for your next hit.");
+            client.SendChatMessage("~g~Quick ~w~You have increased dodge chance for your next hit.");
         }
     }
 }

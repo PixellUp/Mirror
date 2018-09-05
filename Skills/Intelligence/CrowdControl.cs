@@ -45,7 +45,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~b~CrowdControl~n~~w~You are able to disable a person or vehicle temporarily again.");
+            client.SendChatMessage("~b~CrowdControl ~w~You are able to disable a person or vehicle temporarily again.");
         }
     }
 }

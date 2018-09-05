@@ -41,6 +41,9 @@ namespace Mirror.Handler
                 case "AttackPlayer":
                     Events.PlayerEvents.AttackPlayer(client, arguments);
                     return;
+                case "CancelAttack":
+                    Events.PlayerEvents.CancelAttack(client);
+                    return;
                 // Appearance Events
                 case "PushAppearanceChanges":
                     Events.AppearanceEvents.PushAppearanceChanges(client, arguments);

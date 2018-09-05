@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Persuasion~n~~w~Next time someone questions you, you'll sound very persuasive.");
+            client.SendChatMessage("~o~Persuasion ~w~Next time someone questions you, you'll sound very persuasive.");
         }
     }
 }

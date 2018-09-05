@@ -45,7 +45,7 @@ namespace Mirror.Skills.Charisma
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendNotification("~o~Transparent~n~~w~You are able to hide from sight completely again.");
+            client.SendChatMessage("~o~Transparent ~w~You are able to hide from sight completely again.");
         }
     }
 }

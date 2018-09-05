@@ -50,5 +50,26 @@ namespace Mirror.Commands
             // Attach the account to the player under the Dataset of "Mirror_Account";
             account.Attach(client);
         }
+
+        public static void ForceLogin(Client client, string username)
+        {
+            Account account = Account.RetrieveAccount(username);
+
+            if (account == null)
+            {
+                client.Kick(Exceptions.LoginNullException);
+                return;
+            }
+
+            if (account.Banned)
+            {
+                client.Kick(Exceptions.LoginAccountIsBanned);
+                return;
+            }
+
+            client.SendChatMessage(Exceptions.LoginSuccess);
+            // Attach the account to the player under the Dataset of "Mirror_Account";
+            account.Attach(client);
+        }
     }
 }
