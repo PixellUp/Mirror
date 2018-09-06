@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Commands;
+using Mirror.Events;
 using Mirror.Models;
 using Newtonsoft.Json;
 using System;
@@ -41,11 +42,11 @@ namespace Mirror.Handler
 
             if (client.Name.ToLower() == "stuyk_test")
             {
-                Login.ForceLogin(client, client.Name);
+                LoginEvents.ForceLogin(client, client.Name);
             }
 
-            if (client.Name.ToLower() == "john_john")
-                Login.ForceLogin(client, "stuyk");
+            //if (client.Name.ToLower() == "john_john")
+                //Login.ForceLogin(client, "stuyk");
         }
     }
 }

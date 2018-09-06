@@ -40,6 +40,18 @@ namespace Mirror.Models
         public static readonly int MG = 2;
     }
 
+    public static class WeaponRange
+    {
+        public static readonly int Unarmed = 2;
+        public static readonly int Pistol50 = 5;
+        public static readonly int Smg = 10;
+        public static readonly int HeavySniper = 80;
+        public static readonly int MachinePistol = 4;
+        public static readonly int DoubleAction = 0;
+        public static readonly int PumpShotgun = 2;
+        public static readonly int MG = 2;
+    }
+
     public static class Weapons
     {
         public static int GetWeaponTick(string weaponName)

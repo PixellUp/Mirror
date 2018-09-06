@@ -18,6 +18,13 @@ namespace Mirror.Handler
             
             switch(eventName)
             {
+                // Login System
+                case "Login":
+                    Events.LoginEvents.Login(client, arguments);
+                    return;
+                case "Register":
+                    Events.LoginEvents.Register(client, arguments);
+                    return;
                 // Car Events
                 case "ToggleEngine":
                     Events.CarEvents.ToggleEngine(client, arguments);
