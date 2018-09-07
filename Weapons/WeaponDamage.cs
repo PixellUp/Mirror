@@ -35,9 +35,21 @@ namespace Mirror
             if (weaponName == "")
                 return;
 
+            int WeaponRange = Weapons.GetWeaponRange(weaponName);
+            float DistanceBetweenTargets = client.Position.DistanceTo(target.Position);
+
+            // If it's too far there's no point in rolling.
+            if (DistanceBetweenTargets > WeaponRange + 20)
+            {
+                return;
+            }
+
+            // Ternary Op - If the distance is greater than the weapon range return the distance between the targets. If they're in range set the penalty to zero.
+            int RangePenalty = (DistanceBetweenTargets > WeaponRange) ? Convert.ToInt32((DistanceBetweenTargets - WeaponRange)) : 0;
+
             if (weaponName == "Unarmed")
             {
-                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.strength))
+                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.strength, clientModifier: RangePenalty))
                 {
                     target.TriggerEvent("eventLastDamage", 0);
                     client.TriggerEvent("eventTargetDamage", 0);
@@ -85,7 +97,7 @@ namespace Mirror
             // Check if the player beats the other's score.
             if (!skipCheck)
             {
-                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.endurance))
+                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.endurance, clientModifier: RangePenalty))
                 {
                     target.TriggerEvent("eventLastDamage", 0);
                     client.TriggerEvent("eventTargetDamage", 0);

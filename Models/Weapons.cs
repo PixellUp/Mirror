@@ -42,14 +42,14 @@ namespace Mirror.Models
 
     public static class WeaponRange
     {
-        public static readonly int Unarmed = 2;
-        public static readonly int Pistol50 = 5;
-        public static readonly int Smg = 10;
+        public static readonly int Unarmed = 5;
+        public static readonly int Pistol50 = 15;
+        public static readonly int Smg = 25;
         public static readonly int HeavySniper = 80;
-        public static readonly int MachinePistol = 4;
-        public static readonly int DoubleAction = 0;
-        public static readonly int PumpShotgun = 2;
-        public static readonly int MG = 2;
+        public static readonly int MachinePistol = 12;
+        public static readonly int DoubleAction = 12;
+        public static readonly int PumpShotgun = 20;
+        public static readonly int MG = 25;
     }
 
     public static class Weapons
@@ -67,6 +67,21 @@ namespace Mirror.Models
             }
 
             return tick;
+        }
+
+        public static int GetWeaponRange(string weaponName)
+        {
+            int range = 10;
+
+            Type obj = typeof(WeaponRange);
+
+            foreach (var property in obj.GetFields())
+            {
+                if (property.Name.ToLower() == weaponName.ToLower())
+                    range = Convert.ToInt32(property.GetValue(obj));
+            }
+
+            return range;
         }
 
         public static bool IsWeaponTickReady(string weaponName, int currentTick)

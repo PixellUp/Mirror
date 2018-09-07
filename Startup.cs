@@ -13,6 +13,7 @@ namespace Mirror
         {
             Settings.Settings.Initialize();
             Levels.LevelSystem.InitializeLevels(100);
+            TransactionProccess.Initialize();
             ResetLogins();
 
             MaleValidTopConfiguration.Initialize();

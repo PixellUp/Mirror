@@ -22,6 +22,7 @@ namespace Mirror.Models
         public bool Banned { get; set; } = false;
         public bool IsLoggedIn { get; set; } = false;
         public bool NewAccount { get; set; } = true;
+        public int Money { get; set; } = 0;
         public string Inventory { get; set; } = "";
         public string LastPosition { get; set; } = JsonConvert.SerializeObject(new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ));
         public int CurrentExperience { get; set; } = 200;
