@@ -3,9 +3,12 @@ using Mirror.Events;
 using Mirror.Levels;
 using Mirror.Models;
 using Mirror.Settings;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using Mirror.Handler;
 
 namespace Mirror.Skills.Intelligence
 {
@@ -46,6 +49,48 @@ namespace Mirror.Skills.Intelligence
 
             client.SetData(VariableName + Notification, true);
             client.SendChatMessage("~b~Medicine ~w~You can heal someone else or heal yourself for additional again.");
+        }
+
+        public static void Use (Client client, Client target)
+        {
+            Account account = client.GetData("Mirror_Account");
+            LevelRanks ranks = account.GetLevelRanks();
+            LevelRankCooldowns cooldowns = LevelRankCooldowns.GetCooldowns(client);
+            string itemToBurn = "Medkit";
+
+            if (client.Position.DistanceTo2D(target.Position) > 5)
+                return;
+
+            if (account.IsDead)
+                return;
+
+            // They don't have Medicine.
+            if (ranks.Medicine <= 0)
+                return;
+
+            if (!cooldowns.IsMedicineReady)
+                return;
+
+            if (!account.Inventory.ToLower().Contains(itemToBurn.ToLower()))
+            {
+                client.SendChatMessage("~r~You don't have a Medkit to heal the other player.");
+                return;
+            }
+
+            bool didItBurn = InventoryHandler.BurnItemFromInventory(client, itemToBurn);
+
+            if (!didItBurn)
+                return;
+
+            cooldowns.IsMedicineReady = false;
+            cooldowns.NotifyClientsideOfChange(client);
+
+            // Okay it burned let's heal the other player.
+            Account targetAccount = target.GetData("Mirror_Account");
+            target.Health += (25 + ranks.Medicine * 2); // Heal 25 + Ranks * 2. Max heal is around 91 at 33 points.
+            targetAccount.SetPlayerRevived(target);
+            target.StopAnimation();
+            Account.PlayerUpdateEvent.Trigger(target, targetAccount);
         }
     }
 }

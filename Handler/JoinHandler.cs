@@ -2,6 +2,7 @@
 using Mirror.Commands;
 using Mirror.Events;
 using Mirror.Models;
+using Mirror.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,17 @@ namespace Mirror.Handler
         [ServerEvent(Event.PlayerSpawn)]
         public void PlayerSpawnHandler(Client client)
         {
-            Console.WriteLine($"{client.Name} has joined the server.");
-
-            if (client.HasData("Mirror_Account"))
+            if (AccountUtilities.IsAccountReady(client))
                 return;
 
-            client.Position = new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ + 0.2);
-            //client.TriggerEvent("eventFreeze", client.Handle, true);
-            client.TriggerEvent("eventDisable", true);
-            client.Dimension = 0;
-            client.Transparency = 255;
+            Console.WriteLine($"{client.Name} has joined the server.");
+
+            Utilities.FreezePlayerAccount(client, true);
+            Utilities.DisablePlayerAccount(client, true);
+
+            client.Position = new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ + 100);
+            client.Dimension = Convert.ToUInt32(new Random().Next(1, 999));
+            client.Transparency = 0;
 
             foreach (MaleValidTopConfiguration top in MaleValidTopConfiguration.MaleValidTops)
             {
@@ -45,8 +47,8 @@ namespace Mirror.Handler
                 LoginEvents.ForceLogin(client, client.Name);
             }
 
-            if (client.Name.ToLower() == "john_john")
-                LoginEvents.ForceLogin(client, "stuyk");
+            if (client.Name.ToLower() == "john_john") { }
+                //LoginEvents.ForceLogin(client, "stuyk");
         }
     }
 }

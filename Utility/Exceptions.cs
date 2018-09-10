@@ -22,6 +22,9 @@ namespace Mirror.Utility
         public const string LoginLoadedAppearance = Prefix + "Loaded appearance...";
         public const string LoginLoadedSkills = Prefix + "Loaded skills...";
 
+        public const string MoneyUserNotFound = Prefix + "User was not found...";
+        public const string MoneyNotEnoughBalance = Prefix + "Not enough balance to transfer.";
+
         public const string UtilityMoneyLoaded = Prefix + "Loaded existing monetary system.";
         public const string UtilityMoneyEstablished = Prefix + "Created monetary system.";
     }

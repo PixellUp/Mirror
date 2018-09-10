@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Events;
+using Mirror.Handler;
 using Mirror.Levels;
 using Mirror.Models;
 using Mirror.Skills;
@@ -80,6 +81,12 @@ namespace Mirror
             LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
             LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
 
+            if (account.IsDead)
+            {
+                PlayerEvents.CancelAttack(client);
+                return;
+            }
+
             bool skipCheck = false;
 
             // Calculated Check
@@ -131,13 +138,26 @@ namespace Mirror
                 }
             }
 
-            target.Health -= amountOfDamage;
+            if (target.Health - amountOfDamage <= 0)
+            {
+                target.Health = 1;
+            } else {
+                target.Health -= amountOfDamage;
+            }
+                
 
-            if (target.Health <= 0)
-                PlayerEvents.CancelAttack(client);
-
+            // Update Health
+            Account targetAccount = target.GetData("Mirror_Account");
+            Account.PlayerUpdateEvent.Trigger(target, targetAccount);
+            
             target.TriggerEvent("eventLastDamage", amountOfDamage);
             client.TriggerEvent("eventTargetDamage", amountOfDamage);
+
+            if (target.Health > 2)
+                return;
+
+            PlayerEvents.CancelAttack(client);
+            DeathHandler.DeathEvent.Trigger(target, client); // Raise Death Event
         }
     }
 }

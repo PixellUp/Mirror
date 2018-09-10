@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -58,7 +59,7 @@ namespace Mirror.Models
                 client.SetData(variableName, DateTime.Now.AddSeconds(secondsOnCooldown));
 
             DateTime clientTime = client.GetData(variableName);
-
+            
             if (DateTime.Compare(DateTime.Now, clientTime) <= 0)
                 return false;
 
@@ -68,11 +69,17 @@ namespace Mirror.Models
                 if (property.Name.ToLower() == variableName.ToLower())
                 {
                     property.SetValue(this, true);
+                    NotifyClientsideOfChange(client);
                     break;
                 }
                     
             }
             return true;
+        }
+
+        public void NotifyClientsideOfChange(Client client)
+        {
+            client.TriggerEvent("eventRecieveCooldowns", JsonConvert.SerializeObject(this));
         }
     }
 }

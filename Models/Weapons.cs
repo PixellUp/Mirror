@@ -14,6 +14,7 @@ namespace Mirror.Models
         public static readonly int DoubleAction = 6;
         public static readonly int PumpShotgun = 8;
         public static readonly int MG = 1;
+        public static readonly int MicroSMG = 1;
     }
 
     public static class WeaponDice
@@ -25,7 +26,8 @@ namespace Mirror.Models
         public static readonly int MachinePistol = 2;
         public static readonly int DoubleAction = 10;
         public static readonly int PumpShotgun = 15;
-        public static readonly int MG = 2;
+        public static readonly int MG = 4;
+        public static readonly int MicroSMG = 2;
     }
 
     public static class WeaponShotsFired
@@ -38,6 +40,7 @@ namespace Mirror.Models
         public static readonly int DoubleAction = 0;
         public static readonly int PumpShotgun = 2;
         public static readonly int MG = 2;
+        public static readonly int MicroSMG = 3;
     }
 
     public static class WeaponRange
@@ -50,6 +53,7 @@ namespace Mirror.Models
         public static readonly int DoubleAction = 12;
         public static readonly int PumpShotgun = 20;
         public static readonly int MG = 25;
+        public static readonly int MicroSMG = 10;
     }
 
     public static class Weapons

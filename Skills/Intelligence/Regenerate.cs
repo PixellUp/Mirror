@@ -36,7 +36,7 @@ namespace Mirror.Skills.Intelligence
 
             levelRankCooldowns.IsRegenerateReady = false;
 
-            if (client.Health >= 100)
+            if (client.Health >= 95)
                 return;
 
             client.SendChatMessage("~b~Regenerate ~w~You feel a bit healthier.");

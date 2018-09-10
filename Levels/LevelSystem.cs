@@ -79,6 +79,11 @@ namespace Mirror.Levels
         }
 
 
+        /// <summary>
+        /// Check if the LevelRank exists in the class.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public bool DoesLevelRankExist(string type)
         {
             foreach (var property in GetType().GetProperties())
@@ -145,22 +150,10 @@ namespace Mirror.Levels
         }
 
         /// <summary>
-        /// Update the Level Ranks with this current version.
+        /// Update the Level Ranks with this current version of the class.
         /// </summary>
         /// <param name="account"></param>
-        public void UpdateLevelRanks(Client client)
-        {
-            if (!client.HasData("Mirror_Account"))
-                return;
-
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
-
-            account.LevelRanks = JsonConvert.SerializeObject(this);
-            account.Update();
-
-            LevelSystem.UpdatePlayerExperienceLocally(client);
-        }
+        public void UpdateLevelRanks(Client client) => AccountUtilities.UpdateLevelRanks(client, this);
     }
 
     public class LevelInfo
@@ -279,49 +272,6 @@ namespace Mirror.Levels
                     return Levels[i].TotalExperience;
             }
             return 0;
-        }
-
-        /// <summary>
-        /// Updates the HUD locally for the player's skills.
-        /// </summary>
-        /// <param name="client"></param>
-        public static void UpdatePlayerExperienceLocally(Client client)
-        {
-            if (!client.HasData("Mirror_Account"))
-                return;
-
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
-
-            LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
-
-            int currentXP = account.CurrentExperience;
-            int lastXP = GetLastLevelExperience(currentXP);
-            int nextLevelXP = GetNextLevelExperience(currentXP);
-            int currentLvl = GetCurrentLevel(currentXP);
-            int unallocatedPoints = levelRanks.GetUnallocatedRankPointCount(currentXP);
-
-            client.TriggerEvent("eventRecieveRanks", account.LevelRanks);
-            client.TriggerEvent("UpdateExperienceHUD", lastXP, currentXP, nextLevelXP, currentLvl, unallocatedPoints);
-        }
-
-        /// <summary>
-        /// Adds experience to the player and properly updates everything else necessary.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="amount"></param>
-        public static void AddPlayerExperience(Client client, int amount)
-        {
-            if (!client.HasData("Mirror_Account"))
-                return;
-
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
-
-            account.CurrentExperience += amount;
-            account.Update();
-
-            UpdatePlayerExperienceLocally(client);
         }
     }
 }

@@ -38,9 +38,10 @@ namespace Mirror.Models
 
                 for (int i = 0; i < ActivePlayers.Count; i++)
                 {
-                    NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]).TriggerEvent("eventCreatePlayerNotification", $"Objective Complete");
-                    NAPI.ClientEvent.TriggerClientEvent(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), "MissionInfo", "Mission_Active_Objectives", "");
-                    LevelSystem.AddPlayerExperience(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), clearedObjective.Experience);
+                    Client client = NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]);
+                    client.TriggerEvent("MissionInfo", "Mission_Active_Objectives", "");
+                    client.TriggerEvent("eventCreatePlayerNotification", $"All Objectives Complete");
+                    AccountUtilities.AddExperience(client, clearedObjective.Experience);
                 }
                 return true;
             }
@@ -48,11 +49,10 @@ namespace Mirror.Models
             string activeObjectives = JsonConvert.SerializeObject(GetObjectives());
             for (int i = 0; i < ActivePlayers.Count; i++)
             {
-                NAPI.ClientEvent.TriggerClientEvent(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), "MissionInfo", "Mission_Active_Objectives", activeObjectives);
-                NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]).TriggerEvent("eventCreatePlayerNotification", $"Objective Complete");
-
-
-                LevelSystem.AddPlayerExperience(NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]), clearedObjective.Experience);
+                Client client = NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]);
+                client.TriggerEvent("MissionInfo", "Mission_Active_Objectives", activeObjectives);
+                client.TriggerEvent("eventCreatePlayerNotification", $"Objective Complete");
+                AccountUtilities.AddExperience(client, clearedObjective.Experience);
             }
 
             return true;

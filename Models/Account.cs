@@ -10,19 +10,25 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using Encryption = BCrypt;
+using Mirror.Events.ActualEvents;
 
 namespace Mirror.Models
 {
     public class Account : StandardData
     {
+        public static PlayerUpdateEvent PlayerUpdateEvent = new PlayerUpdateEvent();
+        public static List<Account> LoggedInAccounts = new List<Account>();
+
         public string Username { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public int Age { get; set; } = 20;
+        public int Health { get; set; } = 100;
+        public int Armor { get; set; } = 0;
+        public bool IsDead { get; set; } = false;
         public bool Banned { get; set; } = false;
-        public bool IsLoggedIn { get; set; } = false;
         public bool NewAccount { get; set; } = true;
-        public int Money { get; set; } = 0;
+        public double Money { get; set; } = 0;
         public string Inventory { get; set; } = "";
         public string LastPosition { get; set; } = JsonConvert.SerializeObject(new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ));
         public int CurrentExperience { get; set; } = 200;
@@ -59,17 +65,17 @@ namespace Mirror.Models
 
         public void Attach(Client client)
         {
-            // Basic Account
-            IsLoggedIn = true;
-            client.SetData("Mirror_Account", this);
-            client.Name = Name;
-
             Console.WriteLine($"{client.Name} has logged in.");
 
+            // Basic Account
+            client.SetData("Mirror_Account", this);
+            client.Name = Name;
+            client.Health = Health;
+            client.Armor = Armor;
+            
+            // Set Position
             Vector3 position = JsonConvert.DeserializeObject<Vector3>(LastPosition);
             NAPI.Entity.SetEntityPosition(client, position);
-
-            Update(client);
 
             // Appearance
             Appearance appearance = Appearance.RetrieveAppearance(this);
@@ -87,95 +93,203 @@ namespace Mirror.Models
             client.SendChatMessage(Exceptions.LoginLoadedSkills);
 
             // Levels
-            LevelSystem.UpdatePlayerExperienceLocally(client);
+            AccountUtilities.UpdateLevelSystemLocally(client);
 
             // Finish
             FinishLogin(client);
         }
 
-        public void ResetLogin()
-        {
-            IsLoggedIn = false;
-            Update();
-        }
-
         private void FinishLogin(Client client)
         {
-            client.TriggerEvent("eventFreeze", client.Handle, false);
-            client.TriggerEvent("eventDisable", false);
-            client.TriggerEvent("eventLoggedIn", true);
+            AccountUtilities.UpdatePlayerMoneyLocally(client);
+            Utilities.FreezePlayerAccount(client, false);
+            Utilities.DisablePlayerAccount(client, false);
+            Utilities.LoginPlayerAccount(client, true);
+            
             client.Dimension = 0;
             client.Transparency = 255;
 
             if (!NewAccount)
                 return;
 
-            client.TriggerEvent("eventFreeze", client.Handle, true);
+            NewAccount = false;
+            Utilities.FreezePlayerAccount(client, true);
+
             Task task = new Task(() =>
             {
                 client.SendChatMessage("Please wait... setting up appearance menu for your new account.");
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(1000);
                 client.TriggerEvent("OpenFacialMenu");
                 
             });
             task.Start();
 
-            client.TriggerEvent("eventFreeze", client.Handle, false);
-            NewAccount = false;
+            Utilities.FreezePlayerAccount(client, false);
             Database.UpdateData(this);
         }
 
         /// <summary>
-        /// Fully updates the database with new information.
+        /// Update the account even if they're not online.
         /// </summary>
-        public void Update(Client client)
+        public void OfflineUpdate() => Database.UpdateData(this);
+
+        /// <summary>
+        /// Set to true to log in the account. Set to false to log the account out.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetAccountLoggedIn(bool value = true)
         {
-            // Save the player's last position.
-            LastPosition = JsonConvert.SerializeObject(client.Position); 
+            if (!LoggedInAccounts.Contains(this))
+                LoggedInAccounts.Add(this);
 
-            Clothing clothing = Database.GetById<Clothing>(UserID);
-            clothing.Update();
+            if (value)
+                return;
 
-            Appearance appearance = Database.GetById<Appearance>(UserID);
-            appearance.Update();
-
-            client.TriggerEvent("eventRecieveRanks", LevelRanks);
-
-            Database.UpdateData(this);
+            if (IsAccountLoggedIn())
+                LoggedInAccounts.Remove(this);
         }
 
-        public void Update()
+        /// <summary>
+        /// Compare the Account list and try to find a username that matches the player's.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsAccountLoggedIn()
         {
-            Clothing clothing = Database.GetById<Clothing>(UserID);
-            clothing.Update();
-
-            Appearance appearance = Database.GetById<Appearance>(UserID);
-            appearance.Update();
-
-            Database.UpdateData(this);
+            var result = LoggedInAccounts.Find(x => x.Username == Username);
+            return result == null ? false : true;
         }
 
-        public static Account RetrieveAccount(string username)
+        public double TaxOnDeath()
         {
-            Account acc = Database.Get<Account>("Username", username);
-            return acc;
+            double taxedDifference = 0;
+            taxedDifference = Money * 0.02;
+            Money -= taxedDifference;
+            return taxedDifference;
         }
 
+        /// <summary>
+        /// Get the current LevelRanks of a player.
+        /// </summary>
+        /// <returns></returns>
+        public LevelRanks GetLevelRanks() => JsonConvert.DeserializeObject<LevelRanks>(LevelRanks);
+
+        /// <summary>
+        /// Revive the player and clear any forced animations from client-side.
+        /// </summary>
+        /// <param name="client"></param>
+        public void SetPlayerRevived(Client client)
+        {
+            IsDead = false;
+            client.TriggerEvent("eventForceRagdoll", client.Handle, -1);
+
+            Client[] players = NAPI.Pools.GetAllPlayers().ToArray();
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].Position.DistanceTo2D(client.Position) <= 50)
+                    players[i].TriggerEvent("eventForceRagdoll", client.Handle, -1);
+            }
+        }
+    }
+
+    public static class AccountUtilities
+    {
+        /// <summary>
+        /// Retrieve an account by their Username.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public static Account RetrieveAccountByUsername(string username)
+        {
+            return Database.Get<Account>("Username", username);
+        }
+
+        /// <summary>
+        /// Uses GetData to simply retrieve the account.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static Account RetrieveAccount(Client client)
+        {
+            return client.GetData("Mirror_Account") as Account;
+        }
+
+        /// <summary>
+        /// Check if a password matches.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static bool CompareAccountPassword(string username, string password)
         {
             bool passwordCorrect = Encryption.BCryptHelper.CheckPassword(password, Database.Get<Account>("Username", username).Password);
             return passwordCorrect;
         }
 
-        public LevelRanks GetLevelRanks()
+        /// <summary>
+        /// Check if the player has account attached to them.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static bool IsAccountReady(Client client) => client.HasData("Mirror_Account") ? true : false;
+
+        /// <summary>
+        /// Updates the client's account.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void UpdateAccount(Client client) => Account.PlayerUpdateEvent.Trigger(client, RetrieveAccount(client));
+
+        /// <summary>
+        /// Update the player's account with a new serialized JSON string for LevelRanks.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="levelRanks"></param>
+        public static void UpdateLevelRanks(Client client, LevelRanks levelRanks)
         {
-            return JsonConvert.DeserializeObject<LevelRanks>(LevelRanks);
+            RetrieveAccount(client).LevelRanks = JsonConvert.SerializeObject(levelRanks);
+            UpdateAccount(client);
+            UpdateLevelSystemLocally(client);
         }
 
-        public void UpdateLevelRanks(LevelRanks levelRanks)
+        /// <summary>
+        /// Update the player's local game with the required information for the Level System.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void UpdateLevelSystemLocally(Client client)
         {
-            LevelRanks = JsonConvert.SerializeObject(levelRanks);
-            Update();
+            Account account = RetrieveAccount(client);
+            LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
+
+            int currentXP = account.CurrentExperience;
+            int unallocatedPoints = levelRanks.GetUnallocatedRankPointCount(currentXP);
+            int lastXP = LevelSystem.GetLastLevelExperience(currentXP);
+            int nextLevelXP = LevelSystem.GetNextLevelExperience(currentXP);
+            int currentLvl = LevelSystem.GetCurrentLevel(currentXP);
+            
+            client.TriggerEvent("eventRecieveRanks", account.LevelRanks);
+            client.TriggerEvent("UpdateExperienceHUD", lastXP, currentXP, nextLevelXP, currentLvl, unallocatedPoints);
+        }
+
+        /// <summary>
+        /// Add Experience to a Player Account
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="amount"></param>
+        public static void AddExperience(Client client, int amount)
+        {
+            RetrieveAccount(client).CurrentExperience += amount;
+            UpdateAccount(client);
+            UpdateLevelSystemLocally(client);
+        }
+
+        /// <summary>
+        /// Updates the player's money on the local side.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void UpdatePlayerMoneyLocally(Client client)
+        {
+            double money = RetrieveAccount(client).Money;
+            client.TriggerEvent("eventUpdateCurrency", Convert.ToSingle(money));
         }
     }
 }

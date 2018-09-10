@@ -86,10 +86,7 @@ namespace Mirror.Commands
         }
 
         [Command("addxp")]
-        public void CmdSetXP(Client client, int amount)
-        {
-            LevelSystem.AddPlayerExperience(client, amount);
-        }
+        public void CmdSetXP(Client client, int amount) => AccountUtilities.AddExperience(client, amount);
 
         [Command("getpoints")]
         public void GetPoints(Client client)
@@ -108,7 +105,7 @@ namespace Mirror.Commands
         }
 
         [Command("tp")]
-        public void cmdTP(Client client, string trg)
+        public void CmdTP(Client client, string trg)
         {
             Client target = NAPI.Player.GetPlayerFromName(trg);
 
@@ -125,8 +122,12 @@ namespace Mirror.Commands
 
             WeaponHash hash = NAPI.Util.WeaponNameToModel(weapon);
             NAPI.Player.GivePlayerWeapon(client, hash, 25);
+        }
 
-            
+        [Command("transfer")]
+        public void CmdTransferMoney(Client client, string target, int amount)
+        {
+            TransactionProccess.Transaction(client, target, amount);
         }
     }
 }

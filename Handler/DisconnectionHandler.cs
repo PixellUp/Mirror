@@ -15,8 +15,7 @@ namespace Mirror.Handler
                 return;
 
             Account account = client.GetData("Mirror_Account");
-            account.IsLoggedIn = false;
-            account.Update(client);
+            Account.PlayerUpdateEvent.Trigger(client, account);
         }
     }
 }

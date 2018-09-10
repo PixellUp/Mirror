@@ -82,6 +82,10 @@ namespace Mirror.Handler
                 case "Start_Job":
                     Events.JobEvents.StartJob(client, arguments);
                     return;
+                // Skill Events
+                case "Skill_Event":
+                    Events.SkillEvents.ParseSkillEvent(client, arguments);
+                    return;
             }
             
         }

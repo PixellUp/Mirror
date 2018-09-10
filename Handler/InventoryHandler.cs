@@ -13,8 +13,7 @@ namespace Mirror.Handler
 
         public static void UseItem(Client client, int index)
         {
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
+            Account account = AccountUtilities.RetrieveAccount(client);
 
             InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
 
@@ -81,6 +80,47 @@ namespace Mirror.Handler
             }
         }
 
+        public static bool BurnItemFromInventory(Client client, string itemName)
+        {
+            if (!(client.GetData("Mirror_Account") is Account account))
+                return false;
+
+            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
+
+            string inventoryJson = "";
+
+            int index = -1;
+            for (int i = 0; i < inventoryItems.Length; i++)
+            {
+                if (inventoryItems[i] == null)
+                    continue;
+
+                if (inventoryItems[i].Name.ToLower() == itemName.ToLower())
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1)
+                return false;
+
+            client.TriggerEvent("PlaySoundFrontend", "PIN_BUTTON", "ATM_SOUNDS");
+
+            if (inventoryItems[index].StackCount <= 1)
+            {
+                inventoryItems[index] = null;
+                inventoryJson = GetInventoryJson(inventoryItems);
+                SaveInventory(client, inventoryJson);
+                return true;
+            }
+
+            inventoryItems[index].StackCount -= 1;
+            inventoryJson = GetInventoryJson(inventoryItems);
+            SaveInventory(client, inventoryJson);
+            return true;
+        }
+
 
         /// <summary>
         /// Add an item to the ground from the player's inventory.
@@ -132,10 +172,7 @@ namespace Mirror.Handler
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static string GetInventoryJson(InventoryItem[] items)
-        {
-            return JsonConvert.SerializeObject(items);
-        }
+        public static string GetInventoryJson(InventoryItem[] items) => JsonConvert.SerializeObject(items);
 
         /// <summary>
         /// Get an Array based on the inventory json string.
@@ -152,13 +189,7 @@ namespace Mirror.Handler
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static string GetInventory(Client client)
-        {
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return "";
-
-            return account.Inventory;
-        }
+        public static string GetInventory(Client client) => AccountUtilities.RetrieveAccount(client).Inventory;
 
         /// <summary>
         /// Save the player's inventory.
@@ -172,7 +203,7 @@ namespace Mirror.Handler
 
             client.TriggerEvent("Recieve_Inventory", jsonInventory);
             account.Inventory = jsonInventory;
-            account.Update();
+            Account.PlayerUpdateEvent.Trigger(client, account);
         }
 
         /// <summary>

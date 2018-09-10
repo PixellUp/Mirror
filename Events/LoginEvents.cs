@@ -20,23 +20,23 @@ namespace Mirror.Events
             string username = args[1].ToString();
             string password = args[2].ToString();
 
-            if (!Account.CompareAccountPassword(username, password))
+            if (!AccountUtilities.CompareAccountPassword(username, password))
             {
                 client.SendChatMessage(Exceptions.LoginAccountCredentialsInvalid);
                 return;
             }
 
-            if (Utility.Utility.CheckIfLoggedIn(username))
-            {
-                client.SendChatMessage(Exceptions.LoginAccountAlreadyLoggedIn);
-                return;
-            }
-
-            Account account = Account.RetrieveAccount(username);
+            Account account = AccountUtilities.RetrieveAccountByUsername(username);
 
             if (account == null)
             {
                 client.Kick(Exceptions.LoginNullException);
+                return;
+            }
+
+            if (account.IsAccountLoggedIn())
+            {
+                client.SendChatMessage(Exceptions.LoginAccountAlreadyLoggedIn);
                 return;
             }
 
@@ -72,19 +72,19 @@ namespace Mirror.Events
                 return;
             }
 
-            if (!Utility.Utility.IsNameRoleplayFormat(characterName))
+            if (!Utilities.IsNameRoleplayFormat(characterName))
             {
                 client.SendChatMessage(Exceptions.AccountPlayerNameIncorrectFormat);
                 return;
             }
 
-            if (Utility.Utility.DoesFieldExistInAccounts("Name", characterName))
+            if (Utilities.DoesFieldExistInAccounts("Name", characterName))
             {
                 client.SendChatMessage(Exceptions.AccountAlreadyExists);
                 return;
             }
 
-            if (Utility.Utility.DoesFieldExistInAccounts("Username", username))
+            if (Utilities.DoesFieldExistInAccounts("Username", username))
             {
                 client.SendChatMessage(Exceptions.AccountAlreadyExists);
                 return;
@@ -104,7 +104,7 @@ namespace Mirror.Events
 
         public static void ForceLogin(Client client, string username)
         {
-            Account account = Account.RetrieveAccount(username);
+            Account account = AccountUtilities.RetrieveAccountByUsername(username);
 
             if (account == null)
             {

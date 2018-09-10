@@ -93,7 +93,7 @@ namespace Mirror.Skills
 
             string jsonString = JsonConvert.SerializeObject(this);
             account.LevelSkills = jsonString;
-            account.Update();
+            Account.PlayerUpdateEvent.Trigger(client, account);
         }
     }
 
