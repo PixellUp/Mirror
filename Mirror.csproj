@@ -5,11 +5,7 @@
 <ItemGroup>
 <PackageReference Include="BCrypt-Core" Version="2.0.0" />
 <PackageReference Include="gtanetwork.api" Version="0.3.5" />
-</ItemGroup>
-<ItemGroup>
-  <Reference Include="LiteDbWrapper">
-    <HintPath>..\litedbwrapper\bin\Debug\netcoreapp2.0\LiteDbWrapper.dll</HintPath>
-  </Reference>
+<PackageReference Include="LiteDB" Version="4.1.4" />
 </ItemGroup>
 <ItemGroup>
   <None Update="Datasets\FemaleTopCombinations.json">

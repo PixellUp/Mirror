@@ -30,7 +30,7 @@ namespace Mirror.Events
             if (argumentString.Contains(":"))
             {
                 argumentString = argumentString.Substring(0, argumentString.Length - 3);
-                argumentString = Regex.Replace(argumentString, @"\s+", String.Empty);
+                argumentString = Regex.Replace(argumentString, @"[0-9\s:]", String.Empty);
             }
 
             LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
@@ -59,40 +59,11 @@ namespace Mirror.Events
 
             clients.ForEach((client) =>
             {
-                if (!client.HasData("Mirror_Account"))
+                if (!AccountUtilities.IsAccountReady(client))
                     return;
 
                 PassiveEvent.Trigger(client);
             });
-        }
-
-        public static void RankEventRegenerate(Client client)
-        {
-            if (!client.HasData("Mirror_Account"))
-                return;
-
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
-
-            if (!client.HasData("Mirror_LevelRank_Regenerate"))
-                client.SetData("Mirror_LevelRank_Regenerate", DateTime.Now);
-
-            LevelRanks levelRanks = account.GetLevelRanks();
-
-            if (levelRanks.Regenerate <= 0)
-                return;
-
-            DateTime clientDateTime = client.GetData("Mirror_LevelRank_Regenerate");
-
-            if (DateTime.Compare(DateTime.Now, clientDateTime) < 0)
-                return;
-
-            client.SetData("Mirror_LevelRank_Regenerate", DateTime.Now.AddSeconds(30));
-
-            if (client.Health >= 100)
-                return;
-
-            client.Health += levelRanks.Regenerate;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using GTANetworkAPI;
-using LiteDbWrapper;
 using Mirror.Levels;
 using Mirror.Utility;
 using Skillsheet = Mirror.Skills.Skills;
@@ -11,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Encryption = BCrypt;
 using Mirror.Events.ActualEvents;
+using Mirror.Database;
 
 namespace Mirror.Models
 {
@@ -34,7 +34,6 @@ namespace Mirror.Models
         public int CurrentExperience { get; set; } = 200;
         public string LevelRanks { get; set; } = JsonConvert.SerializeObject(new LevelRanks());
         public string LevelSkills { get; set; } = JsonConvert.SerializeObject(new Skillsheet());
-        public int RankPoints { get; set; } = 0;
 
         public void Create(Client client, string username, string playerName, string password)
         {
@@ -44,12 +43,12 @@ namespace Mirror.Models
             Username = username;
             Name = playerName;
             Password = hash;
-            Database.Upsert(this);
+            DatabaseUtilities.Upsert(this);
 
             // Setup UserID with Database Insert ID.
-            Account acc = Database.Get<Account>("Username", username);
+            Account acc = DatabaseUtilities.Get<Account>("Username", username);
             acc.UserID = acc.ID;
-            Database.UpdateData(acc);
+            DatabaseUtilities.UpdateData(acc);
 
             // Setup Clothing Data
             Clothing clothing = new Clothing();
@@ -125,13 +124,13 @@ namespace Mirror.Models
             task.Start();
 
             Utilities.FreezePlayerAccount(client, false);
-            Database.UpdateData(this);
+            DatabaseUtilities.UpdateData(this);
         }
 
         /// <summary>
         /// Update the account even if they're not online.
         /// </summary>
-        public void OfflineUpdate() => Database.UpdateData(this);
+        public void OfflineUpdate() => DatabaseUtilities.UpdateData(this);
 
         /// <summary>
         /// Set to true to log in the account. Set to false to log the account out.
@@ -190,6 +189,12 @@ namespace Mirror.Models
                     players[i].TriggerEvent("eventForceRagdoll", client.Handle, -1);
             }
         }
+
+        /// <summary>
+        /// Get all of the player's items as a list.
+        /// </summary>
+        /// <returns></returns>
+        public InventoryItem[] GetAllItems() => JsonConvert.DeserializeObject<InventoryItem[]>(Inventory);
     }
 
     public static class AccountUtilities
@@ -201,7 +206,7 @@ namespace Mirror.Models
         /// <returns></returns>
         public static Account RetrieveAccountByUsername(string username)
         {
-            return Database.Get<Account>("Username", username);
+            return DatabaseUtilities.Get<Account>("Username", username);
         }
 
         /// <summary>
@@ -222,7 +227,7 @@ namespace Mirror.Models
         /// <returns></returns>
         public static bool CompareAccountPassword(string username, string password)
         {
-            bool passwordCorrect = Encryption.BCryptHelper.CheckPassword(password, Database.Get<Account>("Username", username).Password);
+            bool passwordCorrect = Encryption.BCryptHelper.CheckPassword(password, DatabaseUtilities.Get<Account>("Username", username).Password);
             return passwordCorrect;
         }
 
@@ -291,5 +296,81 @@ namespace Mirror.Models
             double money = RetrieveAccount(client).Money;
             client.TriggerEvent("eventUpdateCurrency", Convert.ToSingle(money));
         }
+
+        /// <summary>
+        /// Set the player's account to the value in the boolean and update it.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="isDead"></param>
+        public static void SetPlayerDeath(Client client, bool isDead)
+        {
+            Account account = RetrieveAccount(client);
+            account.IsDead = isDead;
+
+            if (isDead)
+                client.SetData("Death_Time", DateTime.Now);
+
+            if (!isDead)
+            {
+                Vector3 hospLoc = new Vector3(Settings.Settings.HospitalLocation.Item1, Settings.Settings.HospitalLocation.Item2, Settings.Settings.HospitalLocation.Item3);
+                client.StopAnimation();
+                account.Armor = 0;
+                account.Health = 50;
+                account.LastPosition = JsonConvert.SerializeObject(hospLoc);
+                double taxAmount = account.TaxOnDeath();
+
+                if (!client.Exists)
+                {
+                    account.OfflineUpdate();
+                    return;
+                }
+
+                client.SendChatMessage($"~w~You paid ~r~${taxAmount} ~w~in hospital fees.");
+                client.Position = hospLoc;
+            }
+
+            UpdateAccount(client);
+        }
+
+        /// <summary>
+        /// Check if the player is currently dead.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static bool IsPlayerDead(Client client) => RetrieveAccount(client).IsDead;
+
+        /// <summary>
+        /// Get the time of death for the player.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static DateTime GetTimeOfDeath(Client client) => (DateTime)client.GetData("Death_Time");
+
+        /// <summary>
+        /// Get the client's level ranks.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static LevelRanks GetLevelRanks(Client client) => RetrieveAccount(client).GetLevelRanks();
+
+        /// <summary>
+        /// Get the player's cooldowns
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static LevelRankCooldowns GetCooldowns(Client client)
+        {
+            if (!client.HasData("Mirror_LevelRank_Cooldowns"))
+                client.SetData("Mirror_LevelRank_Cooldowns", new LevelRankCooldowns());
+
+            return client.GetData("Mirror_LevelRank_Cooldowns") as LevelRankCooldowns;
+        }
+
+        /// <summary>
+        /// Get all of the client's items.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static InventoryItem[] GetPlayerItems(Client client) => RetrieveAccount(client).GetAllItems();
     }
 }

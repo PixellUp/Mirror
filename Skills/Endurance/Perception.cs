@@ -32,7 +32,7 @@ namespace Mirror.Skills.Endurance
             if (levelRanks.Perception <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Perception);
 
             if (!levelRankCooldowns.IsPerceptionReady)

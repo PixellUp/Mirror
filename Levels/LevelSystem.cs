@@ -78,7 +78,6 @@ namespace Mirror.Levels
             return false;
         }
 
-
         /// <summary>
         /// Check if the LevelRank exists in the class.
         /// </summary>

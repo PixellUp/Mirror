@@ -32,7 +32,7 @@ namespace Mirror.Skills.Endurance
             if (levelRanks.Deadeye <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Deadeye);
 
             if (!levelRankCooldowns.IsDeadeyeReady)

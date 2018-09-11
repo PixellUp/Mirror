@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "774448246753d5e51e2bdced48c270cd41bb7ef9"
+    "signature": "569dc0aba44f08598aae5f7a4835c36a96af5b41"
   },
   "compilationOptions": {},
   "targets": {
@@ -9,8 +9,8 @@
       "Mirror/1.0.0": {
         "dependencies": {
           "BCrypt-Core": "2.0.0",
-          "gtanetwork.api": "0.3.5",
-          "LiteDbWrapper": "1.0.0.0"
+          "LiteDB": "4.1.4",
+          "gtanetwork.api": "0.3.5"
         },
         "runtime": {
           "Mirror.dll": {}
@@ -74,6 +74,18 @@
           "lib/netcoreapp2.0/Bootstrapper.dll": {
             "assemblyVersion": "0.3.5.0",
             "fileVersion": "0.3.5.0"
+          }
+        }
+      },
+      "LiteDB/4.1.4": {
+        "dependencies": {
+          "System.Reflection": "4.3.0",
+          "System.Reflection.TypeExtensions": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/LiteDB.dll": {
+            "assemblyVersion": "4.1.4.0",
+            "fileVersion": "4.1.4.0"
           }
         }
       },
@@ -1270,14 +1282,6 @@
             "fileVersion": "0.3.0.0"
           }
         }
-      },
-      "LiteDbWrapper/1.0.0.0": {
-        "runtime": {
-          "LiteDbWrapper.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
       }
     }
   },
@@ -1314,6 +1318,13 @@
       "sha512": "sha512-zlcJjdy08eUFD0Np0zvnEWSaifBx837ymPx/YzgShIwHLP40OaTlNa2HGPUdHNXdWo1daB6SK+TfsmrQXCV3nw==",
       "path": "gtanetwork.api/0.3.5",
       "hashPath": "gtanetwork.api.0.3.5.nupkg.sha512"
+    },
+    "LiteDB/4.1.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-g4g9JlHzRBZl+Gd2UbiRdszZ7t8wozU2wX7+5xY5uE79tmcgcDhha+ubAP84G1VLbwQmhBGCzRfIx+epLmJciQ==",
+      "path": "litedb/4.1.4",
+      "hashPath": "litedb.4.1.4.nupkg.sha512"
     },
     "Microsoft.CodeAnalysis/2.6.1": {
       "type": "package",
@@ -2056,11 +2067,6 @@
       "sha512": "sha512-MMjX3/OInZfN+Eo4HQ+2/2HBz5JtL37B9UN4ZCN5c8j5RjL8j8ldYuJABmprn0V1qZrd+I0vZfvCFFh5829CSQ==",
       "path": "xxhash.core/0.3.0",
       "hashPath": "xxhash.core.0.3.0.nupkg.sha512"
-    },
-    "LiteDbWrapper/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

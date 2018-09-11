@@ -35,7 +35,7 @@ namespace Mirror.Skills.Intelligence
             if (levelRanks.Medicine <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Medicine);
 
             if (!levelRankCooldowns.IsMedicineReady)
@@ -55,7 +55,7 @@ namespace Mirror.Skills.Intelligence
         {
             Account account = client.GetData("Mirror_Account");
             LevelRanks ranks = account.GetLevelRanks();
-            LevelRankCooldowns cooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns cooldowns = AccountUtilities.GetCooldowns(client);
             string itemToBurn = "Medkit";
 
             if (client.Position.DistanceTo2D(target.Position) > 5)

@@ -32,7 +32,7 @@ namespace Mirror.Skills.Strength
             if (levelRanks.Drag <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Drag);
 
             if (!levelRankCooldowns.IsDragReady)

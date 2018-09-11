@@ -33,7 +33,7 @@ namespace Mirror.Skills.Strength
             if (levelRanks.Brute <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Brute);
 
             if (!levelRankCooldowns.IsBruteReady)

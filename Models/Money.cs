@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using LiteDbWrapper;
+using Mirror.Database;
 using Mirror.Utility;
 using System;
 using System.Collections.Generic;
@@ -25,17 +25,17 @@ namespace Mirror.Models
         /// </summary>
         public static void Initialize()
         {
-            if (!Database.Exists<Money>())
+            if (!DatabaseUtilities.Exists<Money>())
             {
                 // Create Money Entry
                 ServerFunds = new Money();
-                Database.Upsert(ServerFunds);
+                DatabaseUtilities.Upsert(ServerFunds);
                 Console.WriteLine(Exceptions.UtilityMoneyEstablished);
                 return;
             }
 
             // Get Money Entry
-            var collection = Database.GetCollection<Money>();
+            var collection = DatabaseUtilities.GetCollection<Money>();
             ServerFunds = collection.First();
 
             if (ServerFunds == null)
@@ -47,7 +47,7 @@ namespace Mirror.Models
 
         public static void UpdateFunds()
         {
-            Database.UpdateData(ServerFunds);
+            DatabaseUtilities.UpdateData(ServerFunds);
         }
 
         public static void Transaction(Client client, string toPlayer, double amount)

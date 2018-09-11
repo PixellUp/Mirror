@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using LiteDbWrapper;
+using Mirror.Database;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,7 +32,7 @@ namespace Mirror.Models
                 Z = client.Position.Z
             };
 
-            Database.Upsert(location);
+            DatabaseUtilities.Upsert(location);
             return location;
         }
     }

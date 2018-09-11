@@ -47,8 +47,8 @@ namespace Mirror.Handler
                 LoginEvents.ForceLogin(client, client.Name);
             }
 
-            if (client.Name.ToLower() == "john_john") { }
-                //LoginEvents.ForceLogin(client, "stuyk");
+            if (client.Name.ToLower() == "john_john")
+                LoginEvents.ForceLogin(client, "stuyk");
         }
     }
 }

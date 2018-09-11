@@ -32,7 +32,7 @@ namespace Mirror.Skills.Intelligence
             if (levelRanks.Electric <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Electric);
 
             if (!levelRankCooldowns.IsElectricReady)

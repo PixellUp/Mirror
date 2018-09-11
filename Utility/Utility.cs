@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GTANetworkAPI;
-using LiteDbWrapper;
+﻿using GTANetworkAPI;
+using Mirror.Database;
 using Mirror.Models;
 
 namespace Mirror.Utility
@@ -27,7 +24,7 @@ namespace Mirror.Utility
         /// <returns></returns>
         public static bool DoesFieldExistInAccounts(string targetField, string name)
         {
-            Account acc = Database.Get<Account>(targetField, name);
+            Account acc = DatabaseUtilities.Get<Account>(targetField, name);
             if (acc == null)
             {
                 return false;

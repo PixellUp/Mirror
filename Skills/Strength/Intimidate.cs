@@ -32,7 +32,7 @@ namespace Mirror.Skills.Strength
             if (levelRanks.Intimidate <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Intimidate);
 
             if (!levelRankCooldowns.IsIntimidateReady)

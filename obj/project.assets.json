@@ -68,6 +68,19 @@
           "lib/netcoreapp2.0/Bootstrapper.dll": {}
         }
       },
+      "LiteDB/4.1.4": {
+        "type": "package",
+        "dependencies": {
+          "System.Reflection": "4.3.0",
+          "System.Reflection.TypeExtensions": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/LiteDB.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/LiteDB.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis/2.6.1": {
         "type": "package",
         "dependencies": {
@@ -1370,7 +1383,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.5/_._": {}
+          "ref/netstandard1.5/System.Reflection.TypeExtensions.dll": {}
         },
         "runtime": {
           "lib/netstandard1.5/System.Reflection.TypeExtensions.dll": {}
@@ -2025,6 +2038,23 @@
         "lib/netcoreapp2.0/Bootstrapper.dll",
         "lib/netcoreapp2.0/Bootstrapper.runtimeconfig.json",
         "lib/netcoreapp2.0/Bootstrapper.xml"
+      ]
+    },
+    "LiteDB/4.1.4": {
+      "sha512": "g4g9JlHzRBZl+Gd2UbiRdszZ7t8wozU2wX7+5xY5uE79tmcgcDhha+ubAP84G1VLbwQmhBGCzRfIx+epLmJciQ==",
+      "type": "package",
+      "path": "litedb/4.1.4",
+      "files": [
+        "lib/net35/LiteDB.dll",
+        "lib/net35/LiteDB.xml",
+        "lib/net40/LiteDB.dll",
+        "lib/net40/LiteDB.xml",
+        "lib/netstandard1.3/LiteDB.dll",
+        "lib/netstandard1.3/LiteDB.xml",
+        "lib/netstandard2.0/LiteDB.dll",
+        "lib/netstandard2.0/LiteDB.xml",
+        "litedb.4.1.4.nupkg.sha512",
+        "litedb.nuspec"
       ]
     },
     "Microsoft.CodeAnalysis/2.6.1": {
@@ -6491,6 +6521,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "BCrypt-Core >= 2.0.0",
+      "LiteDB >= 4.1.4",
       "Microsoft.NETCore.App >= 2.0.0",
       "gtanetwork.api >= 0.3.5"
     ]
@@ -6540,6 +6571,10 @@
           "BCrypt-Core": {
             "target": "Package",
             "version": "[2.0.0, )"
+          },
+          "LiteDB": {
+            "target": "Package",
+            "version": "[4.1.4, )"
           },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",

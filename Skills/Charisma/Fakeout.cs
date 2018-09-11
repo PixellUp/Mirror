@@ -32,7 +32,7 @@ namespace Mirror.Skills.Charisma
             if (levelRanks.Fakeout <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Fakeout - (levelRanks.Fakeout * 5));
 
             if (!levelRankCooldowns.IsFakeoutReady)

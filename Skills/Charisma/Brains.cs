@@ -32,7 +32,7 @@ namespace Mirror.Skills.Charisma
             if (levelRanks.Brains <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Brains);
 
             if (!levelRankCooldowns.IsBrainsReady)

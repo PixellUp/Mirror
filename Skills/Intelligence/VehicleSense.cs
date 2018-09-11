@@ -32,7 +32,7 @@ namespace Mirror.Skills.Intelligence
             if (levelRanks.VehicleSense <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.VehicleSense);
 
             if (!levelRankCooldowns.IsVehicleSenseReady)

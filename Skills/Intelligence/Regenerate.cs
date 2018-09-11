@@ -28,7 +28,7 @@ namespace Mirror.Skills.Intelligence
             if (levelRanks.Regenerate <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, "IsRegenerateReady", SkillCooldowns.Regenerate);
 
             if (!levelRankCooldowns.IsRegenerateReady)

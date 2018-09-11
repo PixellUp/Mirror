@@ -32,7 +32,7 @@ namespace Mirror.Skills.Intelligence
             if (levelRanks.Lockpick <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Lockpick - (levelRanks.Lockpick * 5));
 
             if (!levelRankCooldowns.IsLockpickReady)

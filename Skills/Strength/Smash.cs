@@ -32,7 +32,7 @@ namespace Mirror.Skills.Strength
             if (levelRanks.Smash <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Smash - (levelRanks.Smash * 7));
 
             if (!levelRankCooldowns.IsSmashReady)

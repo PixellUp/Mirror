@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using LiteDbWrapper;
+using Mirror.Database;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace Mirror.Models
         public void Create(int id)
         {
             UserID = id;
-            Database.Upsert(this);
+            DatabaseUtilities.Upsert(this);
         }
 
         public void Attach(Client client)
@@ -56,7 +56,7 @@ namespace Mirror.Models
 
         public void Update()
         {
-            Database.UpdateData(this);
+            DatabaseUtilities.UpdateData(this);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Mirror.Models
         /// <returns></returns>
         public static Appearance RetrieveAppearance(Account account)
         {
-            return Database.GetById<Appearance>(account.UserID);
+            return DatabaseUtilities.GetById<Appearance>(account.UserID);
         }
     }
 

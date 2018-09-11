@@ -60,31 +60,6 @@ namespace Mirror.Commands
             InventoryHandler.AddItemToInventory(client, name, amount);
         }
 
-        [Command("dropitem")]
-        public void CmdRemoveItem(Client client, int index)
-        {
-            InventoryHandler.RemoveItemFromInventory(client, index, true);
-
-            string json = InventoryHandler.GetInventory(client);
-
-            InventoryItem[] items = InventoryHandler.GetInventoryArray(json);
-
-            string itemList = "";
-
-            StringBuilder builder = new StringBuilder(itemList);
-
-            foreach (InventoryItem item in items)
-            {
-                if (item == null)
-                    continue;
-
-                builder.Append($"{item.ID} {item.Name} | ");
-            }
-
-            string finished = builder.ToString();
-            client.SendChatMessage(finished);
-        }
-
         [Command("addxp")]
         public void CmdSetXP(Client client, int amount) => AccountUtilities.AddExperience(client, amount);
 

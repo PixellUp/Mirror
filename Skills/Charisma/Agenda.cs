@@ -32,7 +32,7 @@ namespace Mirror.Skills.Charisma
             if (levelRanks.Agenda <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Agenda);
 
             if (!levelRankCooldowns.IsAgendaReady)

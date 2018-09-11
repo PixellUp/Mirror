@@ -43,16 +43,6 @@ namespace Mirror.Models
         public bool IsBrainsReady { get; set; } = false;
         public bool IsAttentionReady { get; set; } = false;
 
-        public static readonly string VariableName = "Mirror_LevelRank_Cooldowns";
-
-        public static LevelRankCooldowns GetCooldowns(Client client)
-        {
-            if (!client.HasData(VariableName))
-                client.SetData(VariableName, new LevelRankCooldowns());
-
-            return client.GetData(VariableName) as LevelRankCooldowns;
-        }
-
         public bool UpdateCooldownTime(Client client, string variableName, int secondsOnCooldown)
         {
             if (!client.HasData(variableName))

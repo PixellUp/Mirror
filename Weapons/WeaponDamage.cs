@@ -79,7 +79,7 @@ namespace Mirror
 
             Account account = client.GetData("Mirror_Account");
             LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
-            LevelRankCooldowns levelRankCooldowns = LevelRankCooldowns.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
 
             if (account.IsDead)
             {

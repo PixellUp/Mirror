@@ -14,8 +14,7 @@ namespace Mirror.Handler
         public static void UseItem(Client client, int index)
         {
             Account account = AccountUtilities.RetrieveAccount(client);
-
-            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
+            InventoryItem[] inventoryItems = account.GetAllItems();
 
             if (inventoryItems[index] == null)
                 return;
@@ -82,10 +81,8 @@ namespace Mirror.Handler
 
         public static bool BurnItemFromInventory(Client client, string itemName)
         {
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return false;
-
-            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
+            Account account = AccountUtilities.RetrieveAccount(client);
+            InventoryItem[] inventoryItems = account.GetAllItems();
 
             string inventoryJson = "";
 
@@ -175,16 +172,6 @@ namespace Mirror.Handler
         public static string GetInventoryJson(InventoryItem[] items) => JsonConvert.SerializeObject(items);
 
         /// <summary>
-        /// Get an Array based on the inventory json string.
-        /// </summary>
-        /// <param name="jsonInventory"></param>
-        /// <returns></returns>
-        public static InventoryItem[] GetInventoryArray(string jsonInventory)
-        {
-            return JsonConvert.DeserializeObject<InventoryItem[]>(jsonInventory);
-        }
-
-        /// <summary>
         /// Get the client's inventory. Returns "" if unavailable.
         /// </summary>
         /// <param name="client"></param>
@@ -198,9 +185,7 @@ namespace Mirror.Handler
         /// <param name="jsonInventory"></param>
         public static void SaveInventory(Client client, string jsonInventory)
         {
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
-
+            Account account = AccountUtilities.RetrieveAccount(client);
             client.TriggerEvent("Recieve_Inventory", jsonInventory);
             account.Inventory = jsonInventory;
             Account.PlayerUpdateEvent.Trigger(client, account);
@@ -218,8 +203,7 @@ namespace Mirror.Handler
             int option = 0;
             bool foundOpenSlot = false;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
+            Account account = AccountUtilities.RetrieveAccount(client);
 
             // If item does not exist. Create a new item.
             InventoryItem invItem = new InventoryItem
@@ -230,7 +214,7 @@ namespace Mirror.Handler
             };
 
             // Grab the player inventory.
-            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
+            InventoryItem[] inventoryItems = account.GetAllItems();
 
             // Check if player even has an inventory.
             if (inventoryItems == null)
@@ -293,10 +277,8 @@ namespace Mirror.Handler
         /// <param name="index"></param>
         public static void RemoveItemFromInventory(Client client, int index, bool allItems)
         {
-            if (!(client.GetData("Mirror_Account") is Account account))
-                return;
-
-            InventoryItem[] inventoryItems = GetInventoryArray(account.Inventory);
+            Account account = AccountUtilities.RetrieveAccount(client);
+            InventoryItem[] inventoryItems = account.GetAllItems();
 
             if (inventoryItems[index] == null)
                 return;

@@ -3,14 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Wrapper = LiteDbWrapper;
 
 namespace Mirror.Settings
 {
     public class Settings
     {
         [JsonProperty("DatabaseLocation")]
-        public static string DatabaseLocation { get; set; } = Wrapper.Settings.DatabaseLocation;
+        public static string DatabaseLocation { get; set; } = @".\bridge\LiteDB";
+        [JsonProperty("DatabaseName")]
+        public static string DatabaseFile { get; set; } = @"\LiteDatabase.db";
         [JsonProperty("StartupMessage")]
         public static string StartupMessage { get; set; } = "Welcome! Please use ~g~/register ~w~or ~b~/login";
         [JsonProperty("DisableTalentCommands")]
@@ -23,6 +24,8 @@ namespace Mirror.Settings
         public static int SpawnY { get; set; } = -942;
         [JsonProperty("SpawnZ")]
         public static int SpawnZ { get; set; } = 11;
+        [JsonProperty("Hospital")]
+        public static Tuple<double, double, double> HospitalLocation { get; set; } = new Tuple<double, double, double>(360, -585, 28);
 
         public static void Initialize()
         {
