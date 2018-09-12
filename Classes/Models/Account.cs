@@ -9,8 +9,8 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using Encryption = BCrypt;
-using Mirror.Events.ActualEvents;
 using Mirror.Classes;
+using Mirror.Events;
 
 namespace Mirror.Classes.Models
 {

@@ -6,7 +6,7 @@ using GTANetworkAPI;
 using Dice = Mirror.Skills.Utility;
 using Mirror.Skills;
 
-namespace Mirror.Events
+namespace Mirror.Classes.Static.StaticEvents
 {
     public static class PlayerEvents
     {

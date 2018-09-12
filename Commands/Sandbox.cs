@@ -9,6 +9,7 @@ using System.Text;
 using Skillsheet = Mirror.Skills.Skills;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
+using Mirror.Classes.Static.StaticEvents;
 
 namespace Mirror.Commands
 {
@@ -78,7 +79,7 @@ namespace Mirror.Commands
         [Command("allocatepoint")]
         public void CMDAllocatePoint(Client client, string type)
         {
-            Events.RankEvents.AllocateRankPoint(client, "", type);
+            RankEvents.AllocateRankPoint(client, "", type);
         }
 
         [Command("tp")]

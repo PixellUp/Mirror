@@ -1,61 +1,10 @@
-﻿using System;
+﻿using Mirror.Classes.Readonly;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Mirror.Classes.Models
 {
-    public static class WeaponTicks
-    {
-        public static readonly int Unarmed = 10; // 4s
-        public static readonly int Pistol50 = 8; // 3s
-        public static readonly int Smg = 4;
-        public static readonly int HeavySniper = 19;
-        public static readonly int MachinePistol = 2;
-        public static readonly int DoubleAction = 6;
-        public static readonly int PumpShotgun = 8;
-        public static readonly int MG = 1;
-        public static readonly int MicroSMG = 1;
-    }
-
-    public static class WeaponDice
-    {
-        public static readonly int Unarmed = 6;
-        public static readonly int Pistol50 = 6;
-        public static readonly int Smg = 4;
-        public static readonly int HeavySniper = 40;
-        public static readonly int MachinePistol = 2;
-        public static readonly int DoubleAction = 10;
-        public static readonly int PumpShotgun = 15;
-        public static readonly int MG = 4;
-        public static readonly int MicroSMG = 2;
-    }
-
-    public static class WeaponShotsFired
-    {
-        public static readonly int Unarmed = 0;
-        public static readonly int Pistol50 = 0;
-        public static readonly int Smg = 4;
-        public static readonly int HeavySniper = 0;
-        public static readonly int MachinePistol = 4;
-        public static readonly int DoubleAction = 0;
-        public static readonly int PumpShotgun = 2;
-        public static readonly int MG = 2;
-        public static readonly int MicroSMG = 3;
-    }
-
-    public static class WeaponRange
-    {
-        public static readonly int Unarmed = 5;
-        public static readonly int Pistol50 = 15;
-        public static readonly int Smg = 25;
-        public static readonly int HeavySniper = 80;
-        public static readonly int MachinePistol = 12;
-        public static readonly int DoubleAction = 12;
-        public static readonly int PumpShotgun = 20;
-        public static readonly int MG = 25;
-        public static readonly int MicroSMG = 10;
-    }
-
     public static class Weapons
     {
         public static int GetWeaponTick(string weaponName)
@@ -105,7 +54,7 @@ namespace Mirror.Classes.Models
         {
             int weaponDice = 4;
 
-            Type obj = typeof(WeaponDice);
+            Type obj = typeof(WeaponDamage);
 
             foreach (var property in obj.GetFields())
             {
@@ -120,7 +69,7 @@ namespace Mirror.Classes.Models
         {
             int weaponRollCount = 0;
 
-            Type obj = typeof(WeaponShotsFired);
+            Type obj = typeof(WeaponShots);
 
             foreach (var property in obj.GetFields())
             {

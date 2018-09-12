@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
-using Mirror.Events.ActualEvents;
+using Mirror.Classes.Models;
+using Mirror.Events;
 using Mirror.Jobs;
 
 using System;

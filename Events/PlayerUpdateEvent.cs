@@ -1,11 +1,10 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Models;
-
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Events.ActualEvents
+namespace Mirror.Events
 {
     public class PlayerUpdateEvent
     {

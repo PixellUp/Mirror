@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
+using Mirror.Classes.Static.StaticEvents;
 
 namespace Mirror.Skills.Strength
 {
@@ -48,6 +49,29 @@ namespace Mirror.Skills.Strength
 
             client.SetData(VariableName + Notification, true);
             client.SendChatMessage("~r~Smash ~w~You're able to break a window again.");
+        }
+
+        public static void Use(Client client, Vehicle vehicle)
+        {
+            if (!vehicle.Exists)
+                return;
+
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            LevelRanks ranks = AccountUtil.GetLevelRanks(client);
+
+            if (!cooldowns.IsSmashReady || ranks.Smash <= 0)
+                return;
+
+            if (client.Position.DistanceTo2D(vehicle.Position) > 2.5)
+                return;
+
+            if (!vehicle.Locked)
+                return;
+
+            cooldowns.IsSmashReady = false;
+            client.SendChatMessage("~r~Smash ~w~You used your fist to break the window.");
+            vehicle.Locked = false;
+            Utilities.BreakVehicleWindow(client, vehicle);
         }
     }
 }

@@ -51,5 +51,23 @@ namespace Mirror.Classes.Static
         /// <param name="client"></param>
         /// <param name="value"></param>
         public static void LoginPlayerAccount(Client client, bool value) => client.TriggerEvent("eventLoggedIn", value);
+
+        /// <summary>
+        /// Break a vehicle's window on 'client-side'.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="vehicle"></param>
+        public static void BreakVehicleWindow(Client client, Vehicle vehicle)
+        {
+            Client[] players = NAPI.Pools.GetAllPlayers().ToArray();
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].Position.DistanceTo2D(client.Position) > 30)
+                    continue;
+
+                client.TriggerEvent("eventBreakWindow", vehicle);
+            }
+        }
     }
 }

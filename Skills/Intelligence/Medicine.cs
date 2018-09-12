@@ -11,6 +11,7 @@ using System.Linq;
 using Mirror.Handler;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
+using Mirror.Classes.Static.StaticEvents;
 
 namespace Mirror.Skills.Intelligence
 {

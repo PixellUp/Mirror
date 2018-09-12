@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Events.ActualEvents
+namespace Mirror.Events
 {
     public class PassiveEvent
     {

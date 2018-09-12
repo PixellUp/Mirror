@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Events
+namespace Mirror.Classes.Static.StaticEvents
 {
     public static class SkillEvents
     {
@@ -15,15 +15,22 @@ namespace Mirror.Events
 
             string eventName = arguments[0] as string;
             string skillName = arguments[1] as string;
-            Client target = arguments[2] as Client;
+
+            Vehicle vehicle = null;
+            Client target = null;
 
             switch (skillName)
             {
                 case "Medicine":
+                    client = arguments[2] as Client;
                     Skills.Intelligence.Medicine.Use(client, target);
                     return;
                 case "Drag":
-                    // not yet
+                    // not yets
+                    return;
+                case "Smash":
+                    vehicle = arguments[2] as Vehicle;
+                    Skills.Strength.Smash.Use(client, vehicle);
                     return;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Classes.Static.StaticEvents;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,7 +24,7 @@ namespace Mirror.Updates
                 return;
 
             ticks = 0;
-            Events.RankEvents.UpdateAllPlayerPassives();
+            RankEvents.UpdateAllPlayerPassives();
         }
     }
 }

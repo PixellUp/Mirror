@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GTANetworkAPI;
-
+using Mirror.Classes.Models;
 using Newtonsoft.Json;
 
 namespace Mirror

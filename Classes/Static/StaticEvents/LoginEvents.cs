@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Mirror.Classes.Models;
 
-namespace Mirror.Events
+namespace Mirror.Classes.Static.StaticEvents
 {
     public static class LoginEvents
     {

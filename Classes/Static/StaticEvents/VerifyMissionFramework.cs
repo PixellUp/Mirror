@@ -1,10 +1,10 @@
 ﻿using GTANetworkAPI;
-
+using Mirror.Classes.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Events
+namespace Mirror.Classes.Static.StaticEvents
 {
     public static class VerifyMissionFramework
     {

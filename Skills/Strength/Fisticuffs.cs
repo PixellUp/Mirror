@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Classes.Models;
 using Mirror.Levels;
 
 using Newtonsoft.Json;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GTANetworkAPI;
-
+using Mirror.Classes.Models;
 
 namespace Mirror.Updates
 {

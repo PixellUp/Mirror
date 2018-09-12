@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mirror.Classes.Static.StaticEvents;
 
 namespace Mirror.Handler
 {
@@ -20,71 +21,71 @@ namespace Mirror.Handler
             {
                 // Login System
                 case "Login":
-                    Events.LoginEvents.Login(client, arguments);
+                    LoginEvents.Login(client, arguments);
                     return;
                 case "Register":
-                    Events.LoginEvents.Register(client, arguments);
+                    LoginEvents.Register(client, arguments);
                     return;
                 // Car Events
                 case "ToggleEngine":
-                    Events.CarEvents.ToggleEngine(client, arguments);
+                    CarEvents.ToggleEngine(client, arguments);
                     return;
                 case "ToggleLights":
-                    Events.CarEvents.ToggleLights(client, arguments);
+                    CarEvents.ToggleLights(client, arguments);
                     return;
                 case "OpenDoor":
-                    Events.CarEvents.OpenDoor(client, arguments);
+                    CarEvents.OpenDoor(client, arguments);
                     return;
                 case "CloseDoors":
-                    Events.CarEvents.CloseDoors(client, arguments);
+                    CarEvents.CloseDoors(client, arguments);
                     return;
                 case "PicklockVehicle":
-                    Events.CarEvents.PicklockDoor(client, arguments);
+                    CarEvents.PicklockDoor(client, arguments);
                     return;
                 case "ToggleLock":
-                    Events.CarEvents.ToggleLock(client, arguments);
+                    CarEvents.ToggleLock(client, arguments);
                     return;
                 // Player Actions
                 case "AttackPlayer":
-                    Events.PlayerEvents.AttackPlayer(client, arguments);
+                    PlayerEvents.AttackPlayer(client, arguments);
                     return;
                 case "CancelAttack":
-                    Events.PlayerEvents.CancelAttack(client);
+                    PlayerEvents.CancelAttack(client);
                     return;
                 // Appearance Events
                 case "PushAppearanceChanges":
-                    Events.AppearanceEvents.PushAppearanceChanges(client, arguments);
+                    AppearanceEvents.PushAppearanceChanges(client, arguments);
                     return;
                 case "RequestFace":
-                    Events.AppearanceEvents.GetAppearance(client);
+                    AppearanceEvents.GetAppearance(client);
                     return;
                 // Mission Events
                 case "Mission_Framework_Verify":
-                    Events.VerifyMissionFramework.Event(client, arguments);
+                    VerifyMissionFramework.Event(client, arguments);
                     return;
                 // Inventory Events
                 case "Get_Inventory":
-                    Events.InventoryEvents.SyncInventory(client);
+                    InventoryEvents.SyncInventory(client);
                     return;
                 case "Drop_Item_Inventory":
-                    Events.InventoryEvents.DropItem(client, arguments);
+                    InventoryEvents.DropItem(client, arguments);
                     return;
                 case "Use_Item_Inventory":
-                    Events.InventoryEvents.UseItem(client, arguments);
+                    InventoryEvents.UseItem(client, arguments);
                     return;
                 case "Pickup_Item_Inventory":
-                    Events.InventoryEvents.PickupItem(client, arguments);
+                    InventoryEvents.PickupItem(client, arguments);
                     return;
                 case "Allocate_Rank_Point":
-                    Events.RankEvents.AllocateRankPoint(client, arguments);
+                    RankEvents.AllocateRankPoint(client, arguments);
                     return;
                 // Job Events
                 case "Start_Job":
-                    Events.JobEvents.StartJob(client, arguments);
+                    JobEvents.StartJob(client, arguments);
                     return;
                 // Skill Events
                 case "Skill_Event":
-                    Events.SkillEvents.ParseSkillEvent(client, arguments);
+                    SkillEvents.ParseSkillEvent(client, arguments);
                     return;
             }
             

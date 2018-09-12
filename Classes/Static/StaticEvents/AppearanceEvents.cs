@@ -1,11 +1,11 @@
 ﻿using GTANetworkAPI;
-
+using Mirror.Classes.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Events
+namespace Mirror.Classes.Static.StaticEvents
 {
     /// <summary>
     /// Anything having to do with facial changes, clothing, etc.

@@ -1,7 +1,5 @@
 ﻿using GTANetworkAPI;
-using Mirror.Events.ActualEvents;
 using Mirror.Levels;
-
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,8 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
+using Mirror.Events;
 
-namespace Mirror.Events
+namespace Mirror.Classes.Static.StaticEvents
 {
     public static class RankEvents
     {

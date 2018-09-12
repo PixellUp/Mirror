@@ -1,6 +1,5 @@
 ﻿using GTANetworkAPI;
 using Mirror.Events;
-using Mirror.Events.ActualEvents;
 using Mirror.Levels;
 
 using Mirror.Settings;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
+using Mirror.Classes.Static.StaticEvents;
 
 namespace Mirror.Skills.Intelligence
 {

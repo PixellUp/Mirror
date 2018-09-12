@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using Skillsheet = Mirror.Skills.Skills;
 
-namespace Mirror.Events
+namespace Mirror.Classes.Static.StaticEvents
 {
     public static class CarEvents
     {
