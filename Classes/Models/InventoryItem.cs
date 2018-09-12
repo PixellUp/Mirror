@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
     public class InventoryItem
     {

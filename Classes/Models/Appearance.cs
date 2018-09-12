@@ -1,11 +1,12 @@
 ﻿using GTANetworkAPI;
-using Mirror.Database;
+using Mirror.Classes;
+using Mirror.Classes.Static;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
     public enum Sex
     {
@@ -13,7 +14,7 @@ namespace Mirror.Models
         Female
     }
 
-    public class Appearance : StandardData
+    public class Appearance : LiteDbData
     {
         // Sex
         public Sex Sex { get; set; } = Sex.Male;
@@ -46,7 +47,7 @@ namespace Mirror.Models
         public void Create(int id)
         {
             UserID = id;
-            DatabaseUtilities.Upsert(this);
+            Database.Upsert(this);
         }
 
         public void Attach(Client client)
@@ -56,7 +57,7 @@ namespace Mirror.Models
 
         public void Update()
         {
-            DatabaseUtilities.UpdateData(this);
+            Database.UpdateData(this);
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace Mirror.Models
         /// <returns></returns>
         public static Appearance RetrieveAppearance(Account account)
         {
-            return DatabaseUtilities.GetById<Appearance>(account.UserID);
+            return Database.GetById<Appearance>(account.UserID);
         }
     }
 

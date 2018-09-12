@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mirror.Events.ActualEvents;
-using Mirror.Models;
+
 using Newtonsoft.Json;
 using Mirror.Levels;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror.Handler
 {
@@ -31,10 +33,10 @@ namespace Mirror.Handler
         private void HandleDeath(object source, Client client, Client killer)
         {
             NotifyPlayersOfDeath(client);
-            AccountUtilities.SetPlayerDeath(client, true);
-            LevelRanks levelRanks = AccountUtilities.GetLevelRanks(client);
-            LevelRankCooldowns cooldowns = AccountUtilities.GetCooldowns(client);
-            DateTime timeOfDeath = AccountUtilities.GetTimeOfDeath(client);
+            AccountUtil.SetPlayerDeath(client, true);
+            LevelRanks levelRanks = AccountUtil.GetLevelRanks(client);
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            DateTime timeOfDeath = AccountUtil.GetTimeOfDeath(client);
 
             int downerBonus = 0;
 
@@ -47,13 +49,13 @@ namespace Mirror.Handler
 
             NAPI.Task.Run(() =>
             {
-                if (AccountUtilities.IsPlayerDead(client))
+                if (AccountUtil.IsPlayerDead(client))
                     return;
 
-                if (timeOfDeath != AccountUtilities.GetTimeOfDeath(client))
+                if (timeOfDeath != AccountUtil.GetTimeOfDeath(client))
                     return;
 
-                AccountUtilities.SetPlayerDeath(client, false);
+                AccountUtil.SetPlayerDeath(client, false);
             }, 30000 + downerBonus);
         }
 

@@ -1,11 +1,13 @@
 ﻿using GTANetworkAPI;
 using Mirror.Events;
 using Mirror.Levels;
-using Mirror.Models;
+
 using Mirror.Settings;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror.Skills.Intelligence
 {
@@ -32,7 +34,7 @@ namespace Mirror.Skills.Intelligence
             if (levelRanks.Lockpick <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtil.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Lockpick - (levelRanks.Lockpick * 5));
 
             if (!levelRankCooldowns.IsLockpickReady)

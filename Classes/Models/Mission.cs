@@ -1,11 +1,12 @@
 ﻿using GTANetworkAPI;
+using Mirror.Classes.Static;
 using Mirror.Levels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
     public class Mission
     {
@@ -41,7 +42,7 @@ namespace Mirror.Models
                     Client client = NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]);
                     client.TriggerEvent("MissionInfo", "Mission_Active_Objectives", "");
                     client.TriggerEvent("eventCreatePlayerNotification", $"All Objectives Complete");
-                    AccountUtilities.AddExperience(client, clearedObjective.Experience);
+                    AccountUtil.AddExperience(client, clearedObjective.Experience);
                 }
                 return true;
             }
@@ -52,7 +53,7 @@ namespace Mirror.Models
                 Client client = NAPI.Player.GetPlayerFromHandle(ActivePlayers[i]);
                 client.TriggerEvent("MissionInfo", "Mission_Active_Objectives", activeObjectives);
                 client.TriggerEvent("eventCreatePlayerNotification", $"Objective Complete");
-                AccountUtilities.AddExperience(client, clearedObjective.Experience);
+                AccountUtil.AddExperience(client, clearedObjective.Experience);
             }
 
             return true;

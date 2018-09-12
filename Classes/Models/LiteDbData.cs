@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
-    public class StandardData
+    public class LiteDbData
     {
         public int ID { get; set; }
         public int UserID { get; set; }

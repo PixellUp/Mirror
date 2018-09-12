@@ -1,12 +1,14 @@
 ﻿using GTANetworkAPI;
 using Mirror.Handler;
 using Mirror.Levels;
-using Mirror.Models;
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Skillsheet = Mirror.Skills.Skills;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror.Commands
 {
@@ -61,7 +63,7 @@ namespace Mirror.Commands
         }
 
         [Command("addxp")]
-        public void CmdSetXP(Client client, int amount) => AccountUtilities.AddExperience(client, amount);
+        public void CmdSetXP(Client client, int amount) => AccountUtil.AddExperience(client, amount);
 
         [Command("getpoints")]
         public void GetPoints(Client client)

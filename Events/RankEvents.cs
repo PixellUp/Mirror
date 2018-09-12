@@ -1,12 +1,14 @@
 ﻿using GTANetworkAPI;
 using Mirror.Events.ActualEvents;
 using Mirror.Levels;
-using Mirror.Models;
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror.Events
 {
@@ -59,7 +61,7 @@ namespace Mirror.Events
 
             clients.ForEach((client) =>
             {
-                if (!AccountUtilities.IsAccountReady(client))
+                if (!AccountUtil.IsAccountReady(client))
                     return;
 
                 PassiveEvent.Trigger(client);

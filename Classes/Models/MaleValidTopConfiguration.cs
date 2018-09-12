@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
-    public class FemaleValidTopConfiguration
+    public class MaleValidTopConfiguration
     {
-        public static List<FemaleValidTopConfiguration> FemaleValidTops = new List<FemaleValidTopConfiguration>();
+        public static List<MaleValidTopConfiguration> MaleValidTops = new List<MaleValidTopConfiguration>();
 
         [JsonProperty("_id")]
         public int ID { get; set; }
@@ -21,13 +21,14 @@ namespace Mirror.Models
 
         public static void Initialize()
         {
-            string deserialize = File.ReadAllText(@".\bridge\resources\Mirror\bin\Debug\netcoreapp2.0\Datasets\FemaleTopCombinations.json");
-            FemaleValidTops = JsonConvert.DeserializeObject<List<FemaleValidTopConfiguration>>(deserialize);
+            string deserialize = File.ReadAllText(@".\bridge\resources\Mirror\bin\Debug\netcoreapp2.0\Data\Outfits\MaleTopCombinations.json");
+            MaleValidTops = JsonConvert.DeserializeObject<List<MaleValidTopConfiguration>>(deserialize);
         }
 
         public static void Create(int top, int torso, int undershirt)
         {
-            FemaleValidTopConfiguration config = new FemaleValidTopConfiguration
+
+            MaleValidTopConfiguration config = new MaleValidTopConfiguration
             {
                 Top = top,
                 Torso = torso,

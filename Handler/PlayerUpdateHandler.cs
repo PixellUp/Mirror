@@ -1,6 +1,8 @@
 ﻿using GTANetworkAPI;
-using Mirror.Database;
-using Mirror.Models;
+using Mirror.Classes;
+using Mirror.Classes.Models;
+using Mirror.Classes.Static;
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,16 +24,16 @@ namespace Mirror.Handler
             account.Health = client.Health;
             account.Armor = client.Armor;
 
-            Clothing clothing = DatabaseUtilities.GetById<Clothing>(account.UserID);
+            Clothing clothing = Database.GetById<Clothing>(account.UserID);
             clothing.Update();
 
-            Appearance appearance = DatabaseUtilities.GetById<Appearance>(account.UserID);
+            Appearance appearance = Database.GetById<Appearance>(account.UserID);
             appearance.Update();
 
             client.TriggerEvent("eventRecieveRanks", account.LevelRanks);
             client.TriggerEvent("eventUpdateCurrency", Convert.ToSingle(account.Money));
 
-            DatabaseUtilities.UpdateData(account);
+            Database.UpdateData(account);
         }
     }
 }

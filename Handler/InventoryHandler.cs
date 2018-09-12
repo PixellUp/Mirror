@@ -1,9 +1,10 @@
 ﻿using GTANetworkAPI;
 using Newtonsoft.Json;
-using Mirror.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror.Handler
 {
@@ -13,7 +14,7 @@ namespace Mirror.Handler
 
         public static void UseItem(Client client, int index)
         {
-            Account account = AccountUtilities.RetrieveAccount(client);
+            Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
 
             if (inventoryItems[index] == null)
@@ -81,7 +82,7 @@ namespace Mirror.Handler
 
         public static bool BurnItemFromInventory(Client client, string itemName)
         {
-            Account account = AccountUtilities.RetrieveAccount(client);
+            Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
 
             string inventoryJson = "";
@@ -176,7 +177,7 @@ namespace Mirror.Handler
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static string GetInventory(Client client) => AccountUtilities.RetrieveAccount(client).Inventory;
+        public static string GetInventory(Client client) => AccountUtil.RetrieveAccount(client).Inventory;
 
         /// <summary>
         /// Save the player's inventory.
@@ -185,7 +186,7 @@ namespace Mirror.Handler
         /// <param name="jsonInventory"></param>
         public static void SaveInventory(Client client, string jsonInventory)
         {
-            Account account = AccountUtilities.RetrieveAccount(client);
+            Account account = AccountUtil.RetrieveAccount(client);
             client.TriggerEvent("Recieve_Inventory", jsonInventory);
             account.Inventory = jsonInventory;
             Account.PlayerUpdateEvent.Trigger(client, account);
@@ -203,7 +204,7 @@ namespace Mirror.Handler
             int option = 0;
             bool foundOpenSlot = false;
 
-            Account account = AccountUtilities.RetrieveAccount(client);
+            Account account = AccountUtil.RetrieveAccount(client);
 
             // If item does not exist. Create a new item.
             InventoryItem invItem = new InventoryItem
@@ -277,7 +278,7 @@ namespace Mirror.Handler
         /// <param name="index"></param>
         public static void RemoveItemFromInventory(Client client, int index, bool allItems)
         {
-            Account account = AccountUtilities.RetrieveAccount(client);
+            Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
 
             if (inventoryItems[index] == null)

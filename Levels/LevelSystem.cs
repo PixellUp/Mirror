@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
-using Mirror.Models;
+using Mirror.Classes.Static;
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -152,7 +153,7 @@ namespace Mirror.Levels
         /// Update the Level Ranks with this current version of the class.
         /// </summary>
         /// <param name="account"></param>
-        public void UpdateLevelRanks(Client client) => AccountUtilities.UpdateLevelRanks(client, this);
+        public void UpdateLevelRanks(Client client) => AccountUtil.UpdateLevelRanks(client, this);
     }
 
     public class LevelInfo
@@ -238,7 +239,7 @@ namespace Mirror.Levels
         }
 
         /// <summary>
-        /// Get the current level of the player based on their xp.
+        /// Get the current level of the player based on their XP.
         /// </summary>
         /// <param name="currentXP"></param>
         /// <returns></returns>

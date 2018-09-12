@@ -1,9 +1,9 @@
 ﻿using GTANetworkAPI;
-using Mirror.Models;
-using Mirror.Utility;
+using Mirror.Classes.Static;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mirror.Classes.Models;
 
 namespace Mirror.Events
 {
@@ -20,13 +20,13 @@ namespace Mirror.Events
             string username = args[1].ToString();
             string password = args[2].ToString();
 
-            if (!AccountUtilities.CompareAccountPassword(username, password))
+            if (!AccountUtil.CompareAccountPassword(username, password))
             {
                 client.SendChatMessage(Exceptions.LoginAccountCredentialsInvalid);
                 return;
             }
 
-            Account account = AccountUtilities.RetrieveAccountByUsername(username);
+            Account account = AccountUtil.RetrieveAccountByUsername(username);
 
             if (account == null)
             {
@@ -104,7 +104,7 @@ namespace Mirror.Events
 
         public static void ForceLogin(Client client, string username)
         {
-            Account account = AccountUtilities.RetrieveAccountByUsername(username);
+            Account account = AccountUtil.RetrieveAccountByUsername(username);
 
             if (account == null)
             {

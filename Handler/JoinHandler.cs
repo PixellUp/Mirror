@@ -1,12 +1,13 @@
 ﻿using GTANetworkAPI;
 using Mirror.Commands;
 using Mirror.Events;
-using Mirror.Models;
-using Mirror.Utility;
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror.Handler
 {
@@ -15,7 +16,7 @@ namespace Mirror.Handler
         [ServerEvent(Event.PlayerSpawn)]
         public void PlayerSpawnHandler(Client client)
         {
-            if (AccountUtilities.IsAccountReady(client))
+            if (AccountUtil.IsAccountReady(client))
                 return;
 
             Console.WriteLine($"{client.Name} has joined the server.");

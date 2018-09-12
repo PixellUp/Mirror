@@ -1,13 +1,13 @@
 ﻿using GTANetworkAPI;
-using Mirror.Database;
+using Mirror.Classes.Static;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
-    public class Clothing : StandardData
+    public class Clothing : LiteDbData
     {
         // Type, Variant
         public int[] Mask { get; set; } = new int[] { 0, 0 };
@@ -28,7 +28,7 @@ namespace Mirror.Models
         public void Create(int id)
         {
             UserID = id;
-            DatabaseUtilities.Upsert(this);
+            Database.Upsert(this);
         }
 
         public void Attach(Client client)
@@ -38,7 +38,7 @@ namespace Mirror.Models
 
         public void Update()
         {
-            DatabaseUtilities.UpdateData(this);
+            Database.UpdateData(this);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Mirror.Models
         /// <returns></returns>
         public static Clothing RetrieveClothing(Account account)
         {
-            return DatabaseUtilities.GetById<Clothing>(account.UserID);
+            return Database.GetById<Clothing>(account.UserID);
         }
     }
 }

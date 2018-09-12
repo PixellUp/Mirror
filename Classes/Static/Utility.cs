@@ -1,8 +1,8 @@
 ﻿using GTANetworkAPI;
-using Mirror.Database;
-using Mirror.Models;
+using Mirror.Classes;
+using Mirror.Classes.Models;
 
-namespace Mirror.Utility
+namespace Mirror.Classes.Static
 {
     public static class Utilities
     {
@@ -24,7 +24,7 @@ namespace Mirror.Utility
         /// <returns></returns>
         public static bool DoesFieldExistInAccounts(string targetField, string name)
         {
-            Account acc = DatabaseUtilities.Get<Account>(targetField, name);
+            Account acc = Database.Get<Account>(targetField, name);
             if (acc == null)
             {
                 return false;

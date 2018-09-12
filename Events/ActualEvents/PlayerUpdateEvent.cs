@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
-using Mirror.Models;
+using Mirror.Classes.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,12 +1,13 @@
 ﻿using GTANetworkAPI;
-using Mirror.Database;
+using Mirror.Classes;
+using Mirror.Classes.Static;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
-    public class Location : StandardData
+    public class Location : LiteDbData
     {
         public static List<Location> Locations = new List<Location>();
 
@@ -32,7 +33,7 @@ namespace Mirror.Models
                 Z = client.Position.Z
             };
 
-            DatabaseUtilities.Upsert(location);
+            Database.Upsert(location);
             return location;
         }
     }

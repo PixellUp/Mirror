@@ -2,13 +2,15 @@
 using Mirror.Events;
 using Mirror.Handler;
 using Mirror.Levels;
-using Mirror.Models;
+
 using Mirror.Skills;
 using Mirror.Updates;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror
 {
@@ -79,7 +81,7 @@ namespace Mirror
 
             Account account = client.GetData("Mirror_Account");
             LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
-            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtil.GetCooldowns(client);
 
             if (account.IsDead)
             {
@@ -144,7 +146,7 @@ namespace Mirror
             } else {
                 target.Health -= amountOfDamage;
             }
-                
+
 
             // Update Health
             Account targetAccount = target.GetData("Mirror_Account");

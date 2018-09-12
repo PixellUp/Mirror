@@ -1,7 +1,7 @@
 ﻿using GTANetworkAPI;
 using Mirror.Events;
 using Mirror.Levels;
-using Mirror.Models;
+
 using Mirror.Settings;
 using Newtonsoft.Json;
 using System;
@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Mirror.Handler;
+using Mirror.Classes.Static;
+using Mirror.Classes.Models;
 
 namespace Mirror.Skills.Intelligence
 {
@@ -35,7 +37,7 @@ namespace Mirror.Skills.Intelligence
             if (levelRanks.Medicine <= 0)
                 return;
 
-            LevelRankCooldowns levelRankCooldowns = AccountUtilities.GetCooldowns(client);
+            LevelRankCooldowns levelRankCooldowns = AccountUtil.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.Medicine);
 
             if (!levelRankCooldowns.IsMedicineReady)
@@ -55,7 +57,7 @@ namespace Mirror.Skills.Intelligence
         {
             Account account = client.GetData("Mirror_Account");
             LevelRanks ranks = account.GetLevelRanks();
-            LevelRankCooldowns cooldowns = AccountUtilities.GetCooldowns(client);
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
             string itemToBurn = "Medkit";
 
             if (client.Position.DistanceTo2D(target.Position) > 5)

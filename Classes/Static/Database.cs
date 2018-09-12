@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Database
+namespace Mirror.Classes.Static
 {
-    public static class DatabaseUtilities
+    public static class Database
     {
         /// <summary>
         /// Insert a class into the database and create a collection of those types. If you want to update a collection pull the data before you push it.

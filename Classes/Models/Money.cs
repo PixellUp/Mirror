@@ -1,12 +1,12 @@
 ﻿using GTANetworkAPI;
-using Mirror.Database;
-using Mirror.Utility;
+using Mirror.Classes;
+using Mirror.Classes.Static;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Mirror.Models
+namespace Mirror.Classes.Models
 {
     public class Money
     {
@@ -25,17 +25,17 @@ namespace Mirror.Models
         /// </summary>
         public static void Initialize()
         {
-            if (!DatabaseUtilities.Exists<Money>())
+            if (!Database.Exists<Money>())
             {
                 // Create Money Entry
                 ServerFunds = new Money();
-                DatabaseUtilities.Upsert(ServerFunds);
+                Database.Upsert(ServerFunds);
                 Console.WriteLine(Exceptions.UtilityMoneyEstablished);
                 return;
             }
 
             // Get Money Entry
-            var collection = DatabaseUtilities.GetCollection<Money>();
+            var collection = Database.GetCollection<Money>();
             ServerFunds = collection.First();
 
             if (ServerFunds == null)
@@ -47,7 +47,7 @@ namespace Mirror.Models
 
         public static void UpdateFunds()
         {
-            DatabaseUtilities.UpdateData(ServerFunds);
+            Database.UpdateData(ServerFunds);
         }
 
         public static void Transaction(Client client, string toPlayer, double amount)

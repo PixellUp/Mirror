@@ -8,11 +8,14 @@
 <PackageReference Include="LiteDB" Version="4.1.4" />
 </ItemGroup>
 <ItemGroup>
-  <None Update="Datasets\FemaleTopCombinations.json">
+  <None Update="Data\Outfits\FemaleTopCombinations.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
-  <None Update="Datasets\MaleTopCombinations.json">
+  <None Update="Data\Outfits\MaleTopCombinations.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </None>
+</ItemGroup>
+<ItemGroup>
+  <Folder Include="Database\" />
 </ItemGroup>
 </Project>

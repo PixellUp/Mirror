@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Utility
+namespace Mirror.Classes.Static
 {
     public static class Exceptions
     {
