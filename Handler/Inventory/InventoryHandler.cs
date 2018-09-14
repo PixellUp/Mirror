@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
+using Mirror.Classes.Readonly;
 
 namespace Mirror.Handler
 {
@@ -22,13 +23,12 @@ namespace Mirror.Handler
 
             string inventoryJson = "";
 
-            bool itemFound = UseItemEffect(client, inventoryItems[index].Name.ToLower());
+            InventoryItem item = inventoryItems[index];
+
+            bool itemFound = UseItemEffect(client, inventoryItems[index].Name.ToLower(), item);
 
             if (!itemFound)
-            {
-                client.SendChatMessage("That item doesn't seem to have any effect.");
                 return;
-            }
 
             client.TriggerEvent("PlaySoundFrontend", "PIN_BUTTON", "ATM_SOUNDS");
 
@@ -46,9 +46,22 @@ namespace Mirror.Handler
             return;
         }
 
-        public static bool UseItemEffect(Client client, string name)
+        public static bool UseItemEffect(Client client, string name, InventoryItem item)
         {
-            switch (name)
+            // Check for weapon names first.
+            if (Array.IndexOf(WeaponNames.Weapons, name.ToLower()) >= 0)
+            {
+                return ItemHandler.Weapon(client, name);
+            }
+
+            // Handle Outfit
+            if (name.ToLower().Contains("topoutfit"))
+            {
+                ItemHandler.TopOutfit(client, item);
+                return true;
+            }
+
+            switch (name.ToLower())
             {
                 case "medkit":
                     ItemHandler.Heal(client, +25);
@@ -71,9 +84,6 @@ namespace Mirror.Handler
                     return true;
                 case "fish":
                     ItemHandler.Heal(client, +8);
-                    return true;
-                case "pistol50":
-                    ItemHandler.Weapon(client, name);
                     return true;
                 default:
                     return false;
@@ -141,26 +151,15 @@ namespace Mirror.Handler
         /// <param name="handle"></param>
         public static void RemoveDroppedItemFromGround(Client client, int handle)
         {
-            DroppedItem droppedItem = null;
-            foreach (DroppedItem item in DroppedItems)
-            {
-                if (item == null)
-                    continue;
-
-                if (item.Position.DistanceTo2D(client.Position) > 3)
-                    continue;
-
-                if (item.SpawnedObject.Value != handle)
-                    continue;
-
-                droppedItem = item;
-                DroppedItems.Remove(droppedItem);
-                break;
-            }
+            DroppedItem droppedItem = DroppedItems.Find(x => x.SpawnedObject.Value == handle);
 
             if (droppedItem == null)
                 return;
 
+            if (droppedItem.Position.DistanceTo2D(client.Position) > 3)
+                return;
+
+            DroppedItems.Remove(droppedItem);
             droppedItem.PickupItem();
             AddItemToInventory(client, droppedItem.Name, droppedItem.StackCount);
         }
@@ -198,7 +197,7 @@ namespace Mirror.Handler
         /// <param name="client"></param>
         /// <param name="itemName"></param>
         /// <param name="amount"></param>
-        public static void AddItemToInventory(Client client, string itemName, int amount)
+        public static void AddItemToInventory(Client client, string itemName, int amount, InventoryItem specificItem = null)
         {
             string inventoryJson = "";
             int option = 0;
@@ -214,6 +213,9 @@ namespace Mirror.Handler
                 StackCount = amount
             };
 
+            if (specificItem != null)
+                invItem = specificItem;
+
             // Grab the player inventory.
             InventoryItem[] inventoryItems = account.GetAllItems();
 
@@ -224,7 +226,8 @@ namespace Mirror.Handler
                 inventoryItems[option] = invItem;
                 inventoryJson = GetInventoryJson(inventoryItems);
                 SaveInventory(client, inventoryJson);
-                client.TriggerEvent("PlaySoundFrontend", "TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                client.TriggerEvent("Recieve_Inventory", inventoryJson);
+                Utilities.PlaySoundFrontend(client, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 return;
             }
 
@@ -234,13 +237,13 @@ namespace Mirror.Handler
                 if (item == null)
                     continue;
 
-                if (item.Name.ToLower() == itemName.ToLower())
+                if (item.Name.ToLower() == invItem.Name.ToLower())
                 {
                     item.StackCount += amount;
                     inventoryJson = GetInventoryJson(inventoryItems);
                     SaveInventory(client, inventoryJson);
                     client.TriggerEvent("Recieve_Inventory", inventoryJson);
-                    client.TriggerEvent("PlaySoundFrontend", "TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                    Utilities.PlaySoundFrontend(client, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                     return;
                 }
             }
@@ -267,7 +270,7 @@ namespace Mirror.Handler
             inventoryJson = GetInventoryJson(inventoryItems);
             SaveInventory(client, inventoryJson);
 
-            client.TriggerEvent("PlaySoundFrontend", "TOGGLE_ON", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            Utilities.PlaySoundFrontend(client, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             client.TriggerEvent("Recieve_Inventory", inventoryJson);
         }
 
@@ -276,39 +279,41 @@ namespace Mirror.Handler
         /// </summary>
         /// <param name="client"></param>
         /// <param name="index"></param>
-        public static void RemoveItemFromInventory(Client client, int index, bool allItems)
+        public static void RemoveItemFromInventory(Client client, int uniqueID, bool allItems)
         {
             Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
+            int index = -1;
 
-            if (inventoryItems[index] == null)
+            if (inventoryItems.Length <= 0)
                 return;
 
-            string inventoryJson = "";
+            index = Array.FindIndex(inventoryItems, x => x.UniqueID == uniqueID);
 
+            if (index == -1)
+                return;
+
+            // If the player is dropping all items make sure to set the slot to null.
             if (allItems || inventoryItems[index].StackCount <= 1)
             {
                 AddDroppedItemToGround(client, inventoryItems[index]);
                 inventoryItems[index] = null;
-                inventoryJson = GetInventoryJson(inventoryItems);
-                SaveInventory(client, inventoryJson);
-                client.TriggerEvent("PlaySoundFrontend", "CANCEL", "HUD_FRONTEND_DEFAULT_SOUNDSET");
-                return;
+            } else {
+                inventoryItems[index].StackCount -= 1;
             }
 
-            inventoryItems[index].StackCount -= 1;
-            inventoryJson = GetInventoryJson(inventoryItems);
-            SaveInventory(client, inventoryJson);
+            // Save the player's inventory and let them know.
+            SaveInventory(client, GetInventoryJson(inventoryItems));
+            Utilities.PlaySoundFrontend(client, "CANCEL", "HUD_FRONTEND_DEFAULT_SOUNDSET");
 
-            InventoryItem item = new InventoryItem()
-            {
-                ID = inventoryItems[index].ID,
-                Name = inventoryItems[index].Name,
-                StackCount = 1
-            };
-            client.TriggerEvent("PlaySoundFrontend", "CANCEL", "HUD_FRONTEND_DEFAULT_SOUNDSET");
-            AddDroppedItemToGround(client, item);
-            return;
+            // Not dropping all items.
+            if (allItems || inventoryItems[index] == null)
+                return;
+
+            // Make a copy of the item and drop it on the ground.
+            InventoryItem droppedItem = inventoryItems[index];
+            droppedItem.StackCount = 1;
+            AddDroppedItemToGround(client, droppedItem);
         }
     }
 }

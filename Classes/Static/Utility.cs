@@ -84,5 +84,19 @@ namespace Mirror.Classes.Static
         /// <param name="client"></param>
         /// <param name="cowerTime"></param>
         public static void ForcePlayerCower(Client client, int cowerTime) => client.TriggerEvent("eventIntimidate", cowerTime);
+
+        /// <summary>
+        /// Play a sound for the client.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="audioName"></param>
+        /// <param name="audioLibrary"></param>
+        public static void PlaySoundFrontend(Client client, string audioName, string audioLibrary) => client.TriggerEvent("PlaySoundFrontend", audioName, audioLibrary);
+
+        /// <summary>
+        /// Force the player to close their inventory.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void ForceCloseInventory(Client client) => client.TriggerEvent("eventCloseInventory");
     }
 }

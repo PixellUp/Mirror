@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mirror.Classes.Models
+namespace Mirror.Classes.Static
 {
     public static class Weapons
     {

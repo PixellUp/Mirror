@@ -6,7 +6,7 @@ namespace Mirror.Classes.Readonly
 {
     public static class WeaponNames
     {
-        public readonly static string[] Weapons = new string[]
+        public readonly static string[] Weapons = 
         {
             // melee
             "dagger",
@@ -80,6 +80,79 @@ namespace Mirror.Classes.Readonly
             "stickybomb",
             "proxmine",
             "pipebomb"
+        };
+
+        public static readonly string[] MeleeWeapons = 
+        {
+            "dagger",
+            "bat",
+            "bottle",
+            "crowbar",
+            "unarmed",
+            "flashlight",
+            "golfclub"
+        };
+
+        public static readonly string[] HandgunWeapons = 
+        {
+             "pistol",
+            "combatpistol",
+            "appistol",
+            "stungun",
+            "pistol50",
+            "snspistol",
+            "heavypistol",
+            "vintagepistol",
+            "flaregun",
+            "marskmanpistol",
+            "revolver"
+        };
+
+        public static readonly string[] SmgWeapons = 
+        {
+             "microsmg",
+            "smg",
+            "assaultsmg",
+            "combatpdw",
+            "machinepistol",
+            "minismg"
+        };
+
+        public static readonly string[] ShotgunWeapons =
+        {
+            "pumpshotgun",
+            "sawnoffshotgun",
+            "assaultshotgun",
+            "bullpupshotgun",
+            "musket",
+            "heavyshotgun",
+            "dbshotgun",
+            "autoshotgun"
+        };
+
+        public static readonly string[] AssaultWeapons =
+        {
+            "assaultrifle",
+            "carbinerifle",
+            "advancedrifle",
+            "specialcarbine",
+            "bullpuprifle",
+            "compactrifle"
+        };
+
+        public static readonly string[] HeavyWeapons =
+        {
+            "mg",
+            "combatmg",
+            "gusenberg",
+            "sniperrifle",
+            "heavysniper",
+            "marskmanrifle",
+            "rpg",
+            "grenadelauncher",
+            "minigun",
+            "railgun",
+            "compactlauncher"
         };
     }
 }

@@ -12,6 +12,7 @@ namespace Mirror.Classes.Models
         public Vector3 Position { get; set; }
         public NetHandle SpawnedObject { get; set; }
         public TextLabel TextLabel { get; set; }
+        public InventoryItem Item { get; set; }
 
         public DroppedItem(Client client, InventoryItem inventoryItem)
         {

@@ -76,6 +76,9 @@ namespace Mirror.Handler
                 case "Pickup_Item_Inventory":
                     InventoryEvents.PickupItem(client, arguments);
                     return;
+                case "Unequip_Weapon":
+                    InventoryEvents.UnequipWeapon(client);
+                    return;
                 case "Allocate_Rank_Point":
                     RankEvents.AllocateRankPoint(client, arguments);
                     return;

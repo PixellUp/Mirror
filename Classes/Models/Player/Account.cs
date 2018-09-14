@@ -29,11 +29,12 @@ namespace Mirror.Classes.Models
         public bool Banned { get; set; } = false;
         public bool NewAccount { get; set; } = true;
         public double Money { get; set; } = 0;
-        public string Inventory { get; set; } = "";
+        public string Inventory { get; set; } = "[]";
         public string LastPosition { get; set; } = JsonConvert.SerializeObject(new Vector3(Settings.Settings.SpawnX, Settings.Settings.SpawnY, Settings.Settings.SpawnZ));
         public int CurrentExperience { get; set; } = 200;
         public string LevelRanks { get; set; } = JsonConvert.SerializeObject(new LevelRanks());
         public string LevelSkills { get; set; } = JsonConvert.SerializeObject(new Skillsheet());
+        public string Weapons { get; set; } = "";
 
         public void Create(Client client, string username, string playerName, string password)
         {
@@ -93,6 +94,9 @@ namespace Mirror.Classes.Models
 
             // Levels
             AccountUtil.UpdateLevelSystemLocally(client);
+
+            // Reload existing weapons.
+            AccountUtil.ReloadPlayerWeapons(client);
 
             // Finish
             FinishLogin(client);

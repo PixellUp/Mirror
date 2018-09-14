@@ -63,6 +63,28 @@ namespace Mirror.Commands
             InventoryHandler.AddItemToInventory(client, name, amount);
         }
 
+        [Command("addtopoutfit")]
+        public void CmdAddTopOutfit(Client client, string name, int mask, int undershirt, int torso, int top, int hat, int glasses)
+        {
+            InventoryItem item = new InventoryItem
+            {
+                ID = 0,
+                Name = name,
+                StackCount = 1
+            };
+
+            item.CreateTopOutfit(
+                new int[] { mask, 0 },
+                new int[] { undershirt, 0 },
+                new int[] { torso, 0 },
+                new int[] { top, 0 },
+                new int[] { hat, 0 },
+                new int[] { glasses, 0 }
+            );
+            
+            InventoryHandler.AddItemToInventory(client, name, 1, item);
+        }
+
         [Command("addxp")]
         public void CmdSetXP(Client client, int amount) => AccountUtil.AddExperience(client, amount);
 

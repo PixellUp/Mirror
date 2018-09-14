@@ -185,5 +185,80 @@ namespace Mirror.Classes.Static
         /// <param name="client"></param>
         /// <returns></returns>
         public static InventoryItem[] GetPlayerItems(Client client) => RetrieveAccount(client).GetAllItems();
+
+        /// <summary>
+        /// Give a player a weapon based on inventory usage. Duplicates won't get overwritten.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="hash"></param>
+        public static void AddPlayerWeapon(Client client, WeaponHash hash)
+        {
+            Account account = RetrieveAccount(client);
+
+            List<WeaponHash> equipment = new List<WeaponHash>();
+
+            if (account.Weapons != "")
+                equipment = JsonConvert.DeserializeObject<List<WeaponHash>>(account.Weapons);
+
+            if (equipment == null)
+                return;
+
+            if (equipment.Contains(hash))
+            {
+                client.SendNotification("You already have that weapon equipped.");
+                return;
+            }
+
+            client.GiveWeapon(hash, 9999);
+            equipment.Add(hash);
+            account.Weapons = JsonConvert.SerializeObject(equipment);
+            UpdateAccount(client);
+        }
+
+        /// <summary>
+        /// Remove a weapon from a player.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static bool RemovePlayerWeapon(Client client, WeaponHash hash)
+        {
+            Account account = RetrieveAccount(client);
+
+            if (account.Weapons == "")
+                return false;
+
+            List<WeaponHash> equipment = JsonConvert.DeserializeObject<List<WeaponHash>>(account.Weapons);
+
+            if (!equipment.Contains(hash))
+                return false;
+
+            equipment.Remove(hash);
+            client.RemoveAllWeapons();
+
+            foreach(WeaponHash existingItem in equipment)
+                client.GiveWeapon(existingItem, 9999);
+
+            account.Weapons = JsonConvert.SerializeObject(equipment);
+            UpdateAccount(client);
+            return true;
+        }
+
+        /// <summary>
+        /// Reload the player's weapons from the account instance.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void ReloadPlayerWeapons(Client client)
+        {
+            Account account = RetrieveAccount(client);
+
+            if (account.Weapons == "")
+                return;
+
+            List<WeaponHash> equipment = JsonConvert.DeserializeObject<List<WeaponHash>>(account.Weapons);
+
+            foreach (WeaponHash existingItem in equipment)
+                client.GiveWeapon(existingItem, 9999);
+        }
     }
 }

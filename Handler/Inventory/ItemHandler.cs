@@ -5,6 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mirror.Classes.Models;
+using Mirror.Classes.Static;
+using Mirror.Levels;
+using Mirror.Classes.Readonly;
+using Mirror.Classes.Models.Player;
+using Newtonsoft.Json;
 
 namespace Mirror.Handler
 {
@@ -50,11 +55,92 @@ namespace Mirror.Handler
             client.TriggerEvent("eventCreatePlayerNotification", $"Stats Restored");
         }
 
-        public static void Weapon(Client client, string name)
+        public static bool Weapon(Client client, string name)
         {
+            LevelRanks levelRanks = AccountUtil.GetLevelRanks(client);
             WeaponHash hash = NAPI.Util.WeaponNameToModel(name);
 
-            client.GiveWeapon(hash, 0);
+            if (Array.IndexOf(WeaponNames.AssaultWeapons, name.ToLower()) >= 0)
+            {
+                if (levelRanks.MediumWeaponry <= 0)
+                {
+                    client.SendChatMessage("~o~You are unable to wield this weapon type: ~y~Medium");
+                    Utilities.PlaySoundFrontend(client, "ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                    return false;
+                }
+            }
+
+            if (Array.IndexOf(WeaponNames.ShotgunWeapons, name.ToLower()) >= 0)
+            {
+                if (levelRanks.MediumWeaponry <= 0)
+                {
+                    client.SendChatMessage("~o~You are unable to wield this weapon type: ~y~Medium");
+                    Utilities.PlaySoundFrontend(client, "ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                    return false;
+                }
+            }
+
+            if (Array.IndexOf(WeaponNames.SmgWeapons, name.ToLower()) >= 0)
+            {
+                if (levelRanks.LightWeaponry <= 0)
+                {
+                    client.SendChatMessage("~o~You are unable to wield this weapon type: ~y~Light");
+                    Utilities.PlaySoundFrontend(client, "ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                    return false;
+                }
+            }
+
+            if (Array.IndexOf(WeaponNames.HeavyWeapons, name.ToLower()) >= 0)
+            {
+                if (levelRanks.HeavyWeaponry <= 0)
+                {
+                    client.SendChatMessage("~o~You are unable to wield this weapon type: ~y~Heavy");
+                    Utilities.PlaySoundFrontend(client, "ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                    return false;
+                }
+            }
+
+            AccountUtil.AddPlayerWeapon(client, hash);
+            Utilities.PlaySoundFrontend(client, "PICK_UP_WEAPON", "HUD_FRONTEND_CUSTOM_SOUNDSET");
+            client.SendNotification("A weapon may be unequipped into your inventory by pressing ~o~R~w~.");
+            return true;
+        }
+
+        public static void TopOutfit(Client client, InventoryItem item)
+        {
+            Account account = AccountUtil.RetrieveAccount(client);
+            Clothing clothing = Clothing.RetrieveClothing(account);
+
+            TopOutfit topOutfit = JsonConvert.DeserializeObject<TopOutfit>(item.Properties);
+
+            if (topOutfit == null)
+                return;
+
+            InventoryItem oldOutfit = new InventoryItem
+            {
+                ID = 0,
+                Name = $"TopOutfit{new Random().Next(0, 999)}",
+                StackCount = 1
+            };
+
+            oldOutfit.CreateTopOutfit(
+                clothing.Mask,
+                clothing.Undershirt,
+                clothing.Torso,
+                clothing.Top,
+                clothing.Hats,
+                clothing.Glasses
+            );
+
+            topOutfit.Equip(clothing);
+            clothing.Update();
+            clothing.UpdateClothing(client);
+
+            Utilities.ForceCloseInventory(client);
+            NAPI.Task.Run(() =>
+            {
+                InventoryHandler.AddItemToInventory(client, oldOutfit.Name, 1, oldOutfit);
+            }, 1000);
         }
     }
 }

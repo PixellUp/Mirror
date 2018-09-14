@@ -15,6 +15,7 @@ namespace Mirror.Classes.Static.StaticEvents
         /// <param name="args"></param>
         public static void UseItem(Client client, params object[] args)
         {
+            // Unique ID
             if (args[1] == null)
                 return;
 
@@ -28,9 +29,11 @@ namespace Mirror.Classes.Static.StaticEvents
         /// <param name="args"></param>
         public static void DropItem(Client client, params object[] args)
         {
+            // Unique ID
             if (args[1] == null)
                 return;
 
+            // Boolean to drop all.
             if (args[2] == null)
                 return;
 
@@ -59,6 +62,20 @@ namespace Mirror.Classes.Static.StaticEvents
                 return;
 
             InventoryHandler.RemoveDroppedItemFromGround(client, Convert.ToInt32(args[1]));
+        }
+
+        public static void UnequipWeapon(Client client)
+        {
+            if (client.CurrentWeapon == WeaponHash.Unarmed)
+                return;
+
+            WeaponHash currentWeapon = client.CurrentWeapon;
+            bool wasItemUnequipped = AccountUtil.RemovePlayerWeapon(client, currentWeapon);
+
+            if (!wasItemUnequipped)
+                return;
+
+            InventoryHandler.AddItemToInventory(client, currentWeapon.ToString(), 1);
         }
     }
 }
