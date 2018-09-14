@@ -15,9 +15,9 @@ using Mirror.Classes.Static.StaticEvents;
 
 namespace Mirror
 {
-    public class WeaponDamage : Script
+    public class WeaponDamageHandler : Script
     {
-        public WeaponDamage()
+        public WeaponDamageHandler()
         {
             AttackUpdates.AttackEvent.AttackEventTrigger += RecieveClientAttackData;
         }

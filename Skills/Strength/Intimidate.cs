@@ -50,5 +50,25 @@ namespace Mirror.Skills.Strength
             client.SetData(VariableName + Notification, true);
             client.SendChatMessage("~r~Intimidate ~w~You're able to intimidate others again.");
         }
+
+        public static void Use(Client client, Client target)
+        {
+            if (!target.Exists)
+                return;
+
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            LevelRanks ranks = AccountUtil.GetLevelRanks(client);
+
+            if (!cooldowns.IsIntimidateReady || ranks.Intimidate <= 0)
+                return;
+
+            if (client.Position.DistanceTo2D(target.Position) > 4)
+                return;
+
+            cooldowns.IsIntimidateReady = false;
+            Utilities.ForcePlayerCower(target, ranks.Intimidate * 1000);
+            client.SendChatMessage($"~r~Intimidate ~w~You look quite intimidating and ~o~{target.Name}~w~ has noticed.");
+            target.SendChatMessage($"~r~Intimidate ~o~{client.Name} ~w~looks very intimidating you cower in fear.");
+        }
     }
 }

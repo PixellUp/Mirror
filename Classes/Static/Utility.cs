@@ -69,5 +69,20 @@ namespace Mirror.Classes.Static
                 client.TriggerEvent("eventBreakWindow", vehicle);
             }
         }
+
+        /// <summary>
+        /// Force the client to follow the target for a set period of time.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="target"></param>
+        /// <param name="dragTime"></param>
+        public static void ForcePlayerToFollowPlayer(Client client, Client target, int dragTime) => client.TriggerEvent("eventForceFollow", target, dragTime);
+
+        /// <summary>
+        /// Force a client to cower in position for a set period of time.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="cowerTime"></param>
+        public static void ForcePlayerCower(Client client, int cowerTime) => client.TriggerEvent("eventIntimidate", cowerTime);
     }
 }

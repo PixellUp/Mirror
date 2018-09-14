@@ -22,15 +22,20 @@ namespace Mirror.Classes.Static.StaticEvents
             switch (skillName)
             {
                 case "Medicine":
-                    client = arguments[2] as Client;
+                    target = arguments[2] as Client;
                     Skills.Intelligence.Medicine.Use(client, target);
                     return;
                 case "Drag":
-                    // not yets
+                    target = arguments[2] as Client;
+                    Skills.Strength.Drag.Use(client, target);
                     return;
                 case "Smash":
                     vehicle = arguments[2] as Vehicle;
                     Skills.Strength.Smash.Use(client, vehicle);
+                    return;
+                case "Intimidate":
+                    target = arguments[2] as Client;
+                    Skills.Strength.Intimidate.Use(client, target);
                     return;
             }
         }

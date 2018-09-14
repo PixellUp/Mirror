@@ -16,7 +16,7 @@ namespace Mirror.Commands
     public class Sandbox : Script
     {
         [Command("cv")]
-        public void CreateVehicle(Client client, string value, bool locked)
+        public void CreateVehicle(Client client, string value, bool locked = false)
         {
             uint vehiclecode = NAPI.Util.GetHashKey(value);
 
@@ -108,4 +108,26 @@ namespace Mirror.Commands
             TransactionProccess.Transaction(client, target, amount);
         }
     }
+
+
+
+    public class MyCustomResource : Script
+    {
+        [Command("sethealth")]
+        public void CmdSetHealth(Client client)
+        {
+            // what we want to do here.
+        }
+    }
+
+
+
+
+
+
 }
+
+
+
+
+

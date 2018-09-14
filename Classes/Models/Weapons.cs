@@ -54,7 +54,7 @@ namespace Mirror.Classes.Models
         {
             int weaponDice = 4;
 
-            Type obj = typeof(WeaponDamage);
+            Type obj = typeof(WeaponDamageHandler);
 
             foreach (var property in obj.GetFields())
             {
