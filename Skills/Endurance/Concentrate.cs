@@ -48,7 +48,20 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendChatMessage("~g~Concentrate ~w~Your next shot will do double damage.");
+            client.SendNotification("~g~Concentrate ~w~Your next shot will do double damage.");
+        }
+
+        public static int Use(Client client, int number)
+        {
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            LevelRanks ranks = AccountUtil.GetLevelRanks(client);
+
+            if (!cooldowns.IsConcentrateReady || ranks.Concentrate <= 0)
+                return number;
+
+            cooldowns.IsConcentrateReady = false;
+            client.SendNotification("Your shot hit for double damage.");
+            return (number * 2);
         }
     }
 }

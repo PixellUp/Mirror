@@ -48,7 +48,20 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendChatMessage("~b~Calculated ~w~First shot will hit with 100% accuracy.");
+            client.SendNotification("~b~Calculated ~w~First shot will hit with 100% accuracy.");
+        }
+
+        public static bool Use(Client client)
+        {
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            LevelRanks ranks = AccountUtil.GetLevelRanks(client);
+
+            if (!cooldowns.IsCalculatedReady || ranks.Calculated <= 0)
+                return false;
+
+            client.SendNotification("Your shot hit with 100% accuracy.");
+            cooldowns.IsCalculatedReady = false;
+            return true;
         }
     }
 }

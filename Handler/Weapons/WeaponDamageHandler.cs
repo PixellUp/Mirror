@@ -12,6 +12,8 @@ using System.Text;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Classes.Static.StaticEvents;
+using Mirror.Skills.Intelligence;
+using Mirror.Skills.Endurance;
 
 namespace Mirror
 {
@@ -24,33 +26,27 @@ namespace Mirror
 
         private void RecieveClientAttackData(object source, Client client, Client target, string weaponName)
         {
-            if (!client.Exists)
+            // Basic Failures. Just make sure there's a weapon and such.
+            if (!client.Exists || !target.Exists || weaponName == "")
                 return;
 
-            if (!target.Exists)
-                return;
-
-            if (client == target)
+            if (client == target || !client.IsAiming)
             {
                 PlayerEvents.CancelAttack(client);
                 return;
             }
-
-            if (weaponName == "")
-                return;
 
             int WeaponRange = Weapons.GetWeaponRange(weaponName);
             float DistanceBetweenTargets = client.Position.DistanceTo(target.Position);
 
             // If it's too far there's no point in rolling.
             if (DistanceBetweenTargets > WeaponRange + 20)
-            {
                 return;
-            }
 
             // Ternary Op - If the distance is greater than the weapon range return the distance between the targets. If they're in range set the penalty to zero.
             int RangePenalty = (DistanceBetweenTargets > WeaponRange) ? Convert.ToInt32((DistanceBetweenTargets - WeaponRange)) : 0;
 
+            /*
             if (weaponName == "Unarmed")
             {
                 if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.strength, clientModifier: RangePenalty))
@@ -61,7 +57,7 @@ namespace Mirror
                 }
 
                 int meleeDie = Weapons.GetWeaponDamageDie(weaponName);
-                int meleeDamage = Skills.Utility.RollDamage(meleeDie);
+                int meleeDamage = Utility.RollDamage(meleeDie);
 
                 target.Health -= meleeDamage;
 
@@ -72,17 +68,18 @@ namespace Mirror
                 client.TriggerEvent("eventTargetDamage", meleeDamage);
                 return;
             }
+            */
 
+            Account account = AccountUtil.RetrieveAccount(client);
+            LevelRanks clientLevelRanks = AccountUtil.GetLevelRanks(client);
 
-            if (!client.IsAiming)
-            {
-                PlayerEvents.CancelAttack(client);
-                return;
-            }
-
-            Account account = client.GetData("Mirror_Account");
-            LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
             LevelRankCooldowns levelRankCooldowns = AccountUtil.GetCooldowns(client);
+            bool skipCheck = false;
+            int deadeyeBonus = 0;
+
+            // The target player's defense bonus.
+            int targetDefenseBonus = 0;
+            targetDefenseBonus = Quick.Use(target, targetDefenseBonus);
 
             if (account.IsDead)
             {
@@ -90,24 +87,18 @@ namespace Mirror
                 return;
             }
 
-            bool skipCheck = false;
+            // Calculated Skill Check
+            if (Calculated.Use(client))
+                skipCheck = true;
 
-            // Calculated Check
-            if (levelRanks.Calculated > 0)
-            {
-                // If ready skip the accuracy check and roll for damage.
-                if (levelRankCooldowns.IsCalculatedReady)
-                {
-                    levelRankCooldowns.IsCalculatedReady = false;
-                    skipCheck = true;
-                    client.SendChatMessage("~b~Calculated ~w~Your shot hit with 100% Accuracy.");
-                }
-            }
+            // Use Deadeye if Calculated wasn't triggered.
+            if (Deadeye.Use(client) && !skipCheck)
+                deadeyeBonus = clientLevelRanks.Deadeye;
 
             // Check if the player beats the other's score.
             if (!skipCheck)
             {
-                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.endurance, clientModifier: RangePenalty))
+                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.endurance, clientModifier: (RangePenalty + deadeyeBonus), targetModifier: targetDefenseBonus))
                 {
                     target.TriggerEvent("eventLastDamage", 0);
                     client.TriggerEvent("eventTargetDamage", 0);
@@ -115,23 +106,23 @@ namespace Mirror
                 }
             }
             
+            // Get the weapon dice and roll count for the damage calculation.
             int weaponDie = Weapons.GetWeaponDamageDie(weaponName);
             int weaponRollCount = Weapons.GetWeaponRollCount(weaponName);
 
+            // Roll for damage.
             int amountOfDamage = 0;
-            
-            if (weaponRollCount == 0)
-            {
-                amountOfDamage = Skills.Utility.RollDamage(weaponDie);
-            } else {
-                for (int i = 0; i < weaponRollCount; i++)
-                {
-                    amountOfDamage += Skills.Utility.RollDamage(weaponDie);
-                }
-            }
+            for (int i = 0; i < weaponRollCount; i++)
+                amountOfDamage += Utility.RollDamage(weaponDie);
 
+            // Double damage if concentrate is available.
+            amountOfDamage = Concentrate.Use(client, amountOfDamage);
+
+            // Add fisticuffs damage if they're unarmed.
+            amountOfDamage += weaponName.ToLower() == "unarmed" ? clientLevelRanks.Fisticuffs : 0;
+        
             // Double Damage Skill
-            if (levelRanks.Concentrate > 0)
+            if (clientLevelRanks.Concentrate > 0)
             {
                 if (levelRankCooldowns.IsConcentrateReady)
                 {
@@ -147,7 +138,6 @@ namespace Mirror
             } else {
                 target.Health -= amountOfDamage;
             }
-
 
             // Update Health
             Account targetAccount = target.GetData("Mirror_Account");

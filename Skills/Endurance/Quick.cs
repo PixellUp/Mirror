@@ -48,7 +48,20 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendChatMessage("~g~Quick ~w~You have increased dodge chance for your next hit.");
+            client.SendNotification("~g~Quick ~w~You have increased dodge chance for your next hit.");
+        }
+
+        public static int Use(Client client, int number)
+        {
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            LevelRanks ranks = AccountUtil.GetLevelRanks(client);
+
+            if (!cooldowns.IsQuickReady || ranks.Quick <= 0)
+                return number;
+
+            cooldowns.IsQuickReady = false;
+            client.SendNotification("You used your increased dodge chance.");
+            return number += ranks.Quick;
         }
     }
 }

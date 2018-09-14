@@ -40,23 +40,34 @@ namespace Mirror.Skills
             Skillsheet clientSheet = client.GetData("Mirror_Skills");
             Skillsheet targetSheet = target.GetData("Mirror_Skills");
 
+            int initialClientRoll = Dice.RollDice(20);
+            int initialTargetRoll = Dice.RollDice(20);
+
+            if (initialClientRoll == 20)
+            {
+                client.SendNotification("You rolled a ~o~20!");
+                client.TriggerEvent("eventLastRoll", initialClientRoll);
+                target.TriggerEvent("eventLastRoll", initialTargetRoll);
+                return true;
+            }
+
             switch (type)
             {
                 case Skills.strength:
-                    clientRoll = clientSheet.GetScore(clientSheet.Strength, clientSheet.StrengthModifier) + Dice.RollDice(20) - clientModifier;
-                    targetRoll = targetSheet.GetScore(targetSheet.Strength, targetSheet.StrengthModifier) + Dice.RollDice(20) - targetModifier;
+                    clientRoll = clientSheet.GetScore(clientSheet.Strength, clientSheet.StrengthModifier) + initialClientRoll - clientModifier;
+                    targetRoll = targetSheet.GetScore(targetSheet.Strength, targetSheet.StrengthModifier) + initialTargetRoll - targetModifier;
                     break;
                 case Skills.endurance:
-                    clientRoll = clientSheet.GetScore(clientSheet.Endurance, clientSheet.EnduranceModifier) + Dice.RollDice(20) - clientModifier;
-                    targetRoll = targetSheet.GetScore(targetSheet.Endurance, targetSheet.EnduranceModifier) + Dice.RollDice(20) - targetModifier;
+                    clientRoll = clientSheet.GetScore(clientSheet.Endurance, clientSheet.EnduranceModifier) + initialClientRoll - clientModifier;
+                    targetRoll = targetSheet.GetScore(targetSheet.Endurance, targetSheet.EnduranceModifier) + initialTargetRoll - targetModifier;
                     break;
                 case Skills.intelligence:
-                    clientRoll = clientSheet.GetScore(clientSheet.Intelligence, clientSheet.IntelligenceModifier) + Dice.RollDice(20) - clientModifier;
-                    targetRoll = targetSheet.GetScore(targetSheet.Intelligence, targetSheet.IntelligenceModifier) + Dice.RollDice(20) - targetModifier;
+                    clientRoll = clientSheet.GetScore(clientSheet.Intelligence, clientSheet.IntelligenceModifier) + initialClientRoll - clientModifier;
+                    targetRoll = targetSheet.GetScore(targetSheet.Intelligence, targetSheet.IntelligenceModifier) + initialTargetRoll - targetModifier;
                     break;
                 case Skills.charisma:
-                    clientRoll = clientSheet.GetScore(clientSheet.Charisma, clientSheet.CharismaModifier) + Dice.RollDice(20) - clientModifier;
-                    targetRoll = targetSheet.GetScore(targetSheet.Charisma, targetSheet.CharismaModifier) + Dice.RollDice(20) - targetModifier;
+                    clientRoll = clientSheet.GetScore(clientSheet.Charisma, clientSheet.CharismaModifier) + initialClientRoll - clientModifier;
+                    targetRoll = targetSheet.GetScore(targetSheet.Charisma, targetSheet.CharismaModifier) + initialTargetRoll - targetModifier;
                     break;
             }
 
@@ -93,7 +104,7 @@ namespace Mirror.Skills
         /// <param name="scoreToBeat"></param>
         /// <param name="impact"></param>
         /// <returns></returns>
-        public static bool SkillCheckPlayer(Client client, Skills type, int scoreToBeat = 10, int impact = 0)
+        public static bool SkillCheckPlayer(Client client, Skills type, int scoreToBeat = 10, int impact = 0, int clientModifier = 0, int targetModifier = 0)
         {
             if (!client.HasData("Mirror_Skills"))
                 return false;
@@ -102,27 +113,33 @@ namespace Mirror.Skills
                 return false;
 
             int clientRoll = 0;
+            int initialRoll = Dice.RollDice(20);
 
             switch (type)
             {
                 case Skills.strength:
-                    clientRoll = clientSheet.GetScore(clientSheet.Strength, clientSheet.StrengthModifier) + Dice.RollDice(20);
+                    clientRoll = clientSheet.GetScore(clientSheet.Strength, clientSheet.StrengthModifier);
                     break;
                 case Skills.endurance:
-                    clientRoll = clientSheet.GetScore(clientSheet.Endurance, clientSheet.EnduranceModifier) + Dice.RollDice(20);
+                    clientRoll = clientSheet.GetScore(clientSheet.Endurance, clientSheet.EnduranceModifier);
                     break;
                 case Skills.intelligence:
-                    clientRoll = clientSheet.GetScore(clientSheet.Intelligence, clientSheet.IntelligenceModifier) + Dice.RollDice(20);
+                    clientRoll = clientSheet.GetScore(clientSheet.Intelligence, clientSheet.IntelligenceModifier);
                     break;
                 case Skills.charisma:
-                    clientRoll = clientSheet.GetScore(clientSheet.Charisma, clientSheet.CharismaModifier) + Dice.RollDice(20);
+                    clientRoll = clientSheet.GetScore(clientSheet.Charisma, clientSheet.CharismaModifier);
                     break;
             }
 
+            clientRoll += initialRoll;
             client.TriggerEvent("eventLastRoll", clientRoll);
 
-            if (clientRoll > scoreToBeat)
+            if (clientRoll + clientModifier > (scoreToBeat + targetModifier) || initialRoll == 20)
+            {
+                if (initialRoll == 20)
+                    client.SendNotification("You rolled a ~o~20!");
                 return true;
+            }
 
             switch (type)
             {

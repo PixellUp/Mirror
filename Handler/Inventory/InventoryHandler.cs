@@ -24,7 +24,7 @@ namespace Mirror.Handler
             InventoryItem[] inventoryItems = account.GetAllItems();
             int index = GetIndexFromUniqueID(inventoryItems, uniqueID);
 
-            if (index == -1)
+            if (index == -1 || account.IsDead)
                 return;
 
             bool itemFound = UseItemEffect(client, inventoryItems[index]);
@@ -200,6 +200,9 @@ namespace Mirror.Handler
             int option = 0;
             bool foundOpenSlot = false;
 
+            if (account.IsDead)
+                return;
+
             InventoryItem invItem = new InventoryItem
             {
                 ID = 0,
@@ -281,7 +284,7 @@ namespace Mirror.Handler
 
             index = Array.FindIndex(inventoryItems, x => x.UniqueID == uniqueID);
 
-            if (index == -1)
+            if (index == -1 || account.IsDead)
                 return;
 
             // If the player is dropping all items make sure to set the slot to null.

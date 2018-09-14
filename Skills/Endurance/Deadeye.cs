@@ -48,7 +48,20 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendChatMessage("~g~Deadeye ~w~You have increased accuracy on your next shot.");
+            client.SendNotification("~g~Deadeye ~w~You have increased accuracy on your next shot.");
+        }
+
+        public static bool Use(Client client)
+        {
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            LevelRanks ranks = AccountUtil.GetLevelRanks(client);
+
+            if (!cooldowns.IsDeadeyeReady || ranks.Deadeye <= 0)
+                return false;
+
+            cooldowns.IsDeadeyeReady = false;
+            client.SendNotification("Your shot had increased accuracy.");
+            return true;
         }
     }
 }

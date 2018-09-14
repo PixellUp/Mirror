@@ -69,8 +69,17 @@ namespace Mirror.Skills.Strength
                 return;
 
             cooldowns.IsSmashReady = false;
-            client.SendChatMessage("~r~Smash ~w~You used your fist to break the window.");
+
+            bool didPlayerSucceed = Skillcheck.SkillCheckPlayer(client, Skillcheck.Skills.strength, new Random().Next(15, 28), clientModifier: ranks.Smash, impact: -1);
+
+            if (!didPlayerSucceed)
+            {
+                client.SendNotification("You try to smash the vehicle window but end up hurting your fist.");
+                return;
+            }
+
             vehicle.Locked = false;
+            client.SendNotification("You successfully smash the vehicle window.");
             Utilities.BreakVehicleWindow(client, vehicle);
         }
     }
