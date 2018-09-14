@@ -191,7 +191,7 @@ namespace Mirror.Classes.Static
         /// </summary>
         /// <param name="client"></param>
         /// <param name="hash"></param>
-        public static void AddPlayerWeapon(Client client, WeaponHash hash)
+        public static bool AddPlayerWeapon(Client client, WeaponHash hash)
         {
             Account account = RetrieveAccount(client);
 
@@ -201,18 +201,19 @@ namespace Mirror.Classes.Static
                 equipment = JsonConvert.DeserializeObject<List<WeaponHash>>(account.Weapons);
 
             if (equipment == null)
-                return;
+                return false;
 
             if (equipment.Contains(hash))
             {
                 client.SendNotification("You already have that weapon equipped.");
-                return;
+                return false;
             }
 
             client.GiveWeapon(hash, 9999);
             equipment.Add(hash);
             account.Weapons = JsonConvert.SerializeObject(equipment);
             UpdateAccount(client);
+            return true;
         }
 
         /// <summary>

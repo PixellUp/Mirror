@@ -15,26 +15,56 @@ namespace Mirror.Handler
 {
     public static class ItemHandler
     {
-        public static void Heal(Client client, int amount)
+        /// <summary>
+        /// Heal the player for the specified amount.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public static bool Heal(Client client, int amount)
         {
-            if (client.Health < 100)
-                client.Health += amount;
+            if (client.Health >= 100)
+            {
+                client.SendNotification("You're already at full health.");
+                return false;
+            }
 
-            if (client.Health > 100)
+            if (client.Health + amount > 100)
+            {
                 client.Health = 100;
-
-            client.TriggerEvent("eventCreatePlayerNotification", $"{amount} Health");
+                client.SendNotification("You have reached maximum health.");
+                return true;
+            }
+                
+            client.Health += amount;
+            client.SendNotification($"You were healed for {amount}."); 
+            return true;
         }
 
-        public static void Armor(Client client, int amount)
+        /// <summary>
+        /// Add armor to the player for the specific amount.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public static bool Armor(Client client, int amount)
         {
-            if (client.Armor < 100)
-                client.Armor += amount;
+            if (client.Armor >= 100)
+            {
+                client.SendNotification("You already have maximum armor.");
+                return false;
+            }
 
-            if (client.Armor > 100)
+            if (client.Armor + amount > 100)
+            {
                 client.Armor = 100;
+                client.SendNotification("You have reached maximum armor.");
+                return true;
+            }
 
-            client.TriggerEvent("eventCreatePlayerNotification", $"{amount} Armor");
+            client.Armor += amount;
+            client.SendNotification($"You gained {amount} armor.");
+            return true;
         }
 
         public static void Drunk(Client client, int time)
@@ -100,7 +130,10 @@ namespace Mirror.Handler
                 }
             }
 
-            AccountUtil.AddPlayerWeapon(client, hash);
+            // Try adding the weapon to the player.
+            if (!AccountUtil.AddPlayerWeapon(client, hash))
+                return false;
+
             Utilities.PlaySoundFrontend(client, "PICK_UP_WEAPON", "HUD_FRONTEND_CUSTOM_SOUNDSET");
             client.SendNotification("A weapon may be unequipped into your inventory by pressing ~o~R~w~.");
             return true;

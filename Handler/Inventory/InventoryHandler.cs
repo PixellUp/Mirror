@@ -13,119 +13,110 @@ namespace Mirror.Handler
     {
         public static List<DroppedItem> DroppedItems = new List<DroppedItem>();
 
-        public static void UseItem(Client client, int index)
+        /// <summary>
+        /// Use the item if it has a specific effect available for it.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="uniqueID"></param>
+        public static void UseItem(Client client, int uniqueID)
         {
             Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
+            int index = GetIndexFromUniqueID(inventoryItems, uniqueID);
 
-            if (inventoryItems[index] == null)
+            if (index == -1)
                 return;
 
-            string inventoryJson = "";
-
-            InventoryItem item = inventoryItems[index];
-
-            bool itemFound = UseItemEffect(client, inventoryItems[index].Name.ToLower(), item);
+            bool itemFound = UseItemEffect(client, inventoryItems[index]);
 
             if (!itemFound)
-                return;
-
-            client.TriggerEvent("PlaySoundFrontend", "PIN_BUTTON", "ATM_SOUNDS");
-
-            if (inventoryItems[index].StackCount <= 1)
             {
-                inventoryItems[index] = null;
-                inventoryJson = GetInventoryJson(inventoryItems);
-                SaveInventory(client, inventoryJson);
+                Utilities.PlaySoundFrontend(client, "ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 return;
             }
 
             inventoryItems[index].StackCount -= 1;
-            inventoryJson = GetInventoryJson(inventoryItems);
-            SaveInventory(client, inventoryJson);
-            return;
+
+            if (inventoryItems[index].StackCount <= 0)
+                inventoryItems[index] = null;
+
+            SaveInventory(client, GetInventoryJson(inventoryItems));
+            Utilities.PlaySoundFrontend(client, "PIN_BUTTON", "ATM_SOUNDS");
         }
 
-        public static bool UseItemEffect(Client client, string name, InventoryItem item)
+        /// <summary>
+        /// Get the index of the item's location from a unique id.
+        /// </summary>
+        /// <param name="inventoryItems"></param>
+        /// <param name="uniqueID"></param>
+        /// <returns></returns>
+        public static int GetIndexFromUniqueID(InventoryItem[] inventoryItems ,int uniqueID)
+        {
+            int index = -1;
+            index = Array.FindIndex(inventoryItems, x => x.UniqueID == uniqueID);
+            return index;
+        }
+
+        public static bool UseItemEffect(Client client, InventoryItem item)
         {
             // Check for weapon names first.
-            if (Array.IndexOf(WeaponNames.Weapons, name.ToLower()) >= 0)
-            {
-                return ItemHandler.Weapon(client, name);
-            }
+            if (Array.IndexOf(WeaponNames.Weapons, item.Name.ToLower()) >= 0)
+                return ItemHandler.Weapon(client, item.Name);
 
             // Handle Outfit
-            if (name.ToLower().Contains("topoutfit"))
+            if (item.Name.ToLower().Contains("topoutfit"))
             {
                 ItemHandler.TopOutfit(client, item);
                 return true;
             }
 
-            switch (name.ToLower())
+            switch (item.Name.ToLower())
             {
                 case "medkit":
-                    ItemHandler.Heal(client, +25);
-                    return true;
+                    return ItemHandler.Heal(client, +25);
                 case "armor":
-                    ItemHandler.Armor(client, +5);
-                    return true;
+                    return ItemHandler.Armor(client, +5);
                 case "coffee":
                     ItemHandler.RestoreStats(client);
                     return true;
                 case "burger":
-                    ItemHandler.Heal(client, +3);
-                    return true;
+                    return ItemHandler.Heal(client, +3);
                 case "soda":
-                    ItemHandler.Heal(client, +5);
-                    return true;
+                    return ItemHandler.Heal(client, +5);
                 case "beer":
-                    ItemHandler.Heal(client, -5);
                     ItemHandler.Drunk(client, 20);
-                    return true;
+                    return ItemHandler.Heal(client, -5);
                 case "fish":
-                    ItemHandler.Heal(client, +8);
-                    return true;
+                    return ItemHandler.Heal(client, +8);
                 default:
                     return false;
             }
         }
 
+        /// <summary>
+        /// Completely burns an item from the inventory. Stacks are taken into account.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="itemName"></param>
+        /// <returns></returns>
         public static bool BurnItemFromInventory(Client client, string itemName)
         {
             Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
-
-            string inventoryJson = "";
-
             int index = -1;
-            for (int i = 0; i < inventoryItems.Length; i++)
-            {
-                if (inventoryItems[i] == null)
-                    continue;
-
-                if (inventoryItems[i].Name.ToLower() == itemName.ToLower())
-                {
-                    index = i;
-                    break;
-                }
-            }
+            index = Array.FindIndex(inventoryItems, x => x.Name.ToLower() == itemName.ToLower());
 
             if (index == -1)
                 return false;
 
-            client.TriggerEvent("PlaySoundFrontend", "PIN_BUTTON", "ATM_SOUNDS");
-
-            if (inventoryItems[index].StackCount <= 1)
-            {
-                inventoryItems[index] = null;
-                inventoryJson = GetInventoryJson(inventoryItems);
-                SaveInventory(client, inventoryJson);
-                return true;
-            }
+            Utilities.PlaySoundFrontend(client, "PIN_BUTTON", "ATM_SOUNDS");
 
             inventoryItems[index].StackCount -= 1;
-            inventoryJson = GetInventoryJson(inventoryItems);
-            SaveInventory(client, inventoryJson);
+
+            if (inventoryItems[index].StackCount <= 0)
+                inventoryItems[index] = null;
+
+            SaveInventory(client, GetInventoryJson(inventoryItems));
             return true;
         }
 
@@ -161,7 +152,7 @@ namespace Mirror.Handler
 
             DroppedItems.Remove(droppedItem);
             droppedItem.PickupItem();
-            AddItemToInventory(client, droppedItem.Name, droppedItem.StackCount);
+            AddItemToInventory(client, droppedItem.Name, droppedItem.StackCount, droppedItem.Item);
         }
 
         /// <summary>
@@ -186,10 +177,16 @@ namespace Mirror.Handler
         public static void SaveInventory(Client client, string jsonInventory)
         {
             Account account = AccountUtil.RetrieveAccount(client);
-            client.TriggerEvent("Recieve_Inventory", jsonInventory);
             account.Inventory = jsonInventory;
             Account.PlayerUpdateEvent.Trigger(client, account);
+            SendInventoryLocally(client);
         }
+
+        /// <summary>
+        /// Send the player's inventory as a JSON string locally.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void SendInventoryLocally(Client client) => client.TriggerEvent("Recieve_Inventory", AccountUtil.RetrieveAccount(client).Inventory);
 
         /// <summary>
         /// Add a new item to the player's inventory.
@@ -199,13 +196,10 @@ namespace Mirror.Handler
         /// <param name="amount"></param>
         public static void AddItemToInventory(Client client, string itemName, int amount, InventoryItem specificItem = null)
         {
-            string inventoryJson = "";
+            Account account = AccountUtil.RetrieveAccount(client);
             int option = 0;
             bool foundOpenSlot = false;
 
-            Account account = AccountUtil.RetrieveAccount(client);
-
-            // If item does not exist. Create a new item.
             InventoryItem invItem = new InventoryItem
             {
                 ID = 0,
@@ -213,6 +207,7 @@ namespace Mirror.Handler
                 StackCount = amount
             };
 
+            // Use the item provided instead if it is provided.
             if (specificItem != null)
                 invItem = specificItem;
 
@@ -220,35 +215,33 @@ namespace Mirror.Handler
             InventoryItem[] inventoryItems = account.GetAllItems();
 
             // Check if player even has an inventory.
-            if (inventoryItems == null)
+            if (inventoryItems.Length <= 0)
             {
                 inventoryItems = new InventoryItem[27];
                 inventoryItems[option] = invItem;
-                inventoryJson = GetInventoryJson(inventoryItems);
-                SaveInventory(client, inventoryJson);
-                client.TriggerEvent("Recieve_Inventory", inventoryJson);
+                SaveInventory(client, GetInventoryJson(inventoryItems));
+                SendInventoryLocally(client);
                 Utilities.PlaySoundFrontend(client, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 return;
             }
 
-            // Check if item type already exists.
+            // Check if item type already exists and if it does stack it and finish.
             foreach (InventoryItem item in inventoryItems)
             {
                 if (item == null)
                     continue;
 
-                if (item.Name.ToLower() == invItem.Name.ToLower())
+                if (item.Name.ToLower() == invItem.Name.ToLower() && item.IsStackable)
                 {
                     item.StackCount += amount;
-                    inventoryJson = GetInventoryJson(inventoryItems);
-                    SaveInventory(client, inventoryJson);
-                    client.TriggerEvent("Recieve_Inventory", inventoryJson);
+                    SaveInventory(client, GetInventoryJson(inventoryItems));
+                    SendInventoryLocally(client);
                     Utilities.PlaySoundFrontend(client, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                     return;
                 }
             }
 
-            // If the item does not exist we'll ad it to the inventory now.
+            // If the item does not exist we'll add it to the inventory now and find an open slot.
             for (option = 0; option < inventoryItems.Length; option++)
             {
                 if (inventoryItems[option] == null)
@@ -260,18 +253,16 @@ namespace Mirror.Handler
 
             if (foundOpenSlot == false)
             {
-                client.SendChatMessage("Your inventory is full.");
+                client.SendNotification("Your inventory is full.");
+                Utilities.PlaySoundFrontend(client, "ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 return;
             }
 
             invItem.ID = option;
             inventoryItems[option] = invItem;
-
-            inventoryJson = GetInventoryJson(inventoryItems);
-            SaveInventory(client, inventoryJson);
-
+            SaveInventory(client, GetInventoryJson(inventoryItems));
+            SendInventoryLocally(client);
             Utilities.PlaySoundFrontend(client, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET");
-            client.TriggerEvent("Recieve_Inventory", inventoryJson);
         }
 
         /// <summary>

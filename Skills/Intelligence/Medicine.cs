@@ -54,7 +54,7 @@ namespace Mirror.Skills.Intelligence
             client.SendChatMessage("~b~Medicine ~w~You can heal someone else or heal yourself for additional again.");
         }
 
-        public static void Use (Client client, Client target)
+        public static void Use(Client client, Client target)
         {
             Account account = client.GetData("Mirror_Account");
             LevelRanks ranks = account.GetLevelRanks();
