@@ -22,7 +22,7 @@ namespace Mirror.Updates
             if (DateTime.Compare(DateTime.Now, TickTime) <= 0)
                 return;
 
-            TickTime = DateTime.Now.AddMilliseconds(500);
+            TickTime = DateTime.Now.AddMilliseconds(250);
 
             Client[] players = NAPI.Pools.GetAllPlayers().ToArray();
             

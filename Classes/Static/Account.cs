@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using Mirror.Classes.Models;
 using Mirror.Globals;
+using Mirror.Handler;
 
 namespace Mirror.Classes.Static
 {
@@ -124,6 +125,7 @@ namespace Mirror.Classes.Static
             if (isDead)
             {
                 client.SetSharedData(EntitySharedData.IsPlayerDowned, true);
+                DropAllWeapons(client);
             }
                 
             if (!isDead)
@@ -266,6 +268,33 @@ namespace Mirror.Classes.Static
             account.Weapons = JsonConvert.SerializeObject(equipment);
             UpdateAccount(client);
             return true;
+        }
+
+        /// <summary>
+        /// Drop all player weapons. Mostly used by on death events.
+        /// </summary>
+        /// <param name="client"></param>
+        public static void DropAllWeapons(Client client)
+        {
+            Account account = RetrieveAccount(client);
+
+            if (account.Weapons == "")
+                return;
+
+            client.RemoveAllWeapons();
+            List<WeaponHash> equipment = JsonConvert.DeserializeObject<List<WeaponHash>>(account.Weapons);
+            account.Weapons = "";
+            UpdateAccount(client);
+
+            foreach (WeaponHash item in equipment)
+            {
+                InventoryHandler.AddDroppedItemToGround(client, new InventoryItem
+                {
+                    Name = item.ToString(),
+                    StackCount = 1,
+                    IsStackable = false
+                });
+            }
         }
 
         /// <summary>

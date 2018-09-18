@@ -122,7 +122,7 @@ namespace Mirror.Commands
             client.RemoveAllWeapons();
 
             WeaponHash hash = NAPI.Util.WeaponNameToModel(weapon);
-            NAPI.Player.GivePlayerWeapon(client, hash, 25);
+            AccountUtil.AddPlayerWeapon(client, hash);
         }
 
         [Command("transfer")]

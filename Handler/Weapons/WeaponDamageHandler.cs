@@ -80,8 +80,7 @@ namespace Mirror
             {
                 if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.endurance, clientModifier: (RangePenalty + deadeyeBonus), targetModifier: targetDefenseBonus) && weaponName != "unarmed")
                 {
-                    target.TriggerEvent("eventLastDamage", 0);
-                    client.TriggerEvent("eventTargetDamage", 0);
+                    Utilities.NotifyPlayersOfTargetDamage(client, target, 0);
                     return;
                 }
             }
@@ -121,9 +120,12 @@ namespace Mirror
 
             // Update Health
             Account.PlayerUpdateEvent.Trigger(target, targetAccount);
+
+
+            Utilities.NotifyPlayersOfTargetDamage(client, target, amountOfDamage);
             
-            target.TriggerEvent("eventLastDamage", amountOfDamage);
-            client.TriggerEvent("eventTargetDamage", amountOfDamage);
+            //target.TriggerEvent("eventLastDamage", amountOfDamage);
+            //client.TriggerEvent("eventTargetDamage", amountOfDamage);
 
             if (target.Health > 2)
                 return;

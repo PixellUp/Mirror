@@ -53,7 +53,44 @@ namespace Mirror.Handler
         public static int GetIndexFromUniqueID(InventoryItem[] inventoryItems ,int uniqueID)
         {
             int index = -1;
-            index = Array.FindIndex(inventoryItems, x => x.UniqueID == uniqueID);
+
+            for (int i = 0; i < inventoryItems.Length; i++)
+            {
+                if (inventoryItems[i] == null)
+                    continue;
+
+                if (inventoryItems[i].UniqueID != uniqueID)
+                    continue;
+
+                index = i;
+                break;
+            }
+
+            return index;
+        }
+
+        /// <summary>
+        /// Get the index based on the name of the item. Accounts for null checks.
+        /// </summary>
+        /// <param name="inventoryItems"></param>
+        /// <param name="itemName"></param>
+        /// <returns></returns>
+        public static int GetIndexFromName(InventoryItem[] inventoryItems, string itemName)
+        {
+            int index = -1;
+
+            for (int i = 0; i < inventoryItems.Length; i++)
+            {
+                if (inventoryItems[i] == null)
+                    continue;
+
+                if (inventoryItems[i].Name.ToLower() != itemName.ToLower())
+                    continue;
+
+                index = i;
+                break;
+            }
+
             return index;
         }
 
@@ -103,8 +140,8 @@ namespace Mirror.Handler
         {
             Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
-            int index = -1;
-            index = Array.FindIndex(inventoryItems, x => x.Name.ToLower() == itemName.ToLower());
+
+            int index = GetIndexFromName(inventoryItems, itemName);
 
             if (index == -1)
                 return false;
@@ -277,12 +314,8 @@ namespace Mirror.Handler
         {
             Account account = AccountUtil.RetrieveAccount(client);
             InventoryItem[] inventoryItems = account.GetAllItems();
-            int index = -1;
 
-            if (inventoryItems.Length <= 0)
-                return;
-
-            index = Array.FindIndex(inventoryItems, x => x.UniqueID == uniqueID);
+            int index = GetIndexFromUniqueID(inventoryItems, uniqueID);
 
             if (index == -1 || account.IsDead)
                 return;

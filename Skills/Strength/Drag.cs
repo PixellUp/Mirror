@@ -49,7 +49,7 @@ namespace Mirror.Skills.Strength
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendChatMessage("~r~Drag ~w~You're able to drag someone again.");
+            client.SendNotification("~r~Drag ~w~You're able to drag someone again.");
         }
 
         public static void Use(Client client, Client target)
@@ -73,9 +73,9 @@ namespace Mirror.Skills.Strength
                 return;
 
             cooldowns.IsDragReady = false;
-            Utilities.ForcePlayerToFollowPlayer(target, client, ranks.Drag * 2500);
-            client.SendChatMessage($"~r~Drag ~w~You are dragging ~o~{target.Name}.");
-            target.SendChatMessage($"~r~Drag ~w~You are being dragged by ~o~{client.Name}.");
+            Utilities.ForcePlayerToFollowPlayer(target, client, ranks.Drag * 1500);
+            client.SendNotification($"You are dragging ~o~{target.Name}.");
+            target.SendNotification($"You are being dragged by ~o~{client.Name}.");
         }
     }
 }

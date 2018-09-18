@@ -52,7 +52,7 @@ namespace Mirror.Skills.Intelligence
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendChatMessage("~b~Medicine ~w~You can heal someone else or heal yourself for additional again.");
+            client.SendNotification("~b~Medicine ~w~You can heal someone else or heal yourself for additional again.");
         }
 
         public static void Use(Client client, Client target)
@@ -89,12 +89,22 @@ namespace Mirror.Skills.Intelligence
             cooldowns.IsMedicineReady = false;
             cooldowns.NotifyClientsideOfChange(client);
 
-            // Okay it burned let's heal the other player.
+            int healAmount = 25 + ranks.Medicine * 2;
+
+            if (healAmount + target.Health > 100)
+            {
+                target.Health = 100;
+            } else {
+                target.Health += healAmount;
+            }
+
             Account targetAccount = target.GetData(EntityData.Account);
-            target.Health += (25 + ranks.Medicine * 2); // Heal 25 + Ranks * 2. Max heal is around 91 at 33 points.
             targetAccount.SetPlayerRevived(target);
             target.StopAnimation();
             Account.PlayerUpdateEvent.Trigger(target, targetAccount);
+
+            client.SendNotification($"You ~g~healed~w~ {target.Name} for {healAmount} Health.");
+            target.SendNotification($"{client.Name} ~g~healed~w~ you for {healAmount} Health.");
         }
     }
 }

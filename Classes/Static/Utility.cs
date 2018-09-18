@@ -98,5 +98,21 @@ namespace Mirror.Classes.Static
         /// </summary>
         /// <param name="client"></param>
         public static void ForceCloseInventory(Client client) => client.TriggerEvent("eventCloseInventory");
+
+
+
+        public static void NotifyPlayersOfTargetDamage(Client client, Client target, int amount)
+        {
+            Client[] players = NAPI.Pools.GetAllPlayers().ToArray();
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].Position.DistanceTo2D(target.Position) >= 50)
+                    continue;
+
+                players[i].TriggerEvent("eventTargetDamage", client, target, amount);
+            }
+
+        }
     }
 }

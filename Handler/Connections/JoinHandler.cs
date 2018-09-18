@@ -51,6 +51,9 @@ namespace Mirror.Handler
 
             if (client.Name.ToLower() == "john_john")
                 LoginEvents.ForceLogin(client, "stuyk");
+
+            if (client.Name.ToLower() == "emily_britson")
+                LoginEvents.ForceLogin(client, "tidal");
         }
     }
 }
