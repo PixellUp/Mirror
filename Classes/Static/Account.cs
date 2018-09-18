@@ -120,6 +120,11 @@ namespace Mirror.Classes.Static
         {
             Account account = RetrieveAccount(client);
             account.IsDead = isDead;
+
+            if (isDead)
+            {
+                client.SetSharedData(EntitySharedData.IsPlayerDowned, true);
+            }
                 
             if (!isDead)
             {

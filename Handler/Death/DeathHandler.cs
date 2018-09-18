@@ -7,6 +7,7 @@ using Mirror.Levels;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Events;
+using Mirror.Globals;
 
 namespace Mirror.Handler
 {
@@ -31,7 +32,6 @@ namespace Mirror.Handler
 
         private void HandleDeath(object source, Client client, Client killer)
         {
-            NotifyPlayersOfDeath(client);
             AccountUtil.SetPlayerDeath(client, true);
             LevelRanks levelRanks = AccountUtil.GetLevelRanks(client);
             LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
@@ -45,6 +45,8 @@ namespace Mirror.Handler
                 downerBonus = 5000 * levelRanks.Downer;
                 client.SendChatMessage("~r~Downer ~w~You are using your extended downtime for dieing.");
             }
+
+            NotifyPlayersOfDeath(client);
 
             NAPI.Task.Run(() =>
             {
@@ -63,10 +65,7 @@ namespace Mirror.Handler
             Client[] players = NAPI.Pools.GetAllPlayers().ToArray();
 
             for (int i = 0; i < players.Length; i++)
-            {
-                if (players[i].Position.DistanceTo2D(client.Position) <= 50)
-                    players[i].TriggerEvent("eventForceRagdoll", client.Handle, 20000);
-            }
+                players[i].TriggerEvent("eventForceRagdoll", client.Handle);
         }
     }
 }
