@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mirror.Classes.Models;
+using Mirror.Globals;
 
 namespace Mirror.Classes.Static
 {
@@ -29,7 +30,7 @@ namespace Mirror.Classes.Static
         /// <returns></returns>
         public static Account RetrieveAccount(Client client)
         {
-            return client.GetData("Mirror_Account") as Account;
+            return client.GetData(EntityData.Account) as Account;
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Mirror.Classes.Static
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static bool IsAccountReady(Client client) => client.HasData("Mirror_Account") ? true : false;
+        public static bool IsAccountReady(Client client) => client.HasData(EntityData.Account) ? true : false;
 
         /// <summary>
         /// Updates the client's account.
@@ -121,7 +122,7 @@ namespace Mirror.Classes.Static
             account.IsDead = isDead;
 
             if (isDead)
-                client.SetData("Death_Time", DateTime.Now);
+                client.SetData(EntityData.DeathTime, DateTime.Now);
 
             if (!isDead)
             {
@@ -173,10 +174,10 @@ namespace Mirror.Classes.Static
         /// <returns></returns>
         public static LevelRankCooldowns GetCooldowns(Client client)
         {
-            if (!client.HasData("Mirror_LevelRank_Cooldowns"))
-                client.SetData("Mirror_LevelRank_Cooldowns", new LevelRankCooldowns());
+            if (!client.HasData(EntityData.Cooldowns))
+                client.SetData(EntityData.Cooldowns, new LevelRankCooldowns());
 
-            return client.GetData("Mirror_LevelRank_Cooldowns") as LevelRankCooldowns;
+            return client.GetData(EntityData.Cooldowns) as LevelRankCooldowns;
         }
 
         /// <summary>

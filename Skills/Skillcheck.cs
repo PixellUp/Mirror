@@ -5,6 +5,8 @@ using System.Text;
 
 using Skillsheet = Mirror.Skills.Skills;
 using Dice = Mirror.Skills.Utility;
+using Mirror.Globals;
+using Mirror.Classes.Static;
 
 namespace Mirror.Skills
 {
@@ -28,17 +30,17 @@ namespace Mirror.Skills
         /// <returns></returns>
         public static bool SkillCheckPlayers(Client client, Client target, Skills type, int impact = 0, int clientModifier = 0, int targetModifier = 0)
         {
-            if (!client.HasData("Mirror_Skills"))
+            if (!client.HasData(EntityData.Skills))
                 return false;
 
-            if (!target.HasData("Mirror_Skills"))
+            if (!target.HasData(EntityData.Skills))
                 return false;
 
             int clientRoll = 0;
             int targetRoll = 0;
 
-            Skillsheet clientSheet = client.GetData("Mirror_Skills");
-            Skillsheet targetSheet = target.GetData("Mirror_Skills");
+            Skillsheet clientSheet = client.GetData(EntityData.Skills);
+            Skillsheet targetSheet = target.GetData(EntityData.Skills);
 
             int initialClientRoll = Dice.RollDice(20);
             int initialTargetRoll = Dice.RollDice(20);
@@ -106,10 +108,10 @@ namespace Mirror.Skills
         /// <returns></returns>
         public static bool SkillCheckPlayer(Client client, Skills type, int scoreToBeat = 10, int impact = 0, int clientModifier = 0, int targetModifier = 0)
         {
-            if (!client.HasData("Mirror_Skills"))
+            if (!client.HasData(EntityData.Skills))
                 return false;
 
-            if (!(client.GetData("Mirror_Skills") is Skillsheet clientSheet))
+            if (!(client.GetData(EntityData.Skills) is Skillsheet clientSheet))
                 return false;
 
             int clientRoll = 0;

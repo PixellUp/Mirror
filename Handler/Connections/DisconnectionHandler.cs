@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Models;
+using Mirror.Globals;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +12,10 @@ namespace Mirror.Handler
         [ServerEvent(Event.PlayerDisconnected)]
         public void PlayerDisconnectEvent(Client client, DisconnectionType type, string reason)
         {
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
-            Account account = client.GetData("Mirror_Account");
+            Account account = client.GetData(EntityData.Account);
             Account.PlayerUpdateEvent.Trigger(client, account);
         }
     }

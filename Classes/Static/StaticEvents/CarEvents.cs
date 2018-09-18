@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-
+using Mirror.Globals;
 using Mirror.Skills;
 using System;
 using System.Collections.Generic;
@@ -133,10 +133,10 @@ namespace Mirror.Classes.Static.StaticEvents
             if (client.VehicleSeat != -1)
                 return;
 
-            if (!vehicle.HasData("Headlights"))
-                vehicle.SetData("Headlights", true);
+            if (!vehicle.HasData(EntityData.Vehicle_Headlights))
+                vehicle.SetData(EntityData.Vehicle_Headlights, true);
 
-            if (Convert.ToBoolean(vehicle.GetData("Headlights")))
+            if (Convert.ToBoolean(vehicle.GetData(EntityData.Vehicle_Headlights)))
             {
                 List<Client> targets = NAPI.Player.GetPlayersInRadiusOfPlayer(25, client);
                 foreach (Client target in targets)
@@ -144,7 +144,7 @@ namespace Mirror.Classes.Static.StaticEvents
                     target.TriggerEvent("eventToggleLights", vehicle.Handle, 0);
                     client.TriggerEvent("eventCreatePlayerNotification", $"Lights Off");
                 }
-                vehicle.SetData("Headlights", false);
+                vehicle.SetData(EntityData.Vehicle_Headlights, false);
             }
             else
             {
@@ -154,7 +154,7 @@ namespace Mirror.Classes.Static.StaticEvents
                     target.TriggerEvent("eventToggleLights", vehicle.Handle, 1);
                     client.TriggerEvent("eventCreatePlayerNotification", $"Lights On");
                 }
-                vehicle.SetData("Headlights", true);
+                vehicle.SetData(EntityData.Vehicle_Headlights, true);
             }
 
         }

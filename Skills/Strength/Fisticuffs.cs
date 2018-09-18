@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Models;
+using Mirror.Globals;
 using Mirror.Levels;
 
 using Newtonsoft.Json;
@@ -17,10 +18,10 @@ namespace Mirror.Skills.Strength
         {
             int bonusDamage = 0;
 
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return bonusDamage;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return bonusDamage;
 
             if (client.CurrentWeapon != WeaponHash.Unarmed)

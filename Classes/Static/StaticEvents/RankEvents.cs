@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Events;
+using Mirror.Globals;
 
 namespace Mirror.Classes.Static.StaticEvents
 {
@@ -20,10 +21,10 @@ namespace Mirror.Classes.Static.StaticEvents
             if (args[1] == null)
                 return;
 
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             string argumentString = args[1] as string;

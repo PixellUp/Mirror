@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Static;
+using Mirror.Globals;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace Mirror.Classes.Models
         /// <param name="client"></param>
         public void UpdateClothing(Client client)
         {
-            client.SetData("Mirror_Clothing", this);
+            client.SetData(EntityData.Clothing, this);
 
             int[] skip = new int[]{ };
 

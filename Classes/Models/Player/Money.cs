@@ -1,6 +1,7 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes;
 using Mirror.Classes.Static;
+using Mirror.Globals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,10 +56,10 @@ namespace Mirror.Classes.Models
             if (amount <= 0)
                 return;
 
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             // Check Player Money
@@ -86,10 +87,10 @@ namespace Mirror.Classes.Models
                 return;
             }
 
-            if (!target.HasData("Mirror_Account"))
+            if (!target.HasData(EntityData.Account))
                 return;
 
-            if (!(target.GetData("Mirror_Account") is Account targetAccount))
+            if (!(target.GetData(EntityData.Account) is Account targetAccount))
                 return;
 
             account.Money -= amount;
@@ -110,10 +111,10 @@ namespace Mirror.Classes.Models
             if (amount <= 0)
                 return;
 
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             ServerFunds.CurrentEconomyPrinted += amount;
@@ -127,10 +128,10 @@ namespace Mirror.Classes.Models
             if (amount <= 0)
                 return;
 
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             ServerFunds.CurrentEconomyPrinted -= amount;

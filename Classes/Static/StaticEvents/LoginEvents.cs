@@ -47,7 +47,7 @@ namespace Mirror.Classes.Static.StaticEvents
             }
 
             client.SendChatMessage(Exceptions.LoginSuccess);
-            // Attach the account to the player under the Dataset of "Mirror_Account";
+            // Attach the account to the player under the Dataset of EntityData.Account;
             account.Attach(client);
         }
 
@@ -119,7 +119,7 @@ namespace Mirror.Classes.Static.StaticEvents
             }
 
             client.SendChatMessage(Exceptions.LoginSuccess);
-            // Attach the account to the player under the Dataset of "Mirror_Account";
+            // Attach the account to the player under the Dataset of EntityData.Account;
             account.Attach(client);
         }
     }

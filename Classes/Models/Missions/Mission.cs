@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Static;
+using Mirror.Globals;
 using Mirror.Levels;
 using Newtonsoft.Json;
 using System;
@@ -99,7 +100,7 @@ namespace Mirror.Classes.Models
         /// <returns></returns>
         public bool AddActivePlayer(Client client)
         {
-            if (client.HasData("Mission_Active"))
+            if (client.HasData(EntityData.ActiveMission))
             {
                 client.SendChatMessage("You must leave your current mission to join a new one. /leavemission");
                 return false;
@@ -109,7 +110,7 @@ namespace Mirror.Classes.Models
                 return false;
 
             ActivePlayers.Add(client);
-            client.SetData("Mission_Active", this);
+            client.SetData(EntityData.ActiveMission, this);
 
             string activePlayers = JsonConvert.SerializeObject(GetActivePlayers());
             string activeObjectives = JsonConvert.SerializeObject(GetObjectives());
@@ -134,7 +135,7 @@ namespace Mirror.Classes.Models
                 return false;
 
             ActivePlayers.Remove(client);
-            client.ResetData("Mission_Active");
+            client.ResetData(EntityData.ActiveMission);
             NAPI.ClientEvent.TriggerClientEvent(client, "MissionInfo", "Mission_Active_Players", "");
             NAPI.ClientEvent.TriggerClientEvent(client, "MissionInfo", "Mission_Active_Objectives", "");
 

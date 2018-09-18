@@ -1,5 +1,4 @@
 ﻿using GTANetworkAPI;
-
 using Skillsheet = Mirror.Skills.Skills;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using Mirror.Levels;
 using Mirror.Classes.Readonly;
 using Mirror.Classes.Models.Player;
 using Newtonsoft.Json;
+using Mirror.Globals;
 
 namespace Mirror.Handler
 {
@@ -72,12 +72,16 @@ namespace Mirror.Handler
             client.TriggerEvent("ScreenEffect", "Drunk", time);
         }
 
+        /// <summary>
+        /// Resets the modifiers of the client completely.
+        /// </summary>
+        /// <param name="client"></param>
         public static void RestoreStats(Client client)
         {
-            if (!(client.GetData("Mirror_Skills") is Skillsheet skillsheet))
+            if (!(client.GetData(EntityData.Skills) is Skillsheet skillsheet))
                 return;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             skillsheet.RestoreModifiers(client);

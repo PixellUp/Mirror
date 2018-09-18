@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Models;
+using Mirror.Globals;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,10 @@ namespace Mirror.Classes.Static.StaticEvents
         /// <param name="args"></param>
         public static void PushAppearanceChanges(Client client, params object[] args)
         {
-            if (!client.HasData("Mirror_Appearance"))
+            if (!client.HasData(EntityData.Appearance))
                 return;
 
-            if (!(client.GetData("Mirror_Appearance") is Appearance app))
+            if (!(client.GetData(EntityData.Appearance) is Appearance app))
                 return;
 
             if (args[1] == null)
@@ -41,7 +42,7 @@ namespace Mirror.Classes.Static.StaticEvents
         /// <param name="client"></param>
         public static void GetAppearance(Client client)
         {
-            if (!(client.GetData("Mirror_Appearance") is Appearance app))
+            if (!(client.GetData(EntityData.Appearance) is Appearance app))
                 return;
 
             double[] faceValues = new double[] {

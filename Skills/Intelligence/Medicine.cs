@@ -12,6 +12,7 @@ using Mirror.Handler;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Classes.Static.StaticEvents;
+using Mirror.Globals;
 
 namespace Mirror.Skills.Intelligence
 {
@@ -30,7 +31,7 @@ namespace Mirror.Skills.Intelligence
             if (!client.HasData(VariableName + Notification))
                 client.SetData(VariableName + Notification, false);
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             LevelRanks levelRanks = account.GetLevelRanks();
@@ -56,7 +57,7 @@ namespace Mirror.Skills.Intelligence
 
         public static void Use(Client client, Client target)
         {
-            Account account = client.GetData("Mirror_Account");
+            Account account = client.GetData(EntityData.Account);
             LevelRanks ranks = account.GetLevelRanks();
             LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
             string itemToBurn = "Medkit";
@@ -89,7 +90,7 @@ namespace Mirror.Skills.Intelligence
             cooldowns.NotifyClientsideOfChange(client);
 
             // Okay it burned let's heal the other player.
-            Account targetAccount = target.GetData("Mirror_Account");
+            Account targetAccount = target.GetData(EntityData.Account);
             target.Health += (25 + ranks.Medicine * 2); // Heal 25 + Ranks * 2. Max heal is around 91 at 33 points.
             targetAccount.SetPlayerRevived(target);
             target.StopAnimation();

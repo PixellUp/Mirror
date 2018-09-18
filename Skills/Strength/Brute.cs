@@ -9,6 +9,7 @@ using System.Text;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Classes.Static.StaticEvents;
+using Mirror.Globals;
 
 namespace Mirror.Skills.Strength
 {
@@ -28,7 +29,7 @@ namespace Mirror.Skills.Strength
             if (!client.HasData(VariableName + Notification))
                 client.SetData(VariableName + Notification, false);
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             LevelRanks levelRanks = account.GetLevelRanks();

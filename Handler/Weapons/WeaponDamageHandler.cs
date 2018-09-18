@@ -14,6 +14,7 @@ using Mirror.Classes.Models;
 using Mirror.Classes.Static.StaticEvents;
 using Mirror.Skills.Intelligence;
 using Mirror.Skills.Endurance;
+using Mirror.Globals;
 
 namespace Mirror
 {
@@ -140,7 +141,7 @@ namespace Mirror
             }
 
             // Update Health
-            Account targetAccount = target.GetData("Mirror_Account");
+            Account targetAccount = target.GetData(EntityData.Account);
             Account.PlayerUpdateEvent.Trigger(target, targetAccount);
             
             target.TriggerEvent("eventLastDamage", amountOfDamage);

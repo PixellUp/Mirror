@@ -2,6 +2,7 @@
 using Mirror.Classes.Models;
 using Mirror.Classes.Static;
 using Mirror.Events;
+using Mirror.Globals;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -43,20 +44,20 @@ namespace Mirror.Updates
             if (client == null)
                 return;
 
-            if (!client.HasData("Tick"))
-                client.SetData("Tick", 0);
+            if (!client.HasData(EntityData.CurrentTick))
+                client.SetData(EntityData.CurrentTick, 0);
 
-            int currentTick = client.GetData("Tick");
+            int currentTick = client.GetData(EntityData.CurrentTick);
 
             if (currentTick + 1 > Maxtick)
                 currentTick = 1;
 
-            client.SetData("Tick", currentTick + 1);
+            client.SetData(EntityData.CurrentTick, currentTick + 1);
 
-            if (!client.HasData("Mirror_Attack"))
+            if (!client.HasData(EntityData.Attack))
                 return;
 
-            if (client.GetData("Mirror_Attack") == null)
+            if (client.GetData(EntityData.Attack) == null)
                 return;
 
             bool isAttackReady = Weapons.IsWeaponTickReady(client.CurrentWeapon.ToString(), currentTick);
@@ -64,7 +65,7 @@ namespace Mirror.Updates
             if (!isAttackReady)
                 return;
 
-            AttackEvent.Trigger(client, client.GetData("Mirror_Attack") as Client, client.CurrentWeapon.ToString());
+            AttackEvent.Trigger(client, client.GetData(EntityData.Attack) as Client, client.CurrentWeapon.ToString());
         }
     }
 }

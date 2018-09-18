@@ -1,6 +1,7 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes;
 using Mirror.Classes.Static;
+using Mirror.Globals;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace Mirror.Classes.Models
         public void UpdateAppearance(Client client)
         {
             // Attach the data to the player.
-            client.SetData("Mirror_Appearance", this);
+            client.SetData(EntityData.Appearance, this);
 
             // Update Character Model
             if (this.Sex.ToString() == "Female")

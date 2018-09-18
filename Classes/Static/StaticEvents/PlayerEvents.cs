@@ -5,6 +5,7 @@ using System.Text;
 using GTANetworkAPI;
 using Dice = Mirror.Skills.Utility;
 using Mirror.Skills;
+using Mirror.Globals;
 
 namespace Mirror.Classes.Static.StaticEvents
 {
@@ -21,47 +22,12 @@ namespace Mirror.Classes.Static.StaticEvents
                 return;
 
             Client target = args[1] as Client;
-            client.SetData("Mirror_Attack", target);
-
-
-
-
-
-
-            /*
-            if (client.Position.DistanceTo2D(target.Position) > 5)
-                return;
-
-            if (target.IsInVehicle)
-                return;
-
-            if (!client.HasData("LastAttack"))
-                client.SetData("LastAttack", DateTime.UtcNow.Millisecond);
-
-            if ((Int32)client.GetData("LastAttack") + 2500 > DateTime.UtcNow.Millisecond)
-                return;
-
-            client.SetData("LastAttack", DateTime.UtcNow.Millisecond);
-
-            if (Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.strength))
-            {
-                int damage = Dice.RollDamage(10, 0);
-                //target.SendChatMessage($"You were attacked by {client.Name} and he hit you.");
-                target.TriggerEvent("eventLastDamage", damage);
-                client.TriggerEvent("eventTargetDamage", damage);
-                //client.SendChatMessage($"You attacked {target.Name} and hit him.");
-                target.Health -= damage;
-                return;
-            }
-
-            target.TriggerEvent("eventLastDamage", 0);
-            client.TriggerEvent("eventTargetDamage", 0);
-            */
+            client.SetData(EntityData.Attack, target);
         }
 
         public static void CancelAttack(Client client)
         {
-            client.SetData("Mirror_Attack", null);
+            client.SetData(EntityData.Attack, null);
         }
     }
 }

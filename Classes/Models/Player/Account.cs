@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Encryption = BCrypt;
 using Mirror.Classes;
 using Mirror.Events;
+using Mirror.Globals;
 
 namespace Mirror.Classes.Models
 {
@@ -68,7 +69,7 @@ namespace Mirror.Classes.Models
             Console.WriteLine($"{client.Name} has logged in.");
 
             // Basic Account
-            client.SetData("Mirror_Account", this);
+            client.SetData(EntityData.Account, this);
             client.Name = Name;
             client.Health = Health;
             client.Armor = Armor;

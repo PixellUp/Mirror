@@ -10,6 +10,7 @@ using Skillsheet = Mirror.Skills.Skills;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Classes.Static.StaticEvents;
+using Mirror.Globals;
 
 namespace Mirror.Commands
 {
@@ -38,10 +39,10 @@ namespace Mirror.Commands
         [Command("update")]
         public void UpdateClothing(Client client)
         {
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
-            Account acc = client.GetData("Mirror_Account") as Account;
+            Account acc = client.GetData(EntityData.Account) as Account;
 
             Appearance app = Appearance.RetrieveAppearance(acc);
             app.Attach(client);
@@ -91,7 +92,7 @@ namespace Mirror.Commands
         [Command("getpoints")]
         public void GetPoints(Client client)
         {
-            Account account = client.GetData("Mirror_Account");
+            Account account = client.GetData(EntityData.Account);
 
             LevelRanks levelRanks = JsonConvert.DeserializeObject<LevelRanks>(account.LevelRanks);
 

@@ -1,6 +1,7 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Models;
 using Mirror.Events;
+using Mirror.Globals;
 using Mirror.Jobs;
 
 using System;
@@ -21,18 +22,18 @@ namespace Mirror.Handler
         private void JobStartTrigger(object source, Client client, string jobID)
         {
             // Remove player from current team to start a new one.
-            if (client.HasData("Mission_Active"))
+            if (client.HasData(EntityData.ActiveMission))
             {
-                if ((client.GetData("Mission_Active") is Mission mission))
+                if ((client.GetData(EntityData.ActiveMission) is Mission mission))
                 {
                     mission.RemoveActivePlayer(client);
                 }
             }
 
-            if (!client.HasData("Mission_Cooldown"))
-                client.SetData("Mission_Cooldown", DateTime.Now);
+            if (!client.HasData(EntityData.MissionCooldown))
+                client.SetData(EntityData.MissionCooldown, DateTime.Now);
 
-            DateTime lastClientTime = client.GetData("Mission_Cooldown");
+            DateTime lastClientTime = client.GetData(EntityData.MissionCooldown);
 
             if (DateTime.Compare(DateTime.Now, lastClientTime) <= 0)
             {
@@ -40,7 +41,7 @@ namespace Mirror.Handler
                 return;
             }
 
-            client.SetData("Mission_Cooldown", DateTime.Now.AddSeconds(25));
+            client.SetData(EntityData.MissionCooldown, DateTime.Now.AddSeconds(25));
 
 
             // Check through registered jobs to determine where our job starting point will be.

@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Globals;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Mirror.Handler.Chat
         [ServerEvent(Event.ChatMessage)]
         public void EventChatMessage(Client client, string message)
         {
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
             Client[] clients = NAPI.Pools.GetAllPlayers().FindAll(x => x.Position.DistanceTo2D(client.Position) <= 10).ToArray();

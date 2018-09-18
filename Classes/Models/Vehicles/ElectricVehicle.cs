@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using Mirror.Globals;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,7 @@ namespace Mirror.Classes.Models
             LastPosition = vehicle.Position;
             Vehicle = vehicle;
             ElectricVehicles.Add(this);
-            Vehicle.SetData("ElectricVehicle", this);
+            Vehicle.SetData(EntityData.Vehicle_Electric, this);
         }
 
         public bool HasPower()

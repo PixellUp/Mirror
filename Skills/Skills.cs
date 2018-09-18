@@ -1,5 +1,6 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes.Models;
+using Mirror.Globals;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Mirror.Skills
 
         public void Attach(Client client)
         {
-            client.SetData("Mirror_Skills", this);
+            client.SetData(EntityData.Skills, this);
             UpdateSkillsLocal(client);
         }
 
@@ -83,10 +84,10 @@ namespace Mirror.Skills
         /// <param name="account"></param>
         public void Update(Client client)
         {
-            if (!client.HasData("Mirror_Account"))
+            if (!client.HasData(EntityData.Account))
                 return;
 
-            if (!(client.GetData("Mirror_Account") is Account account))
+            if (!(client.GetData(EntityData.Account) is Account account))
                 return;
 
             UpdateSkillsLocal(client);
