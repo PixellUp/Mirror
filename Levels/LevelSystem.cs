@@ -38,7 +38,7 @@ namespace Mirror.Levels
         public int SuperclassVehicles { get; set; } = 0;
         public int Deadeye { get; set; } = 0;
         public int Quick { get; set; } = 0;
-        public int HighJump { get; set; } = 0;
+        public int DamageRoll { get; set; } = 0;
         public int Perception { get; set; } = 0;
         public int Concentrate { get; set; } = 0;
 

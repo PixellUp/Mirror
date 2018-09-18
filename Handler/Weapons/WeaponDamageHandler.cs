@@ -26,10 +26,16 @@ namespace Mirror
             if (!client.Exists || !target.Exists || weaponName == "")
                 return;
 
-            if (client == target || !client.IsAiming)
+            if (client == target)
             {
                 PlayerEvents.CancelAttack(client);
                 return;
+            }
+
+            if (weaponName.ToLower() != "unarmed")
+            {
+                if (!client.IsAiming)
+                    return;
             }
 
             int WeaponRange = Weapons.GetWeaponRange(weaponName);
@@ -72,7 +78,7 @@ namespace Mirror
             // Check if the player beats the other's score.
             if (!skipCheck)
             {
-                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.endurance, clientModifier: (RangePenalty + deadeyeBonus), targetModifier: targetDefenseBonus))
+                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.endurance, clientModifier: (RangePenalty + deadeyeBonus), targetModifier: targetDefenseBonus) && weaponName != "unarmed")
                 {
                     target.TriggerEvent("eventLastDamage", 0);
                     client.TriggerEvent("eventTargetDamage", 0);
@@ -81,7 +87,7 @@ namespace Mirror
             }
             
             // Get the weapon dice and roll count for the damage calculation.
-            int weaponDie = Weapons.GetWeaponDamageDie(weaponName.ToLower());
+            int weaponDie = Weapons.GetWeaponDamageDie(weaponName.ToLower()) + DamageRoll.Use(client);
             int weaponRollCount = Weapons.GetWeaponRollCount(weaponName.ToLower());
 
             // Roll for damage.

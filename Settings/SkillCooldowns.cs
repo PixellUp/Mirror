@@ -18,7 +18,7 @@ namespace Mirror.Settings
         // END
         public static readonly int Deadeye = 15;
         public static readonly int Quick = 15;
-        public static readonly int HighJump = 15;
+        public static readonly int HighJump = 5;
         public static readonly int Perception = 15;
         public static readonly int Concentrate = 15;
 

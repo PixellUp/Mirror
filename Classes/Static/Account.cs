@@ -56,7 +56,7 @@ namespace Mirror.Classes.Static
         /// Updates the client's account.
         /// </summary>
         /// <param name="client"></param>
-        public static void UpdateAccount(Client client) => Account.PlayerUpdateEvent.Trigger(client, (Account)RetrieveAccount(client));
+        public static void UpdateAccount(Client client) => Account.PlayerUpdateEvent.Trigger(client, RetrieveAccount(client));
 
         /// <summary>
         /// Update the player's account with a new serialized JSON string for LevelRanks.
@@ -136,6 +136,7 @@ namespace Mirror.Classes.Static
                     return;
                 }
 
+                client.Health = 100;
                 client.SetSharedData(EntitySharedData.IsPlayerDowned, false);
                 client.SendChatMessage($"~w~You paid ~r~${taxAmount.ToString("N2")} ~w~in hospital fees.");
                 client.Position = hospLoc;

@@ -6,7 +6,7 @@ namespace Mirror.Classes.Readonly
 {
     public static class WeaponTicks
     {
-        public static readonly int Unarmed = 10; // 4s
+        public static readonly int Unarmed = 5; // 4s
         public static readonly int Pistol50 = 8; // 3s
         public static readonly int Smg = 4;
         public static readonly int HeavySniper = 19;

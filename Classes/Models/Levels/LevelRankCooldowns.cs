@@ -18,7 +18,7 @@ namespace Mirror.Classes.Models
         // END
         public bool IsDeadeyeReady { get; set; } = false;
         public bool IsQuickReady { get; set; } = false;
-        public bool IsHighJumpReady { get; set; } = false;
+        public bool IsDamageRollReady { get; set; } = false;
         public bool IsConcentrateReady { get; set; } = false;
         public bool IsPerceptionReady { get; set; } = false;
 

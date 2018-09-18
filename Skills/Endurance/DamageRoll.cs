@@ -10,15 +10,16 @@ using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Classes.Static.StaticEvents;
 using Mirror.Globals;
+using System.Threading.Tasks;
 
 namespace Mirror.Skills.Endurance
 {
-    public class HighJump : Script
+    public class DamageRoll : Script
     {
-        private readonly string VariableName = "IsHighJumpReady";
+        private readonly string VariableName = "IsDamageRollReady";
         private readonly string Notification = "Notification";
 
-        public HighJump()
+        public DamageRoll()
         {
             RankEvents.PassiveEvent.PassiveEventTrigger += CheckPassive;
         }
@@ -33,13 +34,13 @@ namespace Mirror.Skills.Endurance
 
             LevelRanks levelRanks = account.GetLevelRanks();
 
-            if (levelRanks.HighJump <= 0)
+            if (levelRanks.DamageRoll <= 0)
                 return;
 
             LevelRankCooldowns levelRankCooldowns = AccountUtil.GetCooldowns(client);
             levelRankCooldowns.UpdateCooldownTime(client, VariableName, SkillCooldowns.HighJump);
 
-            if (!levelRankCooldowns.IsHighJumpReady)
+            if (!levelRankCooldowns.IsDamageRollReady)
             {
                 client.SetData(VariableName + Notification, false);
                 return;
@@ -49,7 +50,30 @@ namespace Mirror.Skills.Endurance
                 return;
 
             client.SetData(VariableName + Notification, true);
-            client.SendChatMessage("~g~High Jump ~w~Your next jump will be much higher.");
+            client.SendNotification("~g~Damage Roll ~w~Your next hit will have a higher damage roll.");
+        }
+
+        public static int Use(Client client)
+        {
+            int damageRollBonus = 0;
+
+            if (!client.Exists)
+                return damageRollBonus;
+
+            LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
+            LevelRanks ranks = AccountUtil.GetLevelRanks(client);
+
+            if (ranks.DamageRoll <= 0)
+                return damageRollBonus;
+
+            if (!cooldowns.IsDamageRollReady)
+                return damageRollBonus;
+
+            damageRollBonus = ranks.DamageRoll / 2;
+
+            cooldowns.IsDamageRollReady = false;
+            client.SendNotification("Your shot hit for a little more damage.");
+            return damageRollBonus;
         }
     }
 }
