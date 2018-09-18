@@ -99,6 +99,13 @@ namespace Mirror.Classes.Models
             // Reload existing weapons.
             AccountUtil.ReloadPlayerWeapons(client);
 
+            if (IsDead)
+            {
+                IsDead = false;
+                Health = 75;
+                client.Health = 75;
+            }
+
             // Finish
             FinishLogin(client);
         }
@@ -185,6 +192,7 @@ namespace Mirror.Classes.Models
         {
             IsDead = false;
             client.TriggerEvent("eventForceRagdoll", client.Handle, -1);
+            client.SetSharedData(EntitySharedData.IsPlayerDowned, false);
 
             Client[] players = NAPI.Pools.GetAllPlayers().ToArray();
 

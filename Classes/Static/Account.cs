@@ -120,16 +120,13 @@ namespace Mirror.Classes.Static
         {
             Account account = RetrieveAccount(client);
             account.IsDead = isDead;
-
-            if (isDead)
-                client.SetData(EntityData.DeathTime, DateTime.Now);
-
+                
             if (!isDead)
             {
                 Vector3 hospLoc = new Vector3(Settings.Settings.HospitalLocation.Item1, Settings.Settings.HospitalLocation.Item2, Settings.Settings.HospitalLocation.Item3);
                 client.StopAnimation();
                 account.Armor = 0;
-                account.Health = 50;
+                account.Health = 75;
                 account.LastPosition = JsonConvert.SerializeObject(hospLoc);
                 double taxAmount = account.TaxOnDeath();
 
@@ -139,7 +136,8 @@ namespace Mirror.Classes.Static
                     return;
                 }
 
-                client.SendChatMessage($"~w~You paid ~r~${taxAmount} ~w~in hospital fees.");
+                client.SetSharedData(EntitySharedData.IsPlayerDowned, false);
+                client.SendChatMessage($"~w~You paid ~r~${taxAmount.ToString("N2")} ~w~in hospital fees.");
                 client.Position = hospLoc;
             }
 
@@ -158,7 +156,25 @@ namespace Mirror.Classes.Static
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public static DateTime GetTimeOfDeath(Client client) => (DateTime)client.GetData("Death_Time");
+        public static DateTime GetTimeOfDeath(Client client)
+        {
+            if (!client.HasData(EntityData.DeathTime))
+                client.SetData(EntityData.DeathTime, DateTime.Now);
+
+            return client.GetData(EntityData.DeathTime);
+        }
+
+        /// <summary>
+        /// Set the time of death for the player.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static DateTime SetTimeOfDeath(Client client)
+        {
+            DateTime timeOfDeath = DateTime.Now;
+            client.SetData(EntityData.DeathTime, timeOfDeath);
+            return timeOfDeath;
+        }
 
         /// <summary>
         /// Get the client's level ranks.

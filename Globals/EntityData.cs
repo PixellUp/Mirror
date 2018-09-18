@@ -26,4 +26,9 @@ namespace Mirror.Globals
         public static readonly string Vehicle_Electric = "Vehicle_Electric";
         public static readonly string Vehicle_Headlights = "Vehicle_Headlights";
     }
+
+    public static class EntitySharedData
+    {
+        public static readonly string IsPlayerDowned = "IsPlayerDowned";
+    }
 }

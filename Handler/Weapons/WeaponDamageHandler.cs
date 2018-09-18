@@ -1,14 +1,9 @@
 ﻿using GTANetworkAPI;
-using Mirror.Events;
 using Mirror.Handler;
 using Mirror.Levels;
-
 using Mirror.Skills;
 using Mirror.Updates;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Classes.Static.StaticEvents;
@@ -47,31 +42,8 @@ namespace Mirror
             // Ternary Op - If the distance is greater than the weapon range return the distance between the targets. If they're in range set the penalty to zero.
             int RangePenalty = (DistanceBetweenTargets > WeaponRange) ? Convert.ToInt32((DistanceBetweenTargets - WeaponRange)) : 0;
 
-            /*
-            if (weaponName == "Unarmed")
-            {
-                if (!Skillcheck.SkillCheckPlayers(client, target, Skillcheck.Skills.strength, clientModifier: RangePenalty))
-                {
-                    target.TriggerEvent("eventLastDamage", 0);
-                    client.TriggerEvent("eventTargetDamage", 0);
-                    return;
-                }
-
-                int meleeDie = Weapons.GetWeaponDamageDie(weaponName);
-                int meleeDamage = Utility.RollDamage(meleeDie);
-
-                target.Health -= meleeDamage;
-
-                if (target.Health <= 0)
-                    PlayerEvents.CancelAttack(client);
-
-                target.TriggerEvent("eventLastDamage", meleeDamage);
-                client.TriggerEvent("eventTargetDamage", meleeDamage);
-                return;
-            }
-            */
-
             Account account = AccountUtil.RetrieveAccount(client);
+            Account targetAccount = AccountUtil.RetrieveAccount(target);
             LevelRanks clientLevelRanks = AccountUtil.GetLevelRanks(client);
 
             LevelRankCooldowns levelRankCooldowns = AccountUtil.GetCooldowns(client);
@@ -82,8 +54,9 @@ namespace Mirror
             int targetDefenseBonus = 0;
             targetDefenseBonus = Quick.Use(target, targetDefenseBonus);
 
-            if (account.IsDead)
+            if (account.IsDead || targetAccount.IsDead)
             {
+                client.SendNotification("That player is already downed. Focus on someone else.");
                 PlayerEvents.CancelAttack(client);
                 return;
             }
@@ -108,8 +81,8 @@ namespace Mirror
             }
             
             // Get the weapon dice and roll count for the damage calculation.
-            int weaponDie = Weapons.GetWeaponDamageDie(weaponName);
-            int weaponRollCount = Weapons.GetWeaponRollCount(weaponName);
+            int weaponDie = Weapons.GetWeaponDamageDie(weaponName.ToLower());
+            int weaponRollCount = Weapons.GetWeaponRollCount(weaponName.ToLower());
 
             // Roll for damage.
             int amountOfDamage = 0;
@@ -141,7 +114,6 @@ namespace Mirror
             }
 
             // Update Health
-            Account targetAccount = target.GetData(EntityData.Account);
             Account.PlayerUpdateEvent.Trigger(target, targetAccount);
             
             target.TriggerEvent("eventLastDamage", amountOfDamage);

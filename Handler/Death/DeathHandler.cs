@@ -35,7 +35,7 @@ namespace Mirror.Handler
             AccountUtil.SetPlayerDeath(client, true);
             LevelRanks levelRanks = AccountUtil.GetLevelRanks(client);
             LevelRankCooldowns cooldowns = AccountUtil.GetCooldowns(client);
-            DateTime timeOfDeath = AccountUtil.GetTimeOfDeath(client);
+            DateTime timeOfDeath = AccountUtil.SetTimeOfDeath(client);
 
             int downerBonus = 0;
 
@@ -48,14 +48,14 @@ namespace Mirror.Handler
 
             NAPI.Task.Run(() =>
             {
-                if (AccountUtil.IsPlayerDead(client))
+                if (!AccountUtil.IsPlayerDead(client))
                     return;
 
                 if (timeOfDeath != AccountUtil.GetTimeOfDeath(client))
                     return;
 
                 AccountUtil.SetPlayerDeath(client, false);
-            }, 30000 + downerBonus);
+            }, 30000 + downerBonus); // 30 Seconds + Bonus
         }
 
         private void NotifyPlayersOfDeath(Client client)

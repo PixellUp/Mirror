@@ -13,7 +13,7 @@ namespace Mirror.Classes.Readonly
         public static readonly int MachinePistol = 2;
         public static readonly int DoubleAction = 10;
         public static readonly int PumpShotgun = 15;
-        public static readonly int MG = 4;
+        public static readonly int MG = 50;
         public static readonly int MicroSMG = 2;
     }
 }
