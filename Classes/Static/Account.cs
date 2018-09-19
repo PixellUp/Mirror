@@ -270,6 +270,20 @@ namespace Mirror.Classes.Static
             return true;
         }
 
+        public static bool DoesPlayerHaveWeapon(Client client, WeaponHash hash)
+        {
+            Account account = RetrieveAccount(client);
+            if (account.Weapons == "")
+                return false;
+
+            List<WeaponHash> equipment = JsonConvert.DeserializeObject<List<WeaponHash>>(account.Weapons);
+
+            if (!equipment.Contains(hash))
+                return false;
+
+            return true;
+        }
+
         /// <summary>
         /// Drop all player weapons. Mostly used by on death events.
         /// </summary>

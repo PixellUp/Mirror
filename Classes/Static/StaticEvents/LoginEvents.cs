@@ -62,37 +62,37 @@ namespace Mirror.Classes.Static.StaticEvents
             if (args[3] == null)
                 return;
 
-            string username = args[1].ToString();
+            string username = args[1].ToString().ToLower();
             string password = args[2].ToString();
             string characterName = args[3].ToString();
 
-            if (username.Length <= 4)
+            if (username.Length < 5)
             {
-                client.SendChatMessage(Exceptions.AccountUsernameNotLongEnough);
+                client.TriggerEvent("Splash_Error_Handler", "Username not long enough.");
                 return;
             }
 
             if (!Utilities.IsNameRoleplayFormat(characterName))
             {
-                client.SendChatMessage(Exceptions.AccountPlayerNameIncorrectFormat);
+                client.TriggerEvent("Splash_Error_Handler", Exceptions.AccountPlayerNameIncorrectFormat);
                 return;
             }
 
             if (Utilities.DoesFieldExistInAccounts("Name", characterName))
             {
-                client.SendChatMessage(Exceptions.AccountAlreadyExists);
+                client.TriggerEvent("Splash_Error_Handler", Exceptions.AccountAlreadyExists);
                 return;
             }
 
-            if (Utilities.DoesFieldExistInAccounts("Username", username))
+            if (Utilities.DoesFieldExistInAccounts("Username", username.ToLower()))
             {
-                client.SendChatMessage(Exceptions.AccountAlreadyExists);
+                client.TriggerEvent("Splash_Error_Handler", Exceptions.AccountAlreadyExists);
                 return;
             }
 
-            if (password.Length <= 6)
+            if (password.Length < 5)
             {
-                client.SendChatMessage(Exceptions.AccountPasswordNotLongEnough);
+                client.TriggerEvent("Splash_Error_Handler", Exceptions.AccountPasswordNotLongEnough);
                 return;
             }
 

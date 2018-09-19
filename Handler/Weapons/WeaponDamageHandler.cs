@@ -26,6 +26,16 @@ namespace Mirror
             if (!client.Exists || !target.Exists || weaponName == "")
                 return;
 
+            WeaponHash hash = NAPI.Util.WeaponNameToModel(weaponName);
+
+            if (!AccountUtil.DoesPlayerHaveWeapon(client, hash))
+            {
+                PlayerEvents.CancelAttack(client);
+                return;
+            }
+                
+            
+
             if (client == target)
             {
                 PlayerEvents.CancelAttack(client);
@@ -123,9 +133,6 @@ namespace Mirror
 
 
             Utilities.NotifyPlayersOfTargetDamage(client, target, amountOfDamage);
-            
-            //target.TriggerEvent("eventLastDamage", amountOfDamage);
-            //client.TriggerEvent("eventTargetDamage", amountOfDamage);
 
             if (target.Health > 2)
                 return;

@@ -6,11 +6,11 @@ namespace Mirror.Classes.Static
 {
     public static class Exceptions
     {
-        public const string Prefix = "[Mirror] -> ";
+        public const string Prefix = "";
         public const string AccountHasBeenRegistered = Prefix + "Account has been registered.";
-        public const string AccountUsernameNotLongEnough = Prefix + "Account username is not long enough. Minimum 4 length.";
-        public const string AccountPlayerNameIncorrectFormat = Prefix + "Account player name is in incorrect format. Try a name similar to John_Doe";
-        public const string AccountAlreadyExists = Prefix + "Account could not be created. ~o~Try a different username or player name.";
+        public const string AccountUsernameNotLongEnough = Prefix + "Account username is not long enough. Minimum 5 length.";
+        public const string AccountPlayerNameIncorrectFormat = Prefix + "Player name has incorrect format.";
+        public const string AccountAlreadyExists = Prefix + "This email already has an account.";
         public const string AccountPasswordNotLongEnough = Prefix + "Account password is not long enough. Minimum is 6.";
 
         public const string LoginAccountCredentialsInvalid = Prefix + "Account credentials are invalid.";

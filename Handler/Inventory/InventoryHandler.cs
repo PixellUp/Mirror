@@ -33,6 +33,7 @@ namespace Mirror.Handler
             if (!itemFound)
             {
                 Utilities.PlaySoundFrontend(client, "ERROR", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                Utilities.PushBrowserEvent(client, BrowserData.Inventory_Item_Has_No_Use);
                 return;
             }
 
@@ -42,6 +43,7 @@ namespace Mirror.Handler
                 inventoryItems[index] = null;
 
             SaveInventory(client, GetInventoryJson(inventoryItems));
+            Utilities.PushBrowserEvent(client, BrowserData.Inventory_Used_Item);
             Utilities.PlaySoundFrontend(client, "PIN_BUTTON", "ATM_SOUNDS");
         }
 

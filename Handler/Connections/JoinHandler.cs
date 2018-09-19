@@ -44,13 +44,11 @@ namespace Mirror.Handler
                 client.TriggerEvent("eventAddJobInformation", JsonConvert.SerializeObject(jobInfo));
             }
 
-            if (client.Name.ToLower() == "stuyk_test")
-            {
-                LoginEvents.ForceLogin(client, client.Name);
-            }
 
-            if (client.Name.ToLower() == "john_john")
+            /*
+            if (client.Name.ToLower() == "john_john" || client.Name.ToLower() == "stuyk")
                 LoginEvents.ForceLogin(client, "stuyk");
+            */
 
             if (client.Name.ToLower() == "emily_britson")
                 LoginEvents.ForceLogin(client, "tidal");
