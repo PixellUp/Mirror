@@ -40,19 +40,14 @@ namespace Mirror.Classes.Static.StaticEvents
 
             if (!success)
             {
-                if (levelRanks.GetUnallocatedRankPointCount(account.CurrentExperience) <= 0)
-                    client.SendChatMessage("~r~You have no points available.");
-                client.TriggerEvent("PlaySoundFrontend", "Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS");
+                Utilities.PushBrowserEvent(client, BrowserData.Skilltree_Error_Point_Assign);
+                Utilities.PlaySoundFrontend(client, "Hack_Failed", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS");
                 return;
             }
             
             levelRanks.UpdateLevelRanks(client);
-
-            int pointsLeft = levelRanks.GetUnallocatedRankPointCount(account.CurrentExperience);
-            client.SendChatMessage($"Point allocated successfully to ~g~{argumentString}~w~. You have ~o~{pointsLeft}~w~ points left.");
-
-            client.TriggerEvent("PlaySoundFrontend", "Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS");
-            client.TriggerEvent("ReloadRankButtons");
+            Utilities.PushBrowserEvent(client, BrowserData.Skilltree_Update_Data);
+            Utilities.PlaySoundFrontend(client, "Hack_Success", "DLC_HEIST_BIOLAB_PREP_HACKING_SOUNDS");
         }
 
         public static void UpdateAllPlayerPassives()

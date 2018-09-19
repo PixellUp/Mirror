@@ -6,6 +6,7 @@ using System.Text;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Classes.Readonly;
+using Mirror.Globals;
 
 namespace Mirror.Handler
 {
@@ -223,7 +224,11 @@ namespace Mirror.Handler
         /// Send the player's inventory as a JSON string locally.
         /// </summary>
         /// <param name="client"></param>
-        public static void SendInventoryLocally(Client client) => client.TriggerEvent("Recieve_Inventory", AccountUtil.RetrieveAccount(client).Inventory);
+        public static void SendInventoryLocally(Client client)
+        {
+            client.TriggerEvent("Recieve_Inventory", AccountUtil.RetrieveAccount(client).Inventory);
+            Utilities.PushBrowserEvent(client, BrowserData.Inventory_Update_Data);
+        }
 
         /// <summary>
         /// Add a new item to the player's inventory.

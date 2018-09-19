@@ -12,6 +12,7 @@ using Encryption = BCrypt;
 using Mirror.Classes;
 using Mirror.Events;
 using Mirror.Globals;
+using Mirror.Handler;
 
 namespace Mirror.Classes.Models
 {
@@ -95,6 +96,9 @@ namespace Mirror.Classes.Models
 
             // Levels
             AccountUtil.UpdateLevelSystemLocally(client);
+
+            // Inventory
+            InventoryHandler.SendInventoryLocally(client);
 
             // Reload existing weapons.
             AccountUtil.ReloadPlayerWeapons(client);

@@ -1,6 +1,7 @@
 ﻿using GTANetworkAPI;
 using Mirror.Classes;
 using Mirror.Classes.Models;
+using Mirror.Globals;
 
 namespace Mirror.Classes.Static
 {
@@ -99,8 +100,12 @@ namespace Mirror.Classes.Static
         /// <param name="client"></param>
         public static void ForceCloseInventory(Client client) => client.TriggerEvent("eventCloseInventory");
 
-
-
+        /// <summary>
+        /// Notifies all players that damage is happening around them.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="target"></param>
+        /// <param name="amount"></param>
         public static void NotifyPlayersOfTargetDamage(Client client, Client target, int amount)
         {
             Client[] players = NAPI.Pools.GetAllPlayers().ToArray();
@@ -114,5 +119,12 @@ namespace Mirror.Classes.Static
             }
 
         }
+
+        /// <summary>
+        /// Notifies the client's browser of an event.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="eventName"></param>
+        public static void PushBrowserEvent(Client client, string eventName) => client.TriggerEvent(BrowserData.Browser_Event, eventName);
     }
 }

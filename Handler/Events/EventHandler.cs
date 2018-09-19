@@ -79,7 +79,7 @@ namespace Mirror.Handler
                 case "Unequip_Weapon":
                     InventoryEvents.UnequipWeapon(client);
                     return;
-                case "Allocate_Rank_Point":
+                case "Skilltree_Contribute_Point":
                     RankEvents.AllocateRankPoint(client, arguments);
                     return;
                 // Job Events
