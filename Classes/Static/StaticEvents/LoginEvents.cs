@@ -20,9 +20,11 @@ namespace Mirror.Classes.Static.StaticEvents
             string username = args[1].ToString();
             string password = args[2].ToString();
 
+            Console.WriteLine("HELLO!?");
+
             if (!AccountUtil.CompareAccountPassword(username, password))
             {
-                client.SendChatMessage(Exceptions.LoginAccountCredentialsInvalid);
+                client.TriggerEvent("Splash_Error_Handler", Exceptions.LoginAccountCredentialsInvalid);
                 return;
             }
 
@@ -36,7 +38,7 @@ namespace Mirror.Classes.Static.StaticEvents
 
             if (account.IsAccountLoggedIn())
             {
-                client.SendChatMessage(Exceptions.LoginAccountAlreadyLoggedIn);
+                client.TriggerEvent("Splash_Error_Handler", Exceptions.LoginAccountAlreadyLoggedIn);
                 return;
             }
 
@@ -46,8 +48,8 @@ namespace Mirror.Classes.Static.StaticEvents
                 return;
             }
 
-            client.SendChatMessage(Exceptions.LoginSuccess);
-            // Attach the account to the player under the Dataset of EntityData.Account;
+            
+
             account.Attach(client);
         }
 
@@ -96,6 +98,8 @@ namespace Mirror.Classes.Static.StaticEvents
                 return;
             }
 
+            client.TriggerEvent("Splash_Error_Handler", "Welcome to the server!");
+
             Account account = new Account();
             account.Create(client, username, characterName, password);
 
@@ -118,7 +122,6 @@ namespace Mirror.Classes.Static.StaticEvents
                 return;
             }
 
-            client.SendChatMessage(Exceptions.LoginSuccess);
             // Attach the account to the player under the Dataset of EntityData.Account;
             account.Attach(client);
         }

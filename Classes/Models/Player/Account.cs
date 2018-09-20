@@ -36,7 +36,7 @@ namespace Mirror.Classes.Models
         public int CurrentExperience { get; set; } = 200;
         public string LevelRanks { get; set; } = JsonConvert.SerializeObject(new LevelRanks());
         public string LevelSkills { get; set; } = JsonConvert.SerializeObject(new Skillsheet());
-        public string Weapons { get; set; } = "";
+        public string Weapons { get; set; } = "[]";
 
         public void Create(Client client, string username, string playerName, string password)
         {
@@ -67,14 +67,14 @@ namespace Mirror.Classes.Models
 
         public void Attach(Client client)
         {
-            Console.WriteLine($"{client.Name} has logged in.");
-
             // Basic Account
             client.SetData(EntityData.Account, this);
             client.Name = Name;
             client.Health = Health;
             client.Armor = Armor;
-            
+
+            Console.WriteLine($"{client.Name} has logged in.");
+
             // Set Position
             Vector3 position = JsonConvert.DeserializeObject<Vector3>(LastPosition);
             NAPI.Entity.SetEntityPosition(client, position);
@@ -124,6 +124,8 @@ namespace Mirror.Classes.Models
             client.Dimension = 0;
             client.Transparency = 255;
 
+            /*
+
             if (!NewAccount)
                 return;
 
@@ -141,6 +143,7 @@ namespace Mirror.Classes.Models
 
             Utilities.FreezePlayerAccount(client, false);
             Database.UpdateData(this);
+            */
         }
 
         /// <summary>
