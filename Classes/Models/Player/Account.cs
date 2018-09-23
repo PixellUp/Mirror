@@ -13,6 +13,7 @@ using Mirror.Classes;
 using Mirror.Events;
 using Mirror.Globals;
 using Mirror.Handler;
+using Mirror.Classes.Models.Player;
 
 namespace Mirror.Classes.Models
 {
@@ -21,10 +22,11 @@ namespace Mirror.Classes.Models
         public static PlayerUpdateEvent PlayerUpdateEvent = new PlayerUpdateEvent();
         public static List<Account> LoggedInAccounts = new List<Account>();
 
-        public string Username { get; set; }
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public int Age { get; set; } = 20;
+        // The main account handle.
+        public string Scatter { get; set; } = "";
+        public string Name { get; set; } = "";
+
+        // The extra data.
         public int Health { get; set; } = 100;
         public int Armor { get; set; } = 0;
         public bool IsDead { get; set; } = false;
@@ -38,18 +40,20 @@ namespace Mirror.Classes.Models
         public string LevelSkills { get; set; } = JsonConvert.SerializeObject(new Skillsheet());
         public string Weapons { get; set; } = "[]";
 
-        public void Create(Client client, string username, string playerName, string password)
+        public void Create(Client client, Scatter scatterHash)
         {
             string salt = Encryption.BCryptHelper.GenerateSalt();
-            string hash = Encryption.BCryptHelper.HashPassword(password, salt);
+            string hash = Encryption.BCryptHelper.HashPassword(scatterHash.Hash, salt);
+            string scatterJsonHash;
 
-            Username = username;
-            Name = playerName;
-            Password = hash;
+            scatterHash.Hash = hash;
+            scatterJsonHash = scatterHash.GetAsJSON();
+            this.Scatter = scatterJsonHash;
+            this.Name = $"{scatterHash.FirstName}_{scatterHash.LastName}";
             Database.Upsert(this);
 
             // Setup UserID with Database Insert ID.
-            Account acc = Database.Get<Account>("Username", username);
+            Account acc = Database.Get<Account>("Name", $"{scatterHash.FirstName}_{scatterHash.LastName}");
             acc.UserID = acc.ID;
             Database.UpdateData(acc);
 
@@ -61,15 +65,17 @@ namespace Mirror.Classes.Models
             Appearance appearance = new Appearance();
             appearance.Create(acc.UserID);
 
-            // Fully Registered
-            client.SendChatMessage(Exceptions.AccountHasBeenRegistered);
+            // Attach to the account to the player based on the new account instance.
+            acc.Attach(client);
         }
 
         public void Attach(Client client)
         {
+            Scatter scatter = GetScatter();
+
             // Basic Account
             client.SetData(EntityData.Account, this);
-            client.Name = Name;
+            client.Name = scatter.FirstName + "_" + scatter.LastName;
             client.Health = Health;
             client.Armor = Armor;
 
@@ -120,6 +126,8 @@ namespace Mirror.Classes.Models
             Utilities.FreezePlayerAccount(client, false);
             Utilities.DisablePlayerAccount(client, false);
             Utilities.LoginPlayerAccount(client, true);
+
+            client.TriggerEvent("closeBrowser");
             
             client.Dimension = 0;
             client.Transparency = 255;
@@ -163,19 +171,23 @@ namespace Mirror.Classes.Models
             if (value)
                 return;
 
+            /*
             if (IsAccountLoggedIn())
                 LoggedInAccounts.Remove(this);
+            */
         }
 
+        /*
         /// <summary>
         /// Compare the Account list and try to find a username that matches the player's.
         /// </summary>
         /// <returns></returns>
         public bool IsAccountLoggedIn()
         {
-            var result = LoggedInAccounts.Find(x => x.Username == Username);
+            //var result = LoggedInAccounts.Find(x => x.Username == Username);
             return result == null ? false : true;
         }
+        */
 
         public double TaxOnDeath()
         {
@@ -215,5 +227,11 @@ namespace Mirror.Classes.Models
         /// </summary>
         /// <returns></returns>
         public InventoryItem[] GetAllItems() => JsonConvert.DeserializeObject<InventoryItem[]>(Inventory);
+
+        /// <summary>
+        /// Get the Scatter class from the json string.
+        /// </summary>
+        /// <returns></returns>
+        public Scatter GetScatter() => JsonConvert.DeserializeObject<Scatter>(Scatter);
     }
 }

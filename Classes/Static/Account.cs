@@ -34,6 +34,7 @@ namespace Mirror.Classes.Static
             return client.GetData(EntityData.Account) as Account;
         }
 
+        /*
         /// <summary>
         /// Check if a password matches.
         /// </summary>
@@ -45,6 +46,7 @@ namespace Mirror.Classes.Static
             bool passwordCorrect = Encryption.BCryptHelper.CheckPassword(password, Database.Get<Account>("Username", username).Password);
             return passwordCorrect;
         }
+        */
 
         /// <summary>
         /// Check if the player has account attached to them.

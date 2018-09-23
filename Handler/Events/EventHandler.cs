@@ -19,13 +19,6 @@ namespace Mirror.Handler
             
             switch(eventName)
             {
-                // Login System
-                case "Login":
-                    LoginEvents.Login(client, arguments);
-                    return;
-                case "Register":
-                    LoginEvents.Register(client, arguments);
-                    return;
                 // Car Events
                 case "ToggleEngine":
                     CarEvents.ToggleEngine(client, arguments);
@@ -90,6 +83,10 @@ namespace Mirror.Handler
                 case "Skill_Event":
                     SkillEvents.ParseSkillEvent(client, arguments);
                     return;
+                // Scatter Integration
+                case "Scatter_Login":
+                    ScatterEvents.HandleAccount(client, arguments);
+                    return; 
             }
             
         }
