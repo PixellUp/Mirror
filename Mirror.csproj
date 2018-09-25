@@ -4,8 +4,15 @@
 </PropertyGroup>
 <ItemGroup>
 <PackageReference Include="BCrypt-Core" Version="2.0.0" />
+<PackageReference Include="Cryptography.ECDSA.Secp256K1" Version="1.1.2" />
 <PackageReference Include="gtanetwork.api" Version="0.3.5" />
 <PackageReference Include="LiteDB" Version="4.1.4" />
+<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+</ItemGroup>
+<ItemGroup>
+  <Reference Include="EosSharp">
+    <HintPath>EosSharp.dll</HintPath>
+  </Reference>
 </ItemGroup>
 <ItemGroup>
   <None Update="Data\Outfits\FemaleTopCombinations.json">
