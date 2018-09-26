@@ -1,0 +1,175 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Wed Sep 26 16:13:28 2018",
+    "version": "eosio::abi/1.0",
+    "structs": [
+        {
+            "name": "accitems",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "uint64"
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "properties",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "acctable",
+            "base": "",
+            "fields": [
+                {
+                    "name": "owner",
+                    "type": "name"
+                },
+                {
+                    "name": "items",
+                    "type": "accitems[]"
+                },
+                {
+                    "name": "vehicles",
+                    "type": "accvehicle[]"
+                }
+            ]
+        },
+        {
+            "name": "accvehicle",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "uint64"
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "x",
+                    "type": "uint64"
+                },
+                {
+                    "name": "y",
+                    "type": "uint64"
+                },
+                {
+                    "name": "z",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "additem",
+            "base": "",
+            "fields": [
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                },
+                {
+                    "name": "key",
+                    "type": "uint64"
+                },
+                {
+                    "name": "itemname",
+                    "type": "string"
+                },
+                {
+                    "name": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "properties",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "issueitem",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "key",
+                    "type": "uint64"
+                },
+                {
+                    "name": "itemname",
+                    "type": "string"
+                },
+                {
+                    "name": "type",
+                    "type": "string"
+                },
+                {
+                    "name": "properties",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "removeitem",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "key",
+                    "type": "uint64"
+                }
+            ]
+        }
+    ],
+    "types": [],
+    "actions": [
+        {
+            "name": "additem",
+            "type": "additem",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "issueitem",
+            "type": "issueitem",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "removeitem",
+            "type": "removeitem",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "acctable",
+            "type": "acctable",
+            "index_type": "i64",
+            "key_names": ["account_name"],
+            "key_types": ["uint64"]
+        }
+    ],
+    "ricardian_clauses": [],
+    "abi_extensions": []
+}

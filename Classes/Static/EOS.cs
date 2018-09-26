@@ -24,8 +24,7 @@ namespace Mirror.Classes.Static
             public bool More { get; set; }
         }
 
-
-        private static Eos EOS;
+        public static Eos EOS;
 
         public EOSHelper()
         {
@@ -41,7 +40,23 @@ namespace Mirror.Classes.Static
             config.SignProvider = new DefaultSignProvider(key);
 
             EOS = new Eos(config);
+
+            TestTransactionResults();
         }
+
+        public static void TestTransactionResults()
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                Task<GetTransactionResponse> actions = EOS.GetTransaction("8aec0347579236900878bc460eb4b3ab3fdd4009ca1e5e7c6aad5b97a1b8e622");
+
+                var result = await actions;
+
+                Console.WriteLine(JsonConvert.SerializeObject(result));
+
+            });
+        }
+
 
         private async void GetAccountBalance(Client client, string pubkey)
         {

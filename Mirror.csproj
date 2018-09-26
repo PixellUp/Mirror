@@ -3,6 +3,11 @@
 <TargetFramework>netcoreapp2.0</TargetFramework>
 </PropertyGroup>
 <ItemGroup>
+  <Compile Remove="EOS\**" />
+  <EmbeddedResource Remove="EOS\**" />
+  <None Remove="EOS\**" />
+</ItemGroup>
+<ItemGroup>
 <PackageReference Include="BCrypt-Core" Version="2.0.0" />
 <PackageReference Include="Cryptography.ECDSA.Secp256K1" Version="1.1.2" />
 <PackageReference Include="gtanetwork.api" Version="0.3.5" />
