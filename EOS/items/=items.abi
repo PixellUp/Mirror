@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Thu Sep 27 21:03:39 2018",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Thu Sep 27 21:05:12 2018",
     "version": "eosio::abi/1.0",
     "structs": [
         {
@@ -34,11 +34,11 @@
                 },
                 {
                     "name": "items",
-                    "type": "accitems>"
+                    "type": "accitems[]"
                 },
                 {
                     "name": "vehicles",
-                    "type": "accvehicle>"
+                    "type": "accvehicle[]"
                 }
             ]
         },
@@ -150,8 +150,8 @@
             "name": "acctable",
             "type": "acctable",
             "index_type": "i64",
-            "key_names": [],
-            "key_types": []
+            "key_names": ["account_name"],
+            "key_types": ["uint64"]
         }
     ],
     "ricardian_clauses": [],
