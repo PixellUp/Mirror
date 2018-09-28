@@ -11,6 +11,10 @@
         "xlocale": "cpp",
         "initializer_list": "cpp",
         "vector": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "iosfwd": "cpp",
+        "system_error": "cpp",
+        "xmemory0": "cpp",
+        "xtr1common": "cpp"
     }
 }

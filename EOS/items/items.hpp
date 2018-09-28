@@ -18,10 +18,10 @@ namespace MirrorItems {
             void issueitem(account_name account, uint64_t key, string itemname, string type, string properties);
 
             [[eosio::action]]
-            void removeitem(account_name account, uint64_t key);
+            void removeitem( account_name account, uint64_t key );
 
             [[eosio::action]]
-            void additem(account_name from, account_name to, uint64_t key, string itemname, string type, string properties);
+            void consumeitem( account_name account, uint64_t key );
 
             struct [[eosio::table]] accitems {
                 uint64_t key;
@@ -56,6 +56,10 @@ namespace MirrorItems {
             };
 
             typedef multi_index<N(acctable), acctable> accountindex;
+
+        private:
+            void additem(account_name from, account_name to, uint64_t key, string itemname, string type, string properties);
+            void deleteitem( account_name target, uint64_t key );
     };
 
     EOSIO_ABI(Items, (issueitem)(removeitem))

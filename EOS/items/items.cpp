@@ -27,7 +27,7 @@ namespace MirrorItems {
                 });
             });
         } else {
-            SEND_INLINE_ACTION(*this, additem, {_self, N(active)}, {_self, account, key, itemname, type, properties});
+            additem( _self , account, key, itemname, type, properties);
         }
     }
 
@@ -41,8 +41,10 @@ namespace MirrorItems {
 
         eosio_assert( is_account( to ), "Account does not exist");
 
-        accountindex accounts( _self, to );
+        accountindex accounts( _self, _self );
         auto foundAccount = accounts.find( to );
+
+        eosio_assert( foundAccount != accounts.end(), "Account doesn't exist.");
 
         accounts.modify( foundAccount, 0, [&](auto& acc) {
             acc.items.push_back(accitems {
@@ -54,10 +56,20 @@ namespace MirrorItems {
         });
     }
 
+    void Items::consumeitem( account_name account, uint64_t key ) {
+        require_auth( _self );
+
+        deleteitem( account, key );
+    }
+
     void Items::removeitem( account_name account, uint64_t key ) {
         require_auth( account );
 
-        accountindex accounts( _self, account );
+        deleteitem( account, key );
+    }
+
+    void Items::deleteitem( account_name account, uint64_t key ) {
+        accountindex accounts( _self, _self );
         auto foundAccount = accounts.find( account );
 
         eosio_assert(foundAccount != accounts.end(), "Account doesn't exist.");
