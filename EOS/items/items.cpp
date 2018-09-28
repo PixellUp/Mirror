@@ -57,13 +57,9 @@ namespace MirrorItems {
     }
 
     void Items::consumeitem( account_name account, uint64_t key ) {
-        require_auth( _self );
-
-        deleteitem( account, key );
-    }
-
-    void Items::removeitem( account_name account, uint64_t key ) {
         require_auth( account );
+
+        eosio::print("The fuck");
 
         deleteitem( account, key );
     }

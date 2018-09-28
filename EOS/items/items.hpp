@@ -18,9 +18,6 @@ namespace MirrorItems {
             void issueitem(account_name account, uint64_t key, string itemname, string type, string properties);
 
             [[eosio::action]]
-            void removeitem( account_name account, uint64_t key );
-
-            [[eosio::action]]
             void consumeitem( account_name account, uint64_t key );
 
             struct [[eosio::table]] accitems {
@@ -59,8 +56,8 @@ namespace MirrorItems {
 
         private:
             void additem(account_name from, account_name to, uint64_t key, string itemname, string type, string properties);
-            void deleteitem( account_name target, uint64_t key );
+            void deleteitem( account_name account, uint64_t key );
     };
 
-    EOSIO_ABI(Items, (issueitem)(removeitem))
+    EOSIO_ABI(Items, (issueitem)(consumeitem))
 }
