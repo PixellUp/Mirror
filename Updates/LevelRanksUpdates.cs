@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using Mirror.Classes.Static.StaticEvents;
+using Mirror.StaticEvents;
 using System;
 using System.Collections.Generic;
 using System.Text;

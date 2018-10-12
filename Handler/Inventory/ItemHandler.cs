@@ -6,10 +6,10 @@ using System.Text;
 using Mirror.Classes.Models;
 using Mirror.Classes.Static;
 using Mirror.Levels;
-using Mirror.Classes.Readonly;
+using Mirror.Globals;
 using Mirror.Classes.Models.Player;
 using Newtonsoft.Json;
-using Mirror.Globals;
+using Mirror.Utility;
 
 namespace Mirror.Handler
 {
@@ -94,7 +94,7 @@ namespace Mirror.Handler
             LevelRanks levelRanks = AccountUtil.GetLevelRanks(client);
             WeaponHash hash = NAPI.Util.WeaponNameToModel(name);
 
-            if (Array.IndexOf(WeaponNames.AssaultWeapons, name.ToLower()) >= 0)
+            if (Array.IndexOf(WeaponNamesData.AssaultWeapons, name.ToLower()) >= 0)
             {
                 if (levelRanks.MediumWeaponry <= 0)
                 {
@@ -104,7 +104,7 @@ namespace Mirror.Handler
                 }
             }
 
-            if (Array.IndexOf(WeaponNames.ShotgunWeapons, name.ToLower()) >= 0)
+            if (Array.IndexOf(WeaponNamesData.ShotgunWeapons, name.ToLower()) >= 0)
             {
                 if (levelRanks.MediumWeaponry <= 0)
                 {
@@ -114,7 +114,7 @@ namespace Mirror.Handler
                 }
             }
 
-            if (Array.IndexOf(WeaponNames.SmgWeapons, name.ToLower()) >= 0)
+            if (Array.IndexOf(WeaponNamesData.SmgWeapons, name.ToLower()) >= 0)
             {
                 if (levelRanks.LightWeaponry <= 0)
                 {
@@ -124,7 +124,7 @@ namespace Mirror.Handler
                 }
             }
 
-            if (Array.IndexOf(WeaponNames.HeavyWeapons, name.ToLower()) >= 0)
+            if (Array.IndexOf(WeaponNamesData.HeavyWeapons, name.ToLower()) >= 0)
             {
                 if (levelRanks.HeavyWeaponry <= 0)
                 {

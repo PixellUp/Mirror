@@ -3,9 +3,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mirror.Classes.Static;
+using Mirror.Utility;
 using Mirror.Classes.Models;
-using Mirror.Classes.Readonly;
 using Mirror.Globals;
 
 namespace Mirror.Handler
@@ -100,7 +99,7 @@ namespace Mirror.Handler
         public static bool UseItemEffect(Client client, InventoryItem item)
         {
             // Check for weapon names first.
-            if (Array.IndexOf(WeaponNames.Weapons, item.Name.ToLower()) >= 0)
+            if (Array.IndexOf(WeaponNamesData.Weapons, item.Name.ToLower()) >= 0)
                 return ItemHandler.Weapon(client, item.Name);
 
             // Handle Outfit

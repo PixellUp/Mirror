@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mirror.Classes.Static.StaticEvents;
+using Mirror.StaticEvents;
 
 namespace Mirror.Handler
 {
@@ -83,10 +83,6 @@ namespace Mirror.Handler
                 case "Skill_Event":
                     SkillEvents.ParseSkillEvent(client, arguments);
                     return;
-                // Scatter Integration
-                case "Scatter_Login":
-                    ScatterEvents.HandleAccount(client, arguments);
-                    return; 
             }
             
         }

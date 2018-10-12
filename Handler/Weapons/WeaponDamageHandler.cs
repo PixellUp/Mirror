@@ -6,10 +6,11 @@ using Mirror.Updates;
 using System;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
-using Mirror.Classes.Static.StaticEvents;
+using Mirror.StaticEvents;
 using Mirror.Skills.Intelligence;
 using Mirror.Skills.Endurance;
 using Mirror.Globals;
+using Mirror.Utility;
 
 namespace Mirror
 {
@@ -102,7 +103,7 @@ namespace Mirror
             // Roll for damage.
             int amountOfDamage = 0;
             for (int i = 0; i < weaponRollCount; i++)
-                amountOfDamage += Utility.RollDamage(weaponDie);
+                amountOfDamage += Skills.Utility.RollDamage(weaponDie);
 
             // Double damage if concentrate is available.
             amountOfDamage = Concentrate.Use(client, amountOfDamage);

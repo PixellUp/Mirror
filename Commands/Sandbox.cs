@@ -9,8 +9,9 @@ using System.Text;
 using Skillsheet = Mirror.Skills.Skills;
 using Mirror.Classes.Static;
 using Mirror.Classes.Models;
-using Mirror.Classes.Static.StaticEvents;
+using Mirror.StaticEvents;
 using Mirror.Globals;
+using Mirror.Utility;
 
 namespace Mirror.Commands
 {

@@ -6051,11 +6051,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Vape\\Desktop\\RageMP\\server-files\\bridge\\resources\\Mirror\\Mirror.csproj",
+      "projectUniqueName": "C:\\Users\\Vape\\Desktop\\Projects\\RageMP\\server-files\\bridge\\resources\\Mirror\\Mirror.csproj",
       "projectName": "Mirror",
-      "projectPath": "C:\\Users\\Vape\\Desktop\\RageMP\\server-files\\bridge\\resources\\Mirror\\Mirror.csproj",
+      "projectPath": "C:\\Users\\Vape\\Desktop\\Projects\\RageMP\\server-files\\bridge\\resources\\Mirror\\Mirror.csproj",
       "packagesPath": "C:\\Users\\Vape\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Vape\\Desktop\\RageMP\\server-files\\bridge\\resources\\Mirror\\obj\\",
+      "outputPath": "C:\\Users\\Vape\\Desktop\\Projects\\RageMP\\server-files\\bridge\\resources\\Mirror\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

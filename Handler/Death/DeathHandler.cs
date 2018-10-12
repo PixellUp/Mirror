@@ -8,6 +8,7 @@ using Mirror.Classes.Static;
 using Mirror.Classes.Models;
 using Mirror.Events;
 using Mirror.Globals;
+using Mirror.Utility;
 
 namespace Mirror.Handler
 {
