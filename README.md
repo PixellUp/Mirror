@@ -9,6 +9,13 @@ There is no current login system as it was deprecated when I was moving over to 
 
 I've since removed the scatter integration and now there just isn't a login system implemented.
 
+SO WHAT YOU NEED TO DO IS **CREATE A LOGIN SYSTEM** AND **HOOK IT INTO THE CLIENT-SIDE CODE**.
+
+### CURRENTLY MISSING:
+
+* Login Page Hook in
+* Registration Page Hook in
+
 ----
 
 What this uses:
