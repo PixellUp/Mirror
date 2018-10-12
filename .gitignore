@@ -11,3 +11,11 @@ obj/Debug/*
 **.AssemblyInfoInputs.cache
 bin/Debug/netcoreapp2.0/*.cs
 bin/Debug/netcoreapp2.1
+.dll
+obj/*
+bin/*
+obj
+bin
+.cache
+.props
+.targets
